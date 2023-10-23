@@ -11,12 +11,14 @@ import { ModalModule } from '@coreui/angular-pro';
 import { AppointmentAddComponent } from './components/appointment.add/appointment-add.component';
 import { AppointmentCancelNoshowComponent } from './components/appointment.cancel.noshow/appointment-cancel-noshow.component';
 import { AppointmentConfirmComponent } from './components/appointment.confirm/appointment-confirm.component';
+import { AppointmentStatusComponent } from './components/appointment.status/appointment-status.component';
 @NgModule({
     declarations: [
         ViewSchdulerComponent,
         AppointmentAddComponent,
         AppointmentCancelNoshowComponent,
-        AppointmentConfirmComponent
+        AppointmentConfirmComponent,
+        AppointmentStatusComponent
     ],
     imports: [
         CommonModule,
