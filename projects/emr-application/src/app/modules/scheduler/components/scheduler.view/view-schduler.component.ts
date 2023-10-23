@@ -61,7 +61,11 @@ const colors: Record<string, EventColor> = {
 })
 export class ViewSchdulerComponent implements OnInit {
   @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
+ 
+ 
+  
   clinicSchedulerConfiguration: SchedulerConfiguration = new SchedulerConfiguration();
+
   view: CalendarView = CalendarView.Month;
 
   CalendarView = CalendarView;
@@ -138,7 +142,8 @@ export class ViewSchdulerComponent implements OnInit {
 
   activeDayIsOpen: boolean = true;
 
-  constructor(private modal: NgbModal,
+  constructor(
+    private modal: NgbModal,
     private appointmentService: AppointmentService,
     private toastr: ToastrService,
     private schedulerConfigurationService: SchedulerConfigurationService) { }
@@ -155,6 +160,7 @@ export class ViewSchdulerComponent implements OnInit {
       }
       this.viewDate = date;
     }
+    this.modal.open(this.modalContent, { size: 'lg' });
   }
 
   eventTimesChanged({
@@ -172,12 +178,12 @@ export class ViewSchdulerComponent implements OnInit {
       }
       return iEvent;
     });
-    this.handleEvent('Dropped or resized', event);
+    //this.handleEvent('Dropped or resized', event);
   }
 
   handleEvent(action: string, event: CalendarEvent): void {
     this.modalData = { event, action };
-    this.modal.open(this.modalContent, { size: 'lg' });
+    // this.modal.open(this.modalContent, { size: 'lg' });
   }
 
   addEvent(): void {

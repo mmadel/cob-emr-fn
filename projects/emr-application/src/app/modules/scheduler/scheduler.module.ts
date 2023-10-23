@@ -7,14 +7,18 @@ import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { FlatpickrModule } from 'angularx-flatpickr';
 import { EmrCommonModule } from '../common/emr-common.module';
+import { ModalModule } from '@coreui/angular-pro';
+import { AppointmentAddComponent } from './components/appointment.add/appointment-add.component';
 @NgModule({
     declarations: [
-        ViewSchdulerComponent
+        ViewSchdulerComponent,
+        AppointmentAddComponent
     ],
     imports: [
         CommonModule,
         SchedulerRoutingModule,
         EmrCommonModule,
+        ModalModule,
         FlatpickrModule.forRoot(),
         CalendarModule.forRoot({
             provide: DateAdapter,
