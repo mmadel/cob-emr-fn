@@ -46,4 +46,12 @@ export class AppointmentService {
       return value;
     }));
   }
+  deleteAppointment(id: string | number) {
+    const createAppointmentTypURL = this.baseUrl + 'appointment/id/' + id;
+    return this._http.delete(createAppointmentTypURL)
+  }
+  deleteAppointmentList(repeatId: number, clinicId: number) {
+    const createAppointmentTypURL = this.baseUrl + 'appointment/list/repeatId/' + repeatId + '/clinicId/' + clinicId;
+    return this._http.delete(createAppointmentTypURL)
+  }
 }
