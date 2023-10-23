@@ -23,6 +23,10 @@ import {
   CalendarView,
 } from 'angular-calendar';
 import { EventColor } from 'calendar-utils';
+import { AppointmentService } from "../../service/appointment.service";
+import { ToastrService } from "ngx-toastr";
+import { SchedulerConfigurationService } from "../../service/scheduler-configuration.service";
+import { SchedulerConfiguration } from "../../models/configuration";
 
 const colors: Record<string, EventColor> = {
   red: {
@@ -55,9 +59,9 @@ const colors: Record<string, EventColor> = {
   ],
   templateUrl: './view-schduler.component.html',
 })
-export class ViewSchdulerComponent {
+export class ViewSchdulerComponent implements OnInit {
   @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
-
+  clinicSchedulerConfiguration: SchedulerConfiguration = new SchedulerConfiguration();
   view: CalendarView = CalendarView.Month;
 
   CalendarView = CalendarView;
@@ -68,7 +72,9 @@ export class ViewSchdulerComponent {
     action: string;
     event: CalendarEvent;
   };
-
+  ngOnInit(): void {
+    //this.getSchedulerConfiguration();
+  }
   actions: CalendarEventAction[] = [
     {
       label: '<i class="fas fa-fw fa-pencil-alt"></i>',
@@ -132,7 +138,10 @@ export class ViewSchdulerComponent {
 
   activeDayIsOpen: boolean = true;
 
-  constructor(private modal: NgbModal) {}
+  constructor(private modal: NgbModal,
+    private appointmentService: AppointmentService,
+    private toastr: ToastrService,
+    private schedulerConfigurationService: SchedulerConfigurationService) { }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
     if (isSameMonth(date, this.viewDate)) {
@@ -198,5 +207,13 @@ export class ViewSchdulerComponent {
 
   closeOpenMonthViewDay() {
     this.activeDayIsOpen = false;
+  }
+  getSchedulerConfiguration() {
+    const clinicId = JSON.parse(localStorage.getItem('user')).selectedClinic.id;
+    const organizationId = JSON.parse(localStorage.getItem('user')).organizationId;
+    this.schedulerConfigurationService.retrieveCliniSchedulerConfigurationByClinicId(clinicId, organizationId).subscribe(result => {
+      this.clinicSchedulerConfiguration.startHour = result.startHour === 0 ? 8 : result.startHour;
+      this.clinicSchedulerConfiguration.endHour = result.endHour === 0 ? 19 : result.endHour
+    })
   }
 }
