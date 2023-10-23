@@ -1,0 +1,48 @@
+@import '~bootstrap/scss/bootstrap';
+@import '~@fortawesome/fontawesome-free/css/all.css';
+@import '~highlight.js/styles/github.css';
+@import '~flatpickr/dist/flatpickr.css';
+@import '../../../../angular-calendar/src/angular-calendar';
+
+@media (min-width: 768px) {
+  body {
+    overflow-y: hidden;
+  }
+}
+.mat-form-field + .mat-form-field {
+  margin-left: 8px;
+}
+.example-action-buttons {
+  padding-bottom: 20px;
+}
+
+.example-headers-align .mat-expansion-panel-header-title,
+.example-headers-align .mat-expansion-panel-header-description {
+  flex-basis: 0;
+}
+
+.example-headers-align .mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.example-headers-align .mat-form-field + .mat-form-field {
+  margin-left: 8px;
+}
+table {
+  width: 100%;
+}
+.mat-accordion .mat-expansion-panel{
+  margin-bottom: 6px;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+.example-card {
+  max-width: 400px;
+}
+th {
+    width:17% ;
+  }
+  table {
+    border-spacing: 15px;
+  }

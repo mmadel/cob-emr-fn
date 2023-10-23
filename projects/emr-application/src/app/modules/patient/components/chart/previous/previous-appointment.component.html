@@ -1,0 +1,33 @@
+<c-card class="mb-3">
+    <c-card-body>
+        <ng-container *ngIf="props$ | async as props">
+            <c-smart-table [columnSorter]="{resetable: true }" [columns]="columns"
+                [items]="(appointments$ | async) ?? []" [itemsPerPage]="props.itemsPerPage"
+                (itemsPerPageChange)="handleItemsPerPageChange($event)" [itemsPerPageOptions]="[5,10,20]"
+                [itemsPerPageSelect]="true" [tableProps]="{ hover: true, striped: false, responsive: true }"
+                [tableBodyProps]="{ align: 'middle' }" (sorterValueChange)="handleSorterValueChange($event)" header>
+                <ng-template cTemplateId="tableData" let-columnName="columnName" let-item="item"
+                    let-tdContent="tdContent">
+                    <td>
+                        <ng-container [ngSwitch]="columnName">
+                            <ng-container *ngSwitchCase="'startDate'">
+                                {{tdContent| date:'MMM d, y, h:mm a'}}
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'endDate'">
+                                {{tdContent| date:'MMM d, y, h:mm a'}}
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'viewHistory'">
+                                dsdsd
+                            </ng-container>
+                            <ng-container *ngSwitchDefault>
+                                {{tdContent}}
+                            </ng-container>
+                        </ng-container>
+                    </td>
+                </ng-template>
+            </c-smart-table>
+            <c-smart-pagination *ngIf="props.totalPages" [activePage]="props.activePage"
+                (activePageChange)="handleActivePageChange($event)" [pages]="props.totalPages"></c-smart-pagination>
+        </ng-container>
+    </c-card-body>
+</c-card>

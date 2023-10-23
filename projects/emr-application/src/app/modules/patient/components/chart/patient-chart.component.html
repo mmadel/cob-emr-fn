@@ -1,0 +1,111 @@
+<ngx-spinner></ngx-spinner>
+<c-row>
+    <c-col xs="12" class="mb-2">
+        <h1>Patient Chart</h1>
+    </c-col>
+</c-row>
+<hr />
+<c-container fluid>
+    <!--Pateint Basic Component-->
+    <c-row class="justify-content-center">
+        <c-col class="col">
+            <c-card class="mb-3 ustify-content-center">
+                <c-card-header>
+                    <h3>Patient information</h3>
+                </c-card-header>
+                <c-card-body>
+                    <c-card cBorder="primary" class="mb-2">
+                        <c-card-body *ngIf="patientChartInfo">
+                            <h5 cCardTitle>
+
+                                <small class="fw-bold fs-5"> Name : </small>
+                                <small class="fw-normal fs-5">{{patientChartInfo.name}}</small>
+                            </h5>
+                            <h5 cCardTitle>
+
+                                <small class="fw-bold fs-5"> Date Of Birth : </small>
+                                <small class="fw-normal fs-5">{{patientChartInfo.dateOfBirth}}</small>
+                            </h5>
+                            <h5 cCardTitle>
+
+                                <small class="fw-bold fs-5"> Age : </small>
+                                <small class="fw-normal fs-5">{{patientChartInfo.age}}</small>
+                            </h5>
+                            <h5 cCardTitle *ngIf="patientChartInfo.address">
+
+                                <small class="fw-bold fs-5"> Addresses : </small>
+                                <ul class="list-unstyled">
+                                    <ul>
+                                        <li *ngFor="let address of patientChartInfo.address; let i = index">
+                                            <small class="fw-normal fs-5">{{address}}</small>
+                                        </li>
+                                    </ul>
+
+                                </ul>
+                            </h5>
+                        </c-card-body>
+                    </c-card>
+                    <c-card cBorder="primary" class="mb-2">
+                        <c-card-body>
+                            <select aria-label="Default select example" cSelect sizing="sm"
+                                (change)="changeCase($event)">
+                                <option value="0">Select Case</option>
+                                <option *ngFor="let case of patientCases" [value]="case.id">
+                                    {{case.title}}</option>
+                            </select>
+                            <c-accordion [alwaysOpen]="accordionAlwaysOpen" class="shadow m-3">
+                                <c-accordion-item #item0="cAccordionItem" [visible]="false">
+                                    <ng-template cTemplateId="accordionHeaderTemplate">
+                                        <button (click)="item0.toggleItem()" [collapsed]="!item0.visible"
+                                            cAccordionButton>
+                                            <h5> <svg cIcon name="cilArrowCircleRight" size="xl"></svg>
+                                                Upcoming Appointment
+                                            </h5>
+                                        </button>
+                                    </ng-template>
+                                    <ng-template cTemplateId="accordionBodyTemplate">
+                                        <app-upcoming-appointment [patientId]="patientId"></app-upcoming-appointment>
+                                    </ng-template>
+                                </c-accordion-item>
+                                <c-accordion-item #item1="cAccordionItem" [visible]="false">
+                                    <ng-template cTemplateId="accordionHeaderTemplate">
+                                        <button (click)="item1.toggleItem()" [collapsed]="!item1.visible"
+                                            cAccordionButton>
+                                            <h5> <svg cIcon name="cilArrowCircleLeft" size="xl"></svg>
+                                                Previous Appointment</h5>
+                                        </button>
+                                    </ng-template>
+                                    <ng-template cTemplateId="accordionBodyTemplate">
+                                        <app-previous-appointment [patientId]="patientId"></app-previous-appointment>
+                                    </ng-template>
+                                </c-accordion-item>
+                            </c-accordion>
+                        </c-card-body>
+                    </c-card>
+                </c-card-body>
+            </c-card>
+        </c-col>
+    </c-row>
+    <!--Pateint Case Component-->
+    <c-row class="justify-content-center">
+        <c-col class="col">
+            <c-card class="mb-3 ustify-content-center">
+                <c-card-header>
+                    <h3>Patient Cases</h3>
+                </c-card-header>
+                <c-card-body>
+                    <c-nav variant="tabs" *ngFor="let case of patientCases; let i = index">
+                        <a [active]="i===0" [cTabContent]="caseContent" [routerLink] [tabPaneIdx]="i"
+                            cNavLink>{{case.title}}</a>
+                    </c-nav>
+                    <c-tab-content #caseContent="cTabContent">
+                        <c-tab-pane class="p-3" *ngFor="let case of patientCases; let i = index">
+                            <app-patient-chart-case [case]="case" [patientId]="patientId"
+                                [clinicId]="2"></app-patient-chart-case>
+                        </c-tab-pane>
+                    </c-tab-content>
+                </c-card-body>
+            </c-card>
+        </c-col>
+    </c-row>
+</c-container>

@@ -1,0 +1,72 @@
+<form cForm #emergencyContactForm="ngForm" (ngSubmit)="add()">
+    <small *ngIf="emergencyName.invalid && (emergencyName.dirty || emergencyName.touched)"
+        class="form-text text-danger">
+        Emergenct Name is required
+    </small>
+    <c-input-group class="mb-3">
+        <input cFormControl id="emergencyName" name="emergencyName" sizing="sm" placeholder="Emergenct Name" required
+            [ngClass]="{'is-invalid': emergencyName.invalid && (emergencyName.dirty || emergencyName.touched)}"
+            [(ngModel)]="emergency.contactName" #emergencyName="ngModel" />
+    </c-input-group>
+
+
+    <small *ngIf="emergencyPhoneType.invalid && (emergencyPhoneType.dirty || emergencyPhoneType.touched)"
+        class="form-text text-danger">
+        Phone Type Type is required
+    </small>
+    <c-input-group class="mb-3">
+        <select cFormControl cSelect sizing="sm" id="emergencyPhoneType" name="emergencyPhoneType" required
+            [ngClass]="{'is-invalid': emergencyPhoneType.invalid && (emergencyPhoneType.dirty || emergencyPhoneType.touched)}"
+            [(ngModel)]="emergency.phoneType" #emergencyPhoneType="ngModel">
+            <option [ngValue]="null" disabled selected>Select Phone Type</option>
+            <option *ngFor="let phoneType of phoneTypes | keyvalue" [ngValue]="phoneType.key">
+                {{phoneType.value}}
+            </option>
+        </select>
+    </c-input-group>
+
+    <small *ngIf="emergencyPhone.invalid && (emergencyPhone.dirty || emergencyPhone.touched)"
+        class="form-text text-danger">
+        Phone is required
+    </small>
+    <c-input-group class="mb-3" sizing="sm">
+        <span cInputGroupText id="basic-addon1">+1</span>
+        <input placeholder="Enter Contact Phone" cFormControl id="contactPhone" name="contactPhone" sizing="sm" required
+            [ngClass]="{'is-invalid': emergencyPhone.invalid && (emergencyPhone.dirty || emergencyPhone.touched)}"
+            #emergencyPhone="ngModel" [ngModel]="emergency.phoneNumber| phone"
+            (ngModelChange)="emergency.phoneNumber=$event" maxlength="15" />
+    </c-input-group>
+
+    <textarea class="mb-3" placeholder="Additional Information" cFormControl id="contactAddInfo" name="contactAddInfo"
+        sizing="sm" #contactAddInfo="ngModel" [(ngModel)]="emergency.additionalInfo"> </textarea>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <button type="submit"  cButton color="primary" variant="outline"
+            (click)="add()">Add</button>
+    </div>
+</form>
+<table class="table table-sm">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">PhoneType</th>
+            <th scope="col">Phone</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let emergenctContact of patient.emergencies;let i=index;">
+            <td>{{i+1}}</td>
+            <td>{{emergenctContact.contactName}}</td>
+            <td>{{emergenctContact.phoneType}}</td>
+            <td>{{emergenctContact.phoneNumber}}</td>
+            <td>
+                <c-button-group aria-label="First group" class="me-2" role="group">
+                    <button cButton color="primary" variant="outline" size="sm" (click)="remove(i)">
+                        <svg cIcon name="cilTrash"></svg>
+                    </button>
+                </c-button-group>
+            </td>
+        </tr>
+    </tbody>
+</table>

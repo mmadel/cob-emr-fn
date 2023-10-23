@@ -1,0 +1,255 @@
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+<form cForm #caseForm="ngForm" (ngSubmit)="add()">
+    <c-card cBorder="primary" class="mb-2">
+        <c-card-body>
+            <h6 cCardTitle>
+                <strong>Case Essential Information</strong>
+            </h6>
+            <small *ngIf="caseTitle.invalid && (caseTitle.dirty || caseTitle.touched)" class="form-text text-danger">
+                Title is required
+            </small>
+            <c-input-group class="mb-3">
+                <input autoComplete="name" cFormControl id="name" name="name" sizing="sm" placeholder="Title" required
+                    [ngClass]="{'is-invalid': caseTitle.invalid && (caseTitle.dirty || caseTitle.touched)}"
+                    [(ngModel)]="case.title" #caseTitle="ngModel" />
+            </c-input-group>
+
+            <small *ngIf="casePlaceOfService.invalid && (casePlaceOfService.dirty || casePlaceOfService.touched)"
+                class="form-text text-danger">
+                Place Of Service is required
+            </small>
+            <c-input-group class="mb-3">
+                <select cFormControl cSelect sizing="sm" id="casePlaceOfService" name="casePlaceOfService" required
+                    [ngClass]="{'is-invalid': casePlaceOfService.invalid && (casePlaceOfService.dirty || casePlaceOfService.touched)}"
+                    [(ngModel)]="case.placeOfService" #casePlaceOfService="ngModel">
+                    <option [ngValue]="null" disabled selected>Select Place Of Service</option>
+                    <option *ngFor="let palceOfService of palceOfServices | keyvalue" [ngValue]="palceOfService.key">
+                        {{palceOfService.value }}
+                    </option>
+                </select>
+            </c-input-group>
+
+            <small *ngIf="caseinjuryCase.invalid && (caseinjuryCase.dirty || caseinjuryCase.touched)"
+                class="form-text text-danger">
+                Injury Case is required
+            </small>
+            <c-input-group class="mb-3">
+                <select cFormControl cSelect sizing="sm" id="casePlaceOfService" name="casePlaceOfService" required
+                    [ngClass]="{'is-invalid': caseinjuryCase.invalid && (caseinjuryCase.dirty || caseinjuryCase.touched)}"
+                    [(ngModel)]="case.injuryCase" #caseinjuryCase="ngModel">
+                    <option [ngValue]="null" disabled selected>Select Injury Cause</option>
+                    <option *ngFor="let injuryCase of injuryCase | keyvalue" [ngValue]="injuryCase.key">
+                        {{injuryCase.value }}
+                    </option>
+                </select>
+            </c-input-group>
+        </c-card-body>
+    </c-card>
+
+    <c-card cBorder="primary" class="mb-2">
+        <c-card-body>
+            <h6 cCardTitle>
+                <strong>Case Insurance Information</strong>
+            </h6>
+            <c-form-check [switch]="true" class="mb-2">
+                <input cFormCheckInput type="checkbox" [(ngModel)]="case.caseInsuranceInformation.isSelfPay"
+                    #isSelfPay="ngModel" id="isselfPayAmount" name="isselfPayAmount" />
+                <label cFormCheckLabel>SefPayed</label>
+            </c-form-check>
+            <span *ngIf="case.caseInsuranceInformation.isSelfPay">
+                <small *ngIf="selfPayAmount.invalid && (selfPayAmount.dirty || selfPayAmount.touched)"
+                    class="form-text text-danger">
+                    SelfPay Amount is required
+                </small>
+                <c-input-group class="mb-2">
+                    <input class="mb-2" placeholder="Enter SelfPay Amount" cFormControl id="selfPayAmount"
+                        name="selfPayAmount" sizing="sm" required
+                        [ngClass]="{'is-invalid': selfPayAmount.invalid && (selfPayAmount.dirty || selfPayAmount.touched)}"
+                        #selfPayAmount="ngModel" [(ngModel)]="case.caseInsuranceInformation.selfPayAmount" />
+                </c-input-group>
+            </span>
+            <span *ngIf="!case.caseInsuranceInformation.isSelfPay">
+                <small *ngIf="primaryInsurance.invalid && (primaryInsurance.dirty || primaryInsurance.touched)"
+                    class="form-text text-danger">
+                    Primary Insurance is required
+                </small>
+                <select cFormControl cSelect class="mb-2" sizing="sm" id="primaryInsurance" name="primaryInsurance"
+                    required
+                    [ngClass]="{'is-invalid': primaryInsurance.invalid && (primaryInsurance.dirty || primaryInsurance.touched)}"
+                    [(ngModel)]="case.caseInsuranceInformation.primaryInsurance" #primaryInsurance="ngModel">
+                    <option [ngValue]="null" disabled selected>Select Primary Insurance</option>
+                </select>
+
+                <small *ngIf="secondaryInsurance.invalid && (secondaryInsurance.dirty || secondaryInsurance.touched)"
+                    class="form-text text-danger">
+                    Secondary Insurance is required
+                </small>
+                <select cFormControl cSelect class="mb-2" sizing="sm" id="secondaryInsurance" name="secondaryInsurance"
+                    required
+                    [ngClass]="{'is-invalid': secondaryInsurance.invalid && (secondaryInsurance.dirty || secondaryInsurance.touched)}"
+                    [(ngModel)]="case.caseInsuranceInformation.secondaryInsurance" #secondaryInsurance="ngModel">
+                    <option [ngValue]="null" disabled selected>Select Primary Insurance</option>
+                </select>
+            </span>
+        </c-card-body>
+    </c-card>
+
+    <c-card cBorder="primary" class="mb-2">
+        <c-card-body>
+            <h6 cCardTitle>
+                <strong>Case Diagnosis Information</strong>
+            </h6>
+            <c-input-group class="mb-3">
+                <span cInputGroupText id="basic-addon1">
+                    <svg cIcon name="cilNotes"></svg>
+                </span>
+                <input cFormControl name="icd10diagnosis" [formControl]="diagnosisCtrl" />
+            </c-input-group>
+            <c-multi-select class="mb-2" (valueChange)="addICD10diagnosis($event)" multiple="true" visibleItems="20">
+                <c-multi-select-option *ngFor="let option of filteredDiagnosis">
+                    {{ option}}
+                </c-multi-select-option>
+            </c-multi-select>
+
+        </c-card-body>
+    </c-card>
+    <c-card cBorder="primary" class="mb-2">
+        <c-card-body>
+            <h6 cCardTitle>
+                <strong>Case Referral Information</strong>
+            </h6>
+            <small *ngIf="referringPartyType.invalid && (referringPartyType.dirty || referringPartyType.touched)"
+                class="form-text text-danger">
+                Referring Party Type is required
+            </small>
+            <c-input-group class="mb-3">
+                <select cFormControl cSelect sizing="sm" id="referringPartyType" name="referringPartyType" required
+                    [ngClass]="{'is-invalid': referringPartyType.invalid && (referringPartyType.dirty || referringPartyType.touched)}"
+                    [(ngModel)]="case.referralCase.referringPartyType" #referringPartyType="ngModel">
+                    <option [ngValue]="null" disabled selected>Select Referring PartyType</option>
+                    <option *ngFor="let referringParty of referringParty | keyvalue" [ngValue]="referringParty.key">
+                        {{referringParty.value}}
+                    </option>
+                </select>
+            </c-input-group>
+
+            <small *ngIf="referringPartyName.invalid && (referringPartyName.dirty || referringPartyName.touched)"
+                class="form-text text-danger">
+                Referring Party Name is required
+            </small>
+            <c-input-group class="mb-3">
+                <input autoComplete="name" cFormControl id="referringPartyName" name="referringPartyName" sizing="sm"
+                    placeholder="Referring PartyName" required
+                    [ngClass]="{'is-invalid': referringPartyName.invalid && (referringPartyName.dirty || referringPartyName.touched)}"
+                    [(ngModel)]="case.referralCase.referringPartyName" #referringPartyName="ngModel" />
+            </c-input-group>
+
+            <small *ngIf="referringNPI.invalid && (referringNPI.dirty || referringNPI.touched)"
+                class="form-text text-danger">
+                NPI is required
+            </small>
+            <c-input-group class="mb-3">
+                <input autoComplete="name" cFormControl id="referringNPI" name="referringNPI" sizing="sm"
+                    placeholder="Referring NPI" required
+                    [ngClass]="{'is-invalid': referringNPI.invalid && (referringNPI.dirty || referringNPI.touched)}"
+                    [(ngModel)]="case.referralCase.referringPartyNPI" #referringNPI="ngModel" />
+            </c-input-group>
+
+            <small *ngIf="referringPhone.invalid && (referringPhone.dirty || referringPhone.touched)"
+                class="form-text text-danger">
+                Referring Phone is required
+            </small>
+            <c-input-group class="mb-3" sizing="sm">
+                <span cInputGroupText id="basic-addon1">+1</span>
+                <input placeholder="Enter Referring Phone" cFormControl id="referringPhone" name="referringPhone"
+                    sizing="sm" required
+                    [ngClass]="{'is-invalid': referringPhone.invalid && (referringPhone.dirty || referringPhone.touched)}"
+                    #referringPhone="ngModel" [ngModel]="case.referralCase.phone| phone"
+                    (ngModelChange)="case.referralCase.phone=$event" maxlength="15" />
+            </c-input-group>
+
+            <small *ngIf="referringPhone.invalid && (referringPhone.dirty || referringPhone.touched)"
+                class="form-text text-danger">
+                Referring Fax is required
+            </small>
+            <c-input-group class="mb-3" sizing="sm">
+                <span cInputGroupText id="basic-addon1">+1</span>
+                <input placeholder="Enter Referring Fax" cFormControl id="referringFax" name="referringFax" sizing="sm"
+                    required
+                    [ngClass]="{'is-invalid': referringFax.invalid && (referringFax.dirty || referringFax.touched)}"
+                    #referringFax="ngModel" [ngModel]="case.referralCase.fax| phone"
+                    (ngModelChange)="case.referralCase.fax=$event" maxlength="15" />
+            </c-input-group>
+
+            <small *ngIf="referringemail.invalid && (referringemail.dirty || referringemail.touched)"
+                class="form-text text-danger">
+                Referring Email is required
+            </small>
+            <c-input-group class="mb-3" sizing="sm">
+                <span cInputGroupText id="basic-addon1">@</span>
+                <input type="email" placeholder="Enter Contact Email" cFormControl id="referringemail"
+                    name="referringemail" sizing="sm" required
+                    [ngClass]="{'is-invalid': referringemail.invalid && (referringemail.dirty || referringemail.touched)}"
+                    #referringemail="ngModel" [(ngModel)]="case.referralCase.email" />
+            </c-input-group>
+        </c-card-body>
+    </c-card>
+
+    <c-card cBorder="primary" class="mb-2">
+        <c-card-body>
+            <h6 cCardTitle>
+                <strong>Other Information</strong>
+            </h6>
+            <c-form-check [switch]="true" class="mb-2">
+                <input cFormCheckInput type="checkbox" [(ngModel)]="case.caseOtherInformation.isAuthorized"
+                    #isAuthorized="ngModel" id="isAuthorized" name="isAuthorized" />
+                <label cFormCheckLabel>Authorization Required</label>
+            </c-form-check>
+
+            <textarea class="mb-2" placeholder="Additional Information For Chart" cFormControl id="caseaddtionalInfo"
+                name="caseaddtionalInfo" sizing="sm"
+                [ngClass]="{'is-invalid': caseaddtionalInfo.invalid && (caseaddtionalInfo.dirty || caseaddtionalInfo.touched)}"
+                #caseaddtionalInfo="ngModel" [(ngModel)]="case.caseOtherInformation.addInfoForChart"></textarea>
+
+            <c-input-group class="mb-3">
+                <select cFormControl cSelect sizing="sm" id="referringPartyType" name="referringPartyType"
+                    [(ngModel)]="case.caseOtherInformation.autoApplyModifier" #referringPartyType="ngModel">
+                    <option [ngValue]="null" disabled selected>Select Auto Apply Modifier</option>
+                    <option *ngFor="let autoApplyModifierVal of autoApplyModifier | keyvalue"
+                        [ngValue]="autoApplyModifierVal.key">
+                        {{autoApplyModifierVal.value}}
+                    </option>
+                </select>
+            </c-input-group>
+        </c-card-body>
+    </c-card>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <button type="submit" cButton color="primary" variant="outline" (click)="add()">Add</button>
+    </div>
+</form>
+<table class="table table-sm">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Title</th>
+            <th scope="col">Place Of Service</th>
+            <th scope="col">Injury Cause</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let emergenctContact of pateint.patientCaseModels;let i=index;">
+            <td>{{i+1}}</td>
+            <td>{{emergenctContact.title}}</td>
+            <td>{{emergenctContact.placeOfService}}</td>
+            <td>{{emergenctContact.injuryCase}}</td>
+            <td>
+                <c-button-group aria-label="First group" class="me-2" role="group">
+                    <button cButton color="primary" variant="outline" size="sm" (click)="remove(i)">
+                        <svg cIcon name="cilTrash"></svg>
+                    </button>
+                </c-button-group>
+            </td>
+        </tr>
+    </tbody>
+</table>

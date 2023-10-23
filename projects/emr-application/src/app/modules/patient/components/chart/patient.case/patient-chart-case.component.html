@@ -1,0 +1,115 @@
+<c-card class="mb-3 ustify-content-center">
+    <c-card-body>
+        <h5 cCardTitle>
+            <small class="fw-bold fs-5"> Case Information </small>
+        </h5>
+        <h6 cCardTitle>
+            <small class="fs-5"> treatingDoctor : </small>
+            <small class="fw-normal fs-5">{{treatingDoctor}}</small><br />
+            <small class="fs-5"> ReferringDoctor : </small>
+            <small class="fw-normal fs-5">{{referringDoctor}}</small><br />
+            <small class="fs-5"> ReferringNPI : </small>
+            <small class="fw-normal fs-5">{{referringNPI}}</small><br />
+            <small class="fs-5"> PlaceOfService : </small>
+            <small class="fw-normal fs-5">{{case.placeOfService | lowercase}}</small><br />
+            <small class="fs-5"> InjuryCase : </small>
+            <small class="fw-normal fs-5">{{case.injuryCase | lowercase}}</small><br />
+        </h6>
+        <h6 cCardTitle>
+            <small class="fs-5"> CaseDiagnosis : </small>
+            <ul class="list-unstyled">
+                <ul>
+                    <li *ngFor="let diagnosis of case.caseDiagnosis; let i = index">
+                        <small
+                            class="fw-normal fs-5">{{diagnosis.diagnosisCode}}-{{diagnosis.diagnosisDescription}}</small>
+                    </li>
+                </ul>
+
+            </ul>
+        </h6>
+    </c-card-body>
+</c-card>
+<c-card class="mb-3 ustify-content-center">
+    <c-card-body>
+        <c-accordion [alwaysOpen]="false" class="shadow m-3">
+            <c-accordion-item #item0="cAccordionItem" [visible]="false">
+                <ng-template cTemplateId="accordionHeaderTemplate">
+                    <button (click)="item0.toggleItem()" [collapsed]="!item0.visible" cAccordionButton>
+                        <h5> <svg cIcon name="cilNotes" size="xl"></svg>
+                            Records
+                        </h5>
+                    </button>
+                </ng-template>
+                <ng-template cTemplateId="accordionBodyTemplate">
+                    <c-card class="mb-3">
+                        <c-card-body>
+                            <ng-container *ngIf="props$ | async as props">
+                                <c-smart-table [columnSorter]="{resetable: true }" [columns]="columns"
+                                    [items]="(appointments$ | async) ?? []" [itemsPerPage]="props.itemsPerPage"
+                                    (itemsPerPageChange)="handleItemsPerPageChange($event)"
+                                    [itemsPerPageOptions]="[5,10,20]" [itemsPerPageSelect]="true"
+                                    [tableProps]="{ hover: true, striped: false, responsive: true }"
+                                    [tableBodyProps]="{ align: 'middle' }"
+                                    (sorterValueChange)="handleSorterValueChange($event)" header>
+                                    <ng-template cTemplateId="tableData" let-columnName="columnName" let-item="item"
+                                        let-tdContent="tdContent">
+                                        <td>
+                                            <ng-container [ngSwitch]="columnName">
+                                                <ng-container *ngSwitchCase="'startDate'">
+                                                    {{tdContent| date:'MMM d, y, h:mm a'}}
+                                                </ng-container>
+                                                <ng-container *ngSwitchCase="'endDate'">
+                                                    {{tdContent| date:'MMM d, y, h:mm a'}}
+                                                </ng-container>
+                                                <ng-container *ngSwitchDefault>
+                                                    {{tdContent}}
+                                                </ng-container>
+                                            </ng-container>
+                                        </td>
+                                    </ng-template>
+                                </c-smart-table>
+                                <c-smart-pagination *ngIf="props.totalPages" [activePage]="props.activePage"
+                                    (activePageChange)="handleActivePageChange($event)"
+                                    [pages]="props.totalPages"></c-smart-pagination>
+                            </ng-container>
+                        </c-card-body>
+                    </c-card>
+
+                </ng-template>
+            </c-accordion-item>
+            <c-accordion-item #item1="cAccordionItem" [visible]="false">
+                <ng-template cTemplateId="accordionHeaderTemplate">
+                    <button (click)="item1.toggleItem()" [collapsed]="!item1.visible" cAccordionButton>
+                        <h5> <svg cIcon name="cilPaperclip" size="xl"></svg>
+                            E-Documents</h5>
+                    </button>
+                </ng-template>
+                <ng-template cTemplateId="accordionBodyTemplate">
+
+                </ng-template>
+            </c-accordion-item>
+            <c-accordion-item #item2="cAccordionItem" [visible]="false">
+                <ng-template cTemplateId="accordionHeaderTemplate">
+                    <button (click)="item2.toggleItem()" [collapsed]="!item2.visible" cAccordionButton>
+                        <h5> <svg cIcon name="cilMoney" size="xl"></svg>
+                            Patient Payment</h5>
+                    </button>
+                </ng-template>
+                <ng-template cTemplateId="accordionBodyTemplate">
+
+                </ng-template>
+            </c-accordion-item>
+            <c-accordion-item #item3="cAccordionItem" [visible]="false">
+                <ng-template cTemplateId="accordionHeaderTemplate">
+                    <button (click)="item3.toggleItem()" [collapsed]="!item3.visible" cAccordionButton>
+                        <h5> <svg cIcon name="cilHome" size="xl"></svg>
+                            Home Exercise Program</h5>
+                    </button>
+                </ng-template>
+                <ng-template cTemplateId="accordionBodyTemplate">
+
+                </ng-template>
+            </c-accordion-item>
+        </c-accordion>
+    </c-card-body>
+</c-card>

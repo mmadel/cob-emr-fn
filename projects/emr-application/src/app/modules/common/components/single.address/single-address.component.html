@@ -1,0 +1,95 @@
+<small *ngIf="addresstype.invalid && (addresstype.dirty || addresstype.touched)" class="form-text text-danger">
+    Address Type is required
+</small>
+<c-input-group class="mb-3">
+    <select cFormControl cSelect sizing="sm" id="addresstype" name="addresstype" required
+        [ngClass]="{'is-invalid': addresstype.invalid && (addresstype.dirty || addresstype.touched)}"
+        [(ngModel)]="address.addressType" #addresstype="ngModel">
+        <option [ngValue]="null" disabled selected>Select Address Type</option>
+        <option *ngFor="let addresstype of addressKeys(addressTypes)" [ngValue]="addresstype">
+            {{addressTypes[addresstype]}}
+        </option>
+    </select>
+</c-input-group>
+
+<span *ngIf="address.addressType ==='Other'">
+    <small *ngIf="other.invalid && (other.dirty || other.touched)" class="form-text text-danger">
+        Other Address is required
+    </small>
+    <c-input-group class="mb-3">
+        <input autoComplete="name" cFormControl id="name" name="name" sizing="sm" placeholder="Other Address" required
+            [ngClass]="{'is-invalid': other.invalid && (other.dirty || other.touched)}" [(ngModel)]="address.other"
+            #other="ngModel" />
+    </c-input-group>
+</span>
+
+<small *ngIf="firstAddress.invalid && (firstAddress.dirty || firstAddress.touched)" class="form-text text-danger">
+    firstAddress is required
+</small>
+<c-input-group class="mb-3">
+    <input autoComplete="name" cFormControl id="firstAddress" name="firstAddress" sizing="sm"
+        placeholder="First Address" required
+        [ngClass]="{'is-invalid': firstAddress.invalid && (firstAddress.dirty || firstAddress.touched)}"
+        [(ngModel)]="address.firstAddress" #firstAddress="ngModel" />
+</c-input-group>
+
+<small *ngIf="secondAddress.invalid && (secondAddress.dirty || secondAddress.touched)" class="form-text text-danger">
+    secondAddress is required
+</small>
+<c-input-group class="mb-3">
+    <input cFormControl id="secondAddress" name="secondAddress" sizing="sm" placeholder="Second Address"
+        [ngClass]="{'is-invalid': secondAddress.invalid && (secondAddress.dirty || secondAddress.touched)}"
+        [(ngModel)]="address.secondAddress" #secondAddress="ngModel" />
+</c-input-group>
+
+<small *ngIf="country.invalid && (country.dirty || country.touched)" class="form-text text-danger">
+    Country Address is required
+</small>
+<c-input-group class="mb-3">
+    <select cFormControl cSelect sizing="sm" id="country" name="country" required
+        [ngClass]="{'is-invalid': country.invalid && (country.dirty || country.touched)}" [(ngModel)]="address.country"
+        #country="ngModel">
+        <option [ngValue]="null" disabled selected>Select Country</option>
+        <option *ngFor="let country of countries" [value]="country.name">
+            {{country.name}}
+        </option>
+    </select>
+</c-input-group>
+<span *ngIf="address.country !== 'United States of America' && (address.country !== null)">
+    <small *ngIf="province.invalid && (province.dirty || province.touched)" class="form-text text-danger">
+        province is required
+    </small>
+    <c-input-group class="mb-3">
+        <input cFormControl id="province" name="province" sizing="sm" placeholder="Province" required
+            [ngClass]="{'is-invalid': province.invalid && (province.dirty || province.touched)}"
+            [(ngModel)]="address.province" #province="ngModel" />
+    </c-input-group>
+</span>
+
+<span *ngIf="address.country == 'United States of America'">
+    <small *ngIf="state.invalid && (state.dirty || state.touched)" class="form-text text-danger">
+        State is required
+    </small>
+    <c-input-group class="mb-3">
+        <input cFormControl id="state" name="state" sizing="sm" placeholder="State" required
+            [ngClass]="{'is-invalid': state.invalid && (state.dirty || state.touched)}" [(ngModel)]="address.state"
+            #state="ngModel" />
+    </c-input-group>
+</span>
+<small *ngIf="city.invalid && (city.dirty || city.touched)" class="form-text text-danger">
+    city is required
+</small>
+<c-input-group class="mb-3">
+    <input cFormControl id="state" name="state" sizing="sm" placeholder="City" required
+        [ngClass]="{'is-invalid': city.invalid && (city.dirty || city.touched)}" [(ngModel)]="address.city"
+        #city="ngModel" />
+</c-input-group>
+
+<small *ngIf="zipCode.invalid && (zipCode.dirty || zipCode.touched)" class="form-text text-danger">
+    zipCode is required
+</small>
+<c-input-group class="mb-3">
+    <input zipcode cFormControl id="zipCode" name="zipCode" sizing="sm" placeholder="Zip-Code" required
+        [ngClass]="{'is-invalid': zipCode.invalid && (zipCode.dirty || zipCode.touched)}" [(ngModel)]="address.zipCode"
+        #zipCode="ngModel" />
+</c-input-group>

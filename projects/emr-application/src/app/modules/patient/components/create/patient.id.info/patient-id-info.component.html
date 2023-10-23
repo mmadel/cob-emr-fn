@@ -1,0 +1,28 @@
+<form cForm #patientIdForm="ngForm">
+    <small *ngIf="idType.invalid && (idType.dirty || idType.touched)" class="form-text text-danger">
+        Id Type is required
+    </small>
+
+    <select cFormControl cSelect class="mb-2" sizing="sm" id="IdType" name="IdType" required
+        [ngClass]="{'is-invalid': idType.invalid && (idType.dirty || idType.touched)}" [(ngModel)]="patient.idType"
+        #idType="ngModel">
+        <option [ngValue]="null" disabled selected>Select Id Type</option>
+        <option *ngFor="let idtype of idTypes | keyvalue" [value]="idtype.key">
+            {{idtype.value}}
+        </option>
+    </select>
+
+    <small *ngIf="patientId.invalid && (patientId.dirty || patientId.touched)" class="form-text text-danger">
+        Patient Id is required
+    </small>
+    <input class="mb-2" placeholder="Enter Patient Id" cFormControl id="patientId" name="patientId" sizing="sm" required
+        [ngClass]="{'is-invalid': patientId.invalid && (patientId.dirty || patientId.touched)}" #patientId="ngModel"
+        [(ngModel)]="patient.patientId" />
+
+    <c-col class="mb-2" xs="12">
+        <c-date-range-picker cFormControl [(startDate)]="patient.effectiveFromDate_Date" size="sm"
+            name="Effective From-Effective To"
+            [(endDate)]="patient.effectiveToDate_Date" 
+            [placeholder]="['Effective From', 'Effective To']"></c-date-range-picker>
+    </c-col>
+</form>

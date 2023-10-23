@@ -1,0 +1,72 @@
+<form cForm #contactForm="ngForm" (ngSubmit)="add()">
+    <small *ngIf="phoneType.invalid && (phoneType.dirty || phoneType.touched)" class="form-text text-danger">
+        Phone Type Type is required
+    </small>
+    <c-input-group class="mb-3">
+        <select cFormControl cSelect sizing="sm" id="phoneType" name="phoneType" required
+            [ngClass]="{'is-invalid': phoneType.invalid && (phoneType.dirty || phoneType.touched)}"
+            [(ngModel)]="contact.phoneType" #phoneType="ngModel">
+            <option [ngValue]="null" disabled selected>Select Phone Type</option>
+            <option *ngFor="let phoneType of phoneTypes | keyvalue" [ngValue]="phoneType.key">
+                {{phoneType.value}}
+            </option>
+        </select>
+    </c-input-group>
+
+    <small *ngIf="contactPhone.invalid && (contactPhone.dirty || contactPhone.touched)" class="form-text text-danger">
+        Phone is required
+    </small>
+    <c-input-group class="mb-3" sizing="sm">
+        <span cInputGroupText id="basic-addon1">+1</span>
+        <input placeholder="Enter Contact Phone" cFormControl id="contactPhone" name="contactPhone" sizing="sm" required
+            [ngClass]="{'is-invalid': contactPhone.invalid && (contactPhone.dirty || contactPhone.touched)}"
+            #contactPhone="ngModel" [ngModel]="contact.phoneNumber| phone" (ngModelChange)="contact.phoneNumber=$event"
+            maxlength="15" />
+    </c-input-group>
+
+    <small *ngIf="contactEmail.invalid && (contactEmail.dirty || contactEmail.touched)" class="form-text text-danger">
+        Email is required
+    </small>
+    <c-input-group class="mb-3" sizing="sm">
+        <span cInputGroupText id="basic-addon1">@</span>
+        <input type="email" placeholder="Enter Contact Email" cFormControl id="contactEmail" name="contactEmail"
+            sizing="sm" required
+            [ngClass]="{'is-invalid': contactEmail.invalid && (contactEmail.dirty || contactEmail.touched)}"
+            #contactEmail="ngModel" [(ngModel)]="contact.email" />
+    </c-input-group>
+
+
+    <textarea class="mb-3" placeholder="Additional Information" cFormControl id="contactAddInfo" name="contactAddInfo"
+        sizing="sm" #contactAddInfo="ngModel" [(ngModel)]="contact.additionalInfo"> </textarea>
+
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <button type="submit" aria-describedby="emailHelp" cButton color="primary" variant="outline"
+            (click)="add()">Add</button>
+    </div>
+</form>
+<table class="table table-sm">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">PhoneType</th>
+            <th scope="col">Phone</th>
+            <th scope="col">Email</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let address of contacts;let i=index;">
+            <td>{{i+1}}</td>
+            <td>{{address.phoneType}}</td>
+            <td>{{address.phoneNumber}}</td>
+            <td>{{address.email}}</td>
+            <td>
+                <c-button-group aria-label="First group" class="me-2" role="group">
+                    <button cButton color="primary" variant="outline" size="sm" (click)="remove(i)">
+                        <svg cIcon name="cilTrash"></svg>
+                    </button>
+                </c-button-group>
+            </td>
+        </tr>
+    </tbody>
+</table>
