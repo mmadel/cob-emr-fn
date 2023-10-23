@@ -9,10 +9,12 @@ import { FlatpickrModule } from 'angularx-flatpickr';
 import { EmrCommonModule } from '../common/emr-common.module';
 import { ModalModule } from '@coreui/angular-pro';
 import { AppointmentAddComponent } from './components/appointment.add/appointment-add.component';
+import { AppointmentCancelNoshowComponent } from './components/appointment.cancel.noshow/appointment-cancel-noshow.component';
 @NgModule({
     declarations: [
         ViewSchdulerComponent,
-        AppointmentAddComponent
+        AppointmentAddComponent,
+        AppointmentCancelNoshowComponent
     ],
     imports: [
         CommonModule,
