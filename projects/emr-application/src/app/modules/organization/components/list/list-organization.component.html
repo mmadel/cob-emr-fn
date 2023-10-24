@@ -1,0 +1,58 @@
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+<c-row>
+    <c-col xs="12" class="mb-2">
+        <h1>Organizations</h1>
+    </c-col>
+</c-row>
+<hr />
+<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    <button cButton color="primary" class="me-md-2" variant="outline" (click)="create()">Create Organization</button>
+</div>
+<ng-container fluid="true">
+    <c-smart-table #smartTable="cSmartTable" clickableRows [columnSorter]="true" [columns]="columns" header
+        [items]="organiztions" [sorterValue]="{ column: 'name', state: 'asc' }"
+        [tableProps]="{ hover: true, striped: true, responsive: true }">
+        <ng-template cTemplateId="tableDetails" let-item="item">
+            <div [visible]="this.details_visible[item.id] === true" cCollapse>
+                <c-card class="rounded-0">
+                    <c-card-body>
+                        <strong>Organization Name : </strong> {{item['name']}}
+                        <br>
+                        <strong>Billing Address : </strong> {{ constructBillingAddress(item['billingAddress'])}}
+                    </c-card-body>
+                </c-card>
+            </div>
+        </ng-template>
+        <ng-template cTemplateId="tableData" let-columnName="columnName" let-item="item" let-tdContent="tdContent">
+            <td [cAlign]="smartTable.tableDataCellProps(item, columnName)?.align"
+                [ngClass]="smartTable.tableDataCellClasses(item, columnName)">
+                <ng-container [ngSwitch]="columnName">
+                    <ng-container *ngSwitchDefault>
+                        {{tdContent}}
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'action'" class="py-2">
+                        <div class="btn-group " role="group" aria-label="Basic example">
+                            <button (click)="toggleDetails(item['id'])" cButton color="primary" size="sm"
+                                variant="outline">
+                                Show Details
+                            </button>
+                            <button cButton color="primary" size="sm" variant="outline"
+                                (click)="openClinicModal(item['clinics'])">
+                                Clinics
+                            </button>
+                        </div>
+                    </ng-container>
+                </ng-container>
+            </td>
+        </ng-template>
+    </c-smart-table>
+</ng-container>
+<c-modal size="lg" [visible]="clinicsVisible" (visibleChange)="handleClinicChange($event)">
+    <c-modal-header>
+        <h5 cModalTitle>Clinics</h5>
+        <button (click)="closeClinicModal()" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+        <app-list-organization-clinics [clinics]="clinics"></app-list-organization-clinics>
+    </c-modal-body>
+</c-modal>

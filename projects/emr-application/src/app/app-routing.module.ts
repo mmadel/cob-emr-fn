@@ -21,6 +21,11 @@ const routes: Routes = [
           import('./modules/administration/administration.module').then((m) => m.AdministrationModule)
       },
       {
+        path: 'organization',
+        loadChildren: () =>
+          import('./modules/organization/organization.module').then((m) => m.OrganizationModule)
+      },
+      {
         path: 'scheduler',
         loadChildren: () =>
           import('./modules/scheduler/scheduler.module').then((m) => m.SchedulerModule)

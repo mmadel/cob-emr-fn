@@ -12,9 +12,20 @@ export const NavItems: INavData[] = [
     iconComponent: { name: 'cil-disabled' },
     children: [
       {
-        name: 'List Patient',
+        name: 'Patients',
         url: 'patient/list'
       },
+    ]
+  },
+  {
+    name:'Organization',
+    url:'/emr/organization',
+    iconComponent: { name: 'cilHome' },
+    children:[
+      {
+        name: 'Organizations',
+        url:'organization/list'
+      }
     ]
   },
   {
