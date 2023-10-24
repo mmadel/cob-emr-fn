@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { IColumn, IItem } from '@coreui/angular-pro/lib/smart-table/smart-table.type';
 import { Address } from '../../../common/models';
 import { Clinic } from '../../../patient/models/clinic';
@@ -50,7 +51,7 @@ export class ListOrganizationComponent implements OnInit {
   toggleDetails(item: any) {
     this.details_visible[item] = !this.details_visible[item];
   }
-  constructor(private organizationService: OrganizationService) { }
+  constructor(private organizationService: OrganizationService , private router:Router ) { }
 
   ngOnInit(): void {
     this.organizationService.getAll()
@@ -61,7 +62,7 @@ export class ListOrganizationComponent implements OnInit {
       })
   }
   create() {
-
+    this.router.navigate(['/emr/organization/create']);
   }
   handleClinicChange(event: any) {
     this.clinicsVisible = event;
