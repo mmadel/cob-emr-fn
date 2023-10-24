@@ -9,13 +9,15 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import {
   CreateOrganizationComponent,
   ListOrganizationComponent,
-  ListOrganizationClinicsComponent
-} from './index'
+  ListOrganizationClinicsComponent,
+  OrganizationClinicsCreationComponent
+} from './index';
 @NgModule({
   declarations: [
     CreateOrganizationComponent,
     ListOrganizationComponent,
-    ListOrganizationClinicsComponent
+    ListOrganizationClinicsComponent,
+    OrganizationClinicsCreationComponent
   ],
   imports: [
     CommonModule,
