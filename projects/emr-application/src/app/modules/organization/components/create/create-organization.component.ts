@@ -1,8 +1,12 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { BasicComponent } from 'projects/emr-application/src/app/util/basic.component';
+import { catchError, EMPTY } from 'rxjs';
 import { AddressComponent } from '../../../common/components/address/address.component';
 import { Organization } from '../../models/organiztion';
+import { OrganizationService } from '../../services/organization.service';
 import { OrganizationClinicsCreationComponent } from '../organization.clinic.creation/organization-clinics-creation.component';
 
 @Component({
@@ -14,7 +18,7 @@ export class CreateOrganizationComponent extends BasicComponent implements OnIni
   @ViewChild(AddressComponent) organizationBillingAddress: AddressComponent;
   @ViewChild(OrganizationClinicsCreationComponent) organizationClinicsCreationComponent: OrganizationClinicsCreationComponent;
   @ViewChild('organizationForm') organizationForm: NgForm;
-  isvalidAddress:boolean = false;
+  isvalidAddress: boolean = false;
   isvalidClinics = false;
   basicInvalidFields: string[] = [];
   valid: boolean = true;
@@ -24,7 +28,9 @@ export class CreateOrganizationComponent extends BasicComponent implements OnIni
     groupNPI: '',
     taxID: ''
   }
-  constructor() {
+  constructor(private organizationService: OrganizationService
+    , private router: Router
+    , private toastr: ToastrService) {
     super()
   }
   ngAfterViewInit(): void {
@@ -36,9 +42,30 @@ export class CreateOrganizationComponent extends BasicComponent implements OnIni
   }
   create() {
     this.valid = this.validate();
+    if (this.valid) {
+      this.organization.clinics = this.organizationClinicsCreationComponent.clinics
+      this.organization.billingAddress = this.organizationBillingAddress.addresses[0];
+      console.log(JSON.stringify(this.organization))
+      this.organizationService.create(this.organization)
+        .pipe(
+          catchError((error) => {
+            console.log(error)
+            return EMPTY;
+          })
+        )
+        .subscribe(() => {
+          this.reset();
+          this.toastr.success('Organization Created.!!');
+          this.router.navigateByUrl('emr/organization/list')
+        })
+    } else {
+      this.scrollUp();
+    }
     this.scrollUp();
   }
-
+  reset() {
+    this.organizationForm.reset();
+  }
   validate(): boolean {
     var valid: boolean = true;
     this.isvalidAddress = this.organizationBillingAddress.addresses.length > 0

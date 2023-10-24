@@ -1,4 +1,5 @@
 import { Address } from "../../common/models";
+import { Clinic } from "../../patient/models/clinic";
 
 export interface Organization {
     id?: number;
@@ -7,4 +8,5 @@ export interface Organization {
     groupNPI?: string;
     taxID?: string;
     billingAddress?: Address;
+    clinics?:Clinic[]
 }
