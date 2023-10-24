@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { IColumn, IItem } from '@coreui/angular-pro/lib/smart-table/smart-table.type';
+import { Address } from '../../../common/models';
 import { Organization } from '../../models/organiztion';
 import { OrganizationService } from '../../services/organization.service';
 import orgData from './data'
@@ -67,5 +68,17 @@ export class ListOrganizationComponent implements OnInit {
   }
   openClinicModal() {
     this.clinicsVisible = !this.clinicsVisible;
+  }
+  constructBillingAddress(billingAddress: Address) :string{
+    var result: string = '';
+    for (const [key, value] of Object.entries(billingAddress)) {
+      if (key === 'firstAddress')
+        result = value + ',';
+      if (key === 'state')
+        result = value + ',';
+      if (key === 'zipCode')
+        result = value;
+    }
+    return result;
   }
 }
