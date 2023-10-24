@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { AddressComponent } from '../../../common/components/address/address.component';
 import { ClinicalUser } from '../../../common/models/user/user';
 import { Clinic } from '../../../patient/models/clinic';
 
@@ -12,6 +11,7 @@ import { Clinic } from '../../../patient/models/clinic';
 export class OrganizationClinicsCreationComponent implements OnInit {
   @ViewChild('doctorForm') doctorForm: NgForm;
   createDoctorVisible: boolean = false
+  isValidDoctor:boolean = false;
   createdClinic: Clinic = {
     name: '',
     address: ''
@@ -49,6 +49,7 @@ export class OrganizationClinicsCreationComponent implements OnInit {
   }
   saveDoctor() {
     if (this.doctorForm.valid) {
+      this.isValidDoctor= true;
       this.closeCreateDoctorModal();
       this.doctorForm.reset;
     }

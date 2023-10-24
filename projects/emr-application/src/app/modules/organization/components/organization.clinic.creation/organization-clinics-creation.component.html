@@ -15,8 +15,11 @@
             placeholder="Clinic Address" required [(ngModel)]="createdClinic.address" #clinicAddress="ngModel" />
     </c-input-group>
     <c-input-group class="mb-3">
-        <button cButton color="primary" variant="outline" size="sm" (click)="openDoctorModal()">Create Clinic's Doctor
+        <button cButton color="primary"  class="mx-2" variant="outline" size="sm" (click)="openDoctorModal()">Create Clinic's Doctor
         </button>
+        <span *ngIf="isValidDoctor">
+            <svg cIcon name="cilCheck" cTextColor="success" size="lg"></svg>
+        </span>
     </c-input-group>
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
         <button cButton color="primary" variant="outline" (click)="add()" size="sm">Add</button>
