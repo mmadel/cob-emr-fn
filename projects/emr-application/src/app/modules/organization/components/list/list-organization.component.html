@@ -47,11 +47,10 @@
         </ng-template>
     </c-smart-table>
 </ng-container>
-<c-modal id="history" #modalXl id="historyID" size="lg" [visible]="clinicsVisible"
-    (visibleChange)="handleHistoryChange($event)">
+<c-modal size="lg" [visible]="clinicsVisible" (visibleChange)="handleClinicChange($event)">
     <c-modal-header>
         <h5 cModalTitle>Clinics</h5>
-        <button (click)="closeHistoryModal()" cButtonClose></button>
+        <button (click)="closeClinicModal()" cButtonClose></button>
     </c-modal-header>
     <c-modal-body>
         <app-list-organization-clinics [clinics]="clinics"></app-list-organization-clinics>

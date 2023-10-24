@@ -13,6 +13,7 @@ import orgData from './data'
 export class ListOrganizationComponent implements OnInit {
   data: IItem[] = orgData;
   public clinicsVisible: boolean = false;
+
   organiztions: IItem[]
   clinics:Clinic[];
   readonly columns: (string | IColumn)[] = [
@@ -62,10 +63,10 @@ export class ListOrganizationComponent implements OnInit {
   create() {
 
   }
-  handleHistoryChange(event: any) {
+  handleClinicChange(event: any) {
     this.clinicsVisible = event;
   }
-  closeHistoryModal() {
+  closeClinicModal() {
     this.clinicsVisible = !this.clinicsVisible;
   }
   openClinicModal(clinics:Clinic[]) {
