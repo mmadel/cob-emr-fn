@@ -7,6 +7,7 @@ import { Clinic } from '../../../patient/models/clinic';
   styleUrls: ['./organization-clinics-creation.component.css']
 })
 export class OrganizationClinicsCreationComponent implements OnInit {
+  createDoctorVisible: boolean = false
   createdClinic: Clinic = {
     name: '',
     address: ''
@@ -17,6 +18,18 @@ export class OrganizationClinicsCreationComponent implements OnInit {
   ngOnInit(): void {
   }
   add() {
+
+  }
+  openDoctorModal() {
+    this.createDoctorVisible = !this.createDoctorVisible;
+  }
+  handleCreateDoctorChange(event: any) {
+    this.createDoctorVisible = event;
+  }
+  closeCreateDoctorModal() {
+    this.createDoctorVisible = !this.createDoctorVisible;
+  }
+  saveDoctor() {
 
   }
 }

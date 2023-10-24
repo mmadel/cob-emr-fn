@@ -15,7 +15,7 @@
             placeholder="Clinic Address" required [(ngModel)]="createdClinic.address" #clinicAddress="ngModel" />
     </c-input-group>
     <c-input-group class="mb-3">
-        <button cButton color="primary" variant="outline" size="sm">Create Clinic's Doctor </button>
+        <button cButton color="primary" variant="outline" size="sm" (click)="openDoctorModal()">Create Clinic's Doctor </button>
     </c-input-group>
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
         <button cButton color="primary" variant="outline" (click)="add()" size="sm">Add</button>
@@ -37,3 +37,17 @@
         </tr>
     </tbody>
 </table>
+
+<c-modal id="firstVisit" #modalXl id="modalXl" size="xl" [visible]="createDoctorVisible"
+  (visibleChange)="handleCreateDoctorChange($event)">
+  <c-modal-header>
+    <h5 cModalTitle>Doctor Creation</h5>
+    <button (click)="closeCreateDoctorModal()" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body>
+  </c-modal-body>
+  <hr>
+  <div class="text-center mb-3">
+    <button cButton color="primary" (click)="saveDoctor()">Save </button>
+  </div>
+</c-modal>
