@@ -11,4 +11,5 @@ export interface ClinicalUser {
     phone?: string
     address?: Address;
     uuid?: string
+    npi?: string
 }

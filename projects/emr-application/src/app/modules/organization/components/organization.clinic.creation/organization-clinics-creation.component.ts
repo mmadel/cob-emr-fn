@@ -10,28 +10,32 @@ import { Clinic } from '../../../patient/models/clinic';
   styleUrls: ['./organization-clinics-creation.component.css']
 })
 export class OrganizationClinicsCreationComponent implements OnInit {
+  @ViewChild('doctorForm') doctorForm: NgForm;
   createDoctorVisible: boolean = false
-  administratorDoctor: ClinicalUser={
-    username:'',
-    firstName:'',
-    middleName:'',
-    lastName:'',
-    email:'',
-    phone:'',
-  }
-  @ViewChild('clinicForm') clinicForm: NgForm;
   createdClinic: Clinic = {
     name: '',
     address: ''
   };
+  administratorDoctor: ClinicalUser = {
+    username: '',
+    firstName: '',
+    middleName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+  }
+  @ViewChild('clinicForm') clinicForm: NgForm;
+
   clinics: Clinic[] = new Array
   constructor() { }
 
   ngOnInit(): void {
   }
   add() {
-    if (this.clinicForm.valid) {
+    if (this.clinicForm.valid && this.doctorForm.valid) {
       this.clinics.push(this.createdClinic);
+      this.clearClinic();
+      this.clinicForm.reset();
     }
   }
   openDoctorModal() {
@@ -44,6 +48,25 @@ export class OrganizationClinicsCreationComponent implements OnInit {
     this.createDoctorVisible = !this.createDoctorVisible;
   }
   saveDoctor() {
-
+    if (this.doctorForm.valid) {
+      this.closeCreateDoctorModal();
+      this.doctorForm.reset;
+    }
+  }
+  clearDoctormodel() {
+    this.administratorDoctor = {
+      username: '',
+      firstName: '',
+      middleName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+    }
+  }
+  clearClinic() {
+    this.createdClinic = {
+      name: '',
+      address: ''
+    };
   }
 }

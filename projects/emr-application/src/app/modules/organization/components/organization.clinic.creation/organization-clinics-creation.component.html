@@ -34,6 +34,11 @@
     </thead>
     <tbody>
         <tr *ngFor="let clinic of clinics;let i=index;" scope="row">
+            <th scope="row">1</th>
+            <td>{{clinic.name}}</td>
+            <td>{{clinic.address}}</td>
+            <td>{{administratorDoctor.username}}</td>
+            <td>{{administratorDoctor.npi}}</td>
 
         </tr>
     </tbody>
@@ -46,7 +51,7 @@
         <button (click)="closeCreateDoctorModal()" cButtonClose></button>
     </c-modal-header>
     <c-modal-body>
-        <form cForm #clinicForm="ngForm" (ngSubmit)="saveDoctor()">
+        <form cForm #doctorForm="ngForm" (ngSubmit)="saveDoctor()">
             <!--User Name-->
             <div class="form-group" class="mb-3">
                 <small *ngIf="doctorname.invalid && (doctorname.dirty || doctorname.touched)"
@@ -56,7 +61,18 @@
                 <c-input-group class="mb-3">
                     <input autoComplete="name" cFormControl id="firstAddress" name="firstAddress" sizing="sm"
                         placeholder="Doctor User Name" required [(ngModel)]="administratorDoctor.username"
+                        [ngClass]="{'is-invalid': doctorname.invalid && (doctorname.dirty || doctorname.touched)}"
                         #doctorname="ngModel" />
+                </c-input-group>
+            </div>
+            <div class="form-group" class="mb-3">
+                <small *ngIf="npi.invalid && (npi.dirty || npi.touched)" class="form-text text-danger">
+                    Doctor NPI is required
+                </small>
+                <c-input-group class="mb-3">
+                    <input autoComplete="name" cFormControl id="npi" name="npi" sizing="sm"
+                        [ngClass]="{'is-invalid': npi.invalid && (npi.dirty || npi.touched)}" placeholder="Doctor NPI "
+                        required [(ngModel)]="administratorDoctor.npi" #npi="ngModel" />
                 </c-input-group>
             </div>
             <!--First Name-->
