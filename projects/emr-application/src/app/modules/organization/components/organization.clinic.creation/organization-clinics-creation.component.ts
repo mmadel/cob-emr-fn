@@ -11,7 +11,7 @@ import { Clinic } from '../../../patient/models/clinic';
 export class OrganizationClinicsCreationComponent implements OnInit {
   @ViewChild('doctorForm') doctorForm: NgForm;
   createDoctorVisible: boolean = false
-  isValidDoctor:boolean = false;
+  isValidDoctor: boolean = false;
   createdClinic: Clinic = {
     name: '',
     address: ''
@@ -33,6 +33,9 @@ export class OrganizationClinicsCreationComponent implements OnInit {
   }
   add() {
     if (this.clinicForm.valid && this.doctorForm.valid) {
+      var users: ClinicalUser[] = new Array();
+      users.push(this.administratorDoctor)
+      this.createdClinic.users = users;
       this.clinics.push(this.createdClinic);
       this.clearClinic();
       this.clinicForm.reset();
@@ -49,7 +52,7 @@ export class OrganizationClinicsCreationComponent implements OnInit {
   }
   saveDoctor() {
     if (this.doctorForm.valid) {
-      this.isValidDoctor= true;
+      this.isValidDoctor = true;
       this.closeCreateDoctorModal();
       this.doctorForm.reset;
     }
