@@ -11,6 +11,7 @@ import { Clinic } from '../../../patient/models/clinic';
 export class OrganizationClinicsCreationComponent implements OnInit {
   @ViewChild('doctorForm') doctorForm: NgForm;
   createDoctorVisible: boolean = false
+  showDoctorsVisible: boolean = false;
   isValidDoctor: boolean = false;
   createdClinic: Clinic = {
     name: '',
@@ -24,6 +25,10 @@ export class OrganizationClinicsCreationComponent implements OnInit {
     email: '',
     phone: '',
   }
+  selectedDoctor: ClinicalUser = {
+    username: '',
+    npi: ''
+  }
   @ViewChild('clinicForm') clinicForm: NgForm;
 
   clinics: Clinic[] = new Array
@@ -32,7 +37,7 @@ export class OrganizationClinicsCreationComponent implements OnInit {
   ngOnInit(): void {
   }
   add() {
-    if (this.clinicForm.valid ) {
+    if (this.clinicForm.valid) {
       var users: ClinicalUser[] = new Array();
       users.push(this.administratorDoctor)
       this.createdClinic.users = users;
@@ -45,6 +50,12 @@ export class OrganizationClinicsCreationComponent implements OnInit {
   }
   handleCreateDoctorChange(event: any) {
     this.createDoctorVisible = event;
+  }
+  handleShowDoctorsChange(event: any) {
+    this.showDoctorsVisible = event;;
+  }
+  closeShowDoctorsModal() {
+    this.showDoctorsVisible = !this.showDoctorsVisible;
   }
   closeCreateDoctorModal() {
     this.createDoctorVisible = !this.createDoctorVisible;
@@ -78,5 +89,12 @@ export class OrganizationClinicsCreationComponent implements OnInit {
     this.clinicForm.reset();
     this.doctorForm.reset();
     this.isValidDoctor = false
+  }
+  remove(index: number) {
+    this.clinics.splice(index, 1);
+  }
+  showDoctor(clinic: Clinic) {
+    this.showDoctorsVisible = !this.showDoctorsVisible;
+    this.selectedDoctor = clinic.users[0];
   }
 }

@@ -42,13 +42,10 @@
             <td>{{clinic.address}}</td>
             <td>
                 <div class="btn-group " role="group" aria-label="Basic example">
-                    <button cButton color="primary" size="sm" variant="outline">
-                        <svg cIcon name="cilSave"></svg>
-                    </button>
-                    <button cButton color="primary" size="sm" variant="outline">
+                    <button cButton color="primary" size="sm" variant="outline" (click)="remove(i)">
                         <svg cIcon name="cilTrash"></svg>
                     </button>
-                    <button cButton color="primary" size="sm" variant="outline">
+                    <button cButton color="primary" size="sm" variant="outline" (click)="showDoctor(clinic)">
                         <svg cIcon name="cilUser"></svg>
                     </button>
                 </div>
@@ -56,9 +53,17 @@
         </tr>
     </tbody>
 </table>
-
-<c-modal id="firstVisit" #modalXl id="modalXl" size="xl" [visible]="createDoctorVisible"
-    (visibleChange)="handleCreateDoctorChange($event)">
+<c-modal size="sm" [visible]="showDoctorsVisible" (visibleChange)="handleShowDoctorsChange($event)">
+    <c-modal-header>
+        <h5 cModalTitle>Administrative Doctor</h5>
+        <button (click)="closeShowDoctorsModal()" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+            <strong>Doctor Name : </strong> {{selectedDoctor.username}} <br>
+            <strong>Doctor NPI : </strong> {{selectedDoctor.npi}} <br>
+    </c-modal-body>
+</c-modal>
+<c-modal size="xl" [visible]="createDoctorVisible" (visibleChange)="handleCreateDoctorChange($event)">
     <c-modal-header>
         <h5 cModalTitle>Doctor Creation</h5>
         <button (click)="closeCreateDoctorModal()" cButtonClose></button>
