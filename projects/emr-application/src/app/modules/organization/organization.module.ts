@@ -2,15 +2,20 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { OrganizationRoutingModule } from './organization-routing.module';
-import {CreateOrganizationComponent ,ListOrganizationComponent} from './index'
+
 import { EmrCommonModule } from '../common/emr-common.module';
 import { AccordionModule, CollapseModule, DatePickerModule, ModalModule, SharedModule, SmartPaginationModule, SmartTableModule } from '@coreui/angular-pro';
 import { NgxSpinnerModule } from 'ngx-spinner';
-
+import {
+  CreateOrganizationComponent,
+  ListOrganizationComponent,
+  ListOrganizationClinicsComponent
+} from './index'
 @NgModule({
   declarations: [
     CreateOrganizationComponent,
-    ListOrganizationComponent
+    ListOrganizationComponent,
+    ListOrganizationClinicsComponent
   ],
   imports: [
     CommonModule,
