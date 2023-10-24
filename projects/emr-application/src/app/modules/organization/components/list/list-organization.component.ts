@@ -11,7 +11,7 @@ import orgData from './data'
 export class ListOrganizationComponent implements OnInit {
   data: IItem[] = orgData;
   public clinicsVisible: boolean = false;
-  organiztions: Organization[]
+  organiztions: IItem[]
   readonly columns: (string | IColumn)[] = [
     {
       key: 'name',
@@ -28,7 +28,7 @@ export class ListOrganizationComponent implements OnInit {
       sorter: false,
     },
     {
-      key: 'npi',
+      key: 'groupNPI',
       label: 'Group NPI',
       //_style: { width: '10%' },
       filter: false,
