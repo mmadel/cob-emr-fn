@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { AddressComponent } from '../../../common/components/address/address.component';
+import { ClinicalUser } from '../../../common/models/user/user';
 import { Clinic } from '../../../patient/models/clinic';
 
 @Component({
@@ -8,17 +11,28 @@ import { Clinic } from '../../../patient/models/clinic';
 })
 export class OrganizationClinicsCreationComponent implements OnInit {
   createDoctorVisible: boolean = false
+  administratorDoctor: ClinicalUser={
+    username:'',
+    firstName:'',
+    middleName:'',
+    lastName:'',
+    email:'',
+    phone:'',
+  }
+  @ViewChild('clinicForm') clinicForm: NgForm;
   createdClinic: Clinic = {
     name: '',
     address: ''
   };
-  clinics: Clinic[]
+  clinics: Clinic[] = new Array
   constructor() { }
 
   ngOnInit(): void {
   }
   add() {
-
+    if (this.clinicForm.valid) {
+      this.clinics.push(this.createdClinic);
+    }
   }
   openDoctorModal() {
     this.createDoctorVisible = !this.createDoctorVisible;
