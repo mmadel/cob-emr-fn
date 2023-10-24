@@ -17,4 +17,10 @@ export class OrganizationService {
     return this.httpClient.get(historyFollowupURL).pipe(
       map((response: any) => <Organization[]>response.records));
   }
+
+  create(organization: Organization) {
+    const createFollowupURL = this.baseUrl + '/create'
+    const headers = { 'content-type': 'application/json' }
+    return this.httpClient.post(`${createFollowupURL}`, JSON.stringify(organization), { 'headers': headers, observe: 'response' })
+  }
 }
