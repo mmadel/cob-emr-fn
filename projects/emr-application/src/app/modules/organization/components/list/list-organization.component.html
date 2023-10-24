@@ -36,7 +36,8 @@
                                 variant="outline">
                                 Show Details
                             </button>
-                            <button cButton color="primary" size="sm" variant="outline" (click)="openClinicModal()">
+                            <button cButton color="primary" size="sm" variant="outline"
+                                (click)="openClinicModal(item['clinics'])">
                                 Clinics
                             </button>
                         </div>
@@ -53,6 +54,6 @@
         <button (click)="closeHistoryModal()" cButtonClose></button>
     </c-modal-header>
     <c-modal-body>
-        <app-list-organization-clinics></app-list-organization-clinics>
+        <app-list-organization-clinics [clinics]="clinics"></app-list-organization-clinics>
     </c-modal-body>
 </c-modal>

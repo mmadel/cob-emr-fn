@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { IColumn, IItem } from '@coreui/angular-pro/lib/smart-table/smart-table.type';
 import { Address } from '../../../common/models';
+import { Clinic } from '../../../patient/models/clinic';
 import { Organization } from '../../models/organiztion';
 import { OrganizationService } from '../../services/organization.service';
 import orgData from './data'
@@ -13,6 +14,7 @@ export class ListOrganizationComponent implements OnInit {
   data: IItem[] = orgData;
   public clinicsVisible: boolean = false;
   organiztions: IItem[]
+  clinics:Clinic[];
   readonly columns: (string | IColumn)[] = [
     {
       key: 'name',
@@ -66,7 +68,8 @@ export class ListOrganizationComponent implements OnInit {
   closeHistoryModal() {
     this.clinicsVisible = !this.clinicsVisible;
   }
-  openClinicModal() {
+  openClinicModal(clinics:Clinic[]) {
+    this.clinics = clinics;
     this.clinicsVisible = !this.clinicsVisible;
   }
   constructBillingAddress(billingAddress: Address) :string{
