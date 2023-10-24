@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Clinic } from '../../../patient/models/clinic';
 
 @Component({
   selector: 'app-organization-clinics-creation',
@@ -6,10 +7,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./organization-clinics-creation.component.css']
 })
 export class OrganizationClinicsCreationComponent implements OnInit {
-
+  createdClinic: Clinic = {
+    name: '',
+    address: ''
+  };
+  clinics: Clinic[]
   constructor() { }
 
   ngOnInit(): void {
   }
+  add() {
 
+  }
 }

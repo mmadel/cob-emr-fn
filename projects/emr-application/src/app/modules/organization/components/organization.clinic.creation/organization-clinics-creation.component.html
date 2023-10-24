@@ -1,1 +1,39 @@
-<p>organization-clinics-creation works!</p>
+<form cForm #addressForm="ngForm" (ngSubmit)="add()">
+    <small *ngIf="clinicname.invalid && (clinicname.dirty || clinicname.touched)" class="form-text text-danger">
+        Clinic Name is required
+    </small>
+    <c-input-group class="mb-3">
+        <input autoComplete="name" cFormControl id="firstAddress" name="firstAddress" sizing="sm"
+            placeholder="Clinic Name" required [(ngModel)]="createdClinic.name" #clinicname="ngModel" />
+    </c-input-group>
+    <small *ngIf="clinicAddress.invalid && (clinicAddress.dirty || clinicAddress.touched)"
+        class="form-text text-danger">
+        Clinic Address is required
+    </small>
+    <c-input-group class="mb-3">
+        <input autoComplete="name" cFormControl id="clinicAddress" name="clinicAddress" sizing="sm"
+            placeholder="Clinic Address" required [(ngModel)]="createdClinic.address" #clinicAddress="ngModel" />
+    </c-input-group>
+    <c-input-group class="mb-3">
+        <button cButton color="primary" variant="outline" size="sm">Create Clinic's Doctor </button>
+    </c-input-group>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <button cButton color="primary" variant="outline" (click)="add()" size="sm">Add</button>
+    </div>
+</form>
+<table class="table table-sm table-striped table-hover">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Address</th>
+            <th scope="col">Doctor Name</th>
+            <th scope="col">Doctor NPI</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let clinic of clinics;let i=index;" scope="row">
+
+        </tr>
+    </tbody>
+</table>
