@@ -15,7 +15,8 @@
             placeholder="Clinic Address" required [(ngModel)]="createdClinic.address" #clinicAddress="ngModel" />
     </c-input-group>
     <c-input-group class="mb-3">
-        <button cButton color="primary"  class="mx-2" variant="outline" size="sm" (click)="openDoctorModal()">Create Clinic's Doctor
+        <button cButton color="primary" class="mx-2" variant="outline" size="sm" (click)="openDoctorModal()">Create
+            Clinic's Doctor
         </button>
         <span *ngIf="isValidDoctor">
             <svg cIcon name="cilCheck" cTextColor="success" size="lg"></svg>
@@ -31,8 +32,7 @@
             <th scope="col">#</th>
             <th scope="col">Name</th>
             <th scope="col">Address</th>
-            <th scope="col">Doctor Name</th>
-            <th scope="col">Doctor NPI</th>
+            <th scope="col" style="width: 5%;">Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -40,9 +40,19 @@
             <th scope="row">1</th>
             <td>{{clinic.name}}</td>
             <td>{{clinic.address}}</td>
-            <td>{{administratorDoctor.username}}</td>
-            <td>{{administratorDoctor.npi}}</td>
-
+            <td>
+                <div class="btn-group " role="group" aria-label="Basic example">
+                    <button cButton color="primary" size="sm" variant="outline">
+                        <svg cIcon name="cilSave"></svg>
+                    </button>
+                    <button cButton color="primary" size="sm" variant="outline">
+                        <svg cIcon name="cilTrash"></svg>
+                    </button>
+                    <button cButton color="primary" size="sm" variant="outline">
+                        <svg cIcon name="cilUser"></svg>
+                    </button>
+                </div>
+            </td>
         </tr>
     </tbody>
 </table>

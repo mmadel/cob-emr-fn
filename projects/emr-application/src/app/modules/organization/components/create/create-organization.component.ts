@@ -10,7 +10,6 @@ import { OrganizationClinicsCreationComponent } from '../organization.clinic.cre
 })
 export class CreateOrganizationComponent implements OnInit {
   @ViewChild(AddressComponent) organizationBillingAddress: AddressComponent;
-
   @ViewChild(OrganizationClinicsCreationComponent) organizationClinicsCreationComponent: OrganizationClinicsCreationComponent;
   organization: Organization = {
     name: '',
@@ -23,6 +22,6 @@ export class CreateOrganizationComponent implements OnInit {
   ngOnInit(): void {
   }
   create() {
-    console.log(JSON.stringify(this.organizationBillingAddress.addresses))
+    console.log(JSON.stringify(this.organizationClinicsCreationComponent.clinics))
   }
 }

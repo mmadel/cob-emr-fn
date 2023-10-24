@@ -32,13 +32,12 @@ export class OrganizationClinicsCreationComponent implements OnInit {
   ngOnInit(): void {
   }
   add() {
-    if (this.clinicForm.valid && this.doctorForm.valid) {
+    if (this.clinicForm.valid ) {
       var users: ClinicalUser[] = new Array();
       users.push(this.administratorDoctor)
       this.createdClinic.users = users;
       this.clinics.push(this.createdClinic);
-      this.clearClinic();
-      this.clinicForm.reset();
+      this.clearAll();
     }
   }
   openDoctorModal() {
@@ -72,5 +71,12 @@ export class OrganizationClinicsCreationComponent implements OnInit {
       name: '',
       address: ''
     };
+  }
+  clearAll() {
+    this.clearClinic();
+    this.clearDoctormodel()
+    this.clinicForm.reset();
+    this.doctorForm.reset();
+    this.isValidDoctor = false
   }
 }
