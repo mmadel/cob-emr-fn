@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 
 import { ClassToggleService, HeaderComponent } from '@coreui/angular-pro';
+import { KcAuthService } from '../../../modules/security/service/kc-auth.service';
 
 @Component({
   selector: 'app-header',
@@ -19,12 +20,16 @@ export class DefaultHeaderComponent extends HeaderComponent {
     themeSwitchRadio: new UntypedFormControl('light'),
   });
 
-  constructor(private classToggler: ClassToggleService) {
+  constructor(private classToggler: ClassToggleService
+    , private ksAuthServiceService: KcAuthService) {
     super();
   }
 
   setTheme(value: string): void {
     this.themeSwitch.setValue({ themeSwitchRadio: value });
     this.classToggler.toggle('body', 'dark-theme');
+  }
+  logout() {
+    this.ksAuthServiceService.logout()
   }
 }

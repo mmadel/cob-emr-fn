@@ -37,12 +37,10 @@ import {
   DefaultHeaderComponent,
   DefaultFooterComponent,
 } from './core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
-
-
-
-
+import { SecurityModule } from './modules/security/security.module';
+import { AuthInterceptor } from './modules/security/service/auth.interceptor';
 const APP_CONTAINERS = [
   DefaultHeaderComponent,
   DefaultFooterComponent,
@@ -84,15 +82,17 @@ const APP_CONTAINERS = [
       timeOut: 15000, // 15 seconds
       closeButton: true,
       progressBar: true,
-    })
+    }),
+    SecurityModule
   ],
   providers: [
     {
       provide: LocationStrategy,
-      useClass: HashLocationStrategy,
+      useClass: PathLocationStrategy,
     },
     IconSetService,
     Title,
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })
