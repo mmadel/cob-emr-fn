@@ -3,6 +3,7 @@ import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 
 import { ClassToggleService, HeaderComponent } from '@coreui/angular-pro';
 import { ClinicService } from '../../../modules/administration/services/clinic/clinic.service';
+import { CacheService } from '../../../modules/common/service/cahce/cache.service';
 import { Clinic } from '../../../modules/patient/models/clinic';
 import { KcAuthService } from '../../../modules/security/service/kc-auth.service';
 
@@ -12,6 +13,8 @@ import { KcAuthService } from '../../../modules/security/service/kc-auth.service
 })
 export class DefaultHeaderComponent extends HeaderComponent {
   clinics: Clinic[] = new Array();
+  selectedClinicId: number;
+  userName: string | undefined;
   @Input() sidebarId: string = "sidebar1";
 
   public newMessages = new Array(4)
@@ -23,9 +26,31 @@ export class DefaultHeaderComponent extends HeaderComponent {
   });
 
   constructor(private classToggler: ClassToggleService
-    , private ksAuthServiceService: KcAuthService
-    , private clinicService: ClinicService) {
+    , private ksAuthService: KcAuthService
+    , private clinicService: ClinicService
+    , private cacheService :CacheService) {
     super();
+  }
+  ngOnInit(): void {
+    this.ksAuthService.isLoggedIn()
+    .then((loggedIn) => {
+      console.log('is LoggedIn ' + loggedIn)
+      if (loggedIn) {
+        this.ksAuthService.loadUserProfile()
+          .then((userProfile) => {
+
+            console.log('uuid  ' + userProfile.id!)
+            console.log('username  ' + userProfile.username!)
+            this.cacheService.setLoggedinUserUUID(userProfile.id!)
+            this.cacheService.setLoggedinUserName(userProfile.username!);
+            this.userName = this.cacheService.getLoggedinUserName()?.charAt(0).toUpperCase()
+            this.clinicService.getByUserId(this.cacheService.getLoggedinUserUUID()).subscribe(response => {
+              this.clinics = response;
+              this.clinicService.selectedClinic$.next(Number(this.clinics[0].id!))
+            })
+          })
+      }
+    })
   }
 
   setTheme(value: string): void {
@@ -33,7 +58,7 @@ export class DefaultHeaderComponent extends HeaderComponent {
     this.classToggler.toggle('body', 'dark-theme');
   }
   logout() {
-    this.ksAuthServiceService.logout()
+    this.ksAuthService.logout()
   }
   setSelectedClinic(event: any) {
     this.clinicService.selectedClinic$.next(event.target.value)
