@@ -12,13 +12,15 @@ import {
 import { SmartPaginationModule, SmartTableModule } from '@coreui/angular-pro';
 import { EmrCommonModule } from '../common/emr-common.module';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { ListClinicComponent } from './components/clinic/list/list-clinic.component';
 
 @NgModule({
   declarations: [
     CreateInsuranceCompanyComponent,
     ListInsuranceCompanyComponent,
     CreateUserComponent,
-    ListUserComponent
+    ListUserComponent,
+    ListClinicComponent
   ],
   imports: [
     CommonModule,
