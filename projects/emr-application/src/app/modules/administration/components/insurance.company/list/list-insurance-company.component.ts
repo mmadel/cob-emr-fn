@@ -50,7 +50,7 @@ export class ListInsuranceCompanyComponent extends ListTemplate implements OnIni
   }
 
   create() {
-    this.router.navigateByUrl('/insurance/company/create');
+    this.router.navigateByUrl('emr/administration/create/insurance/company');
   }
   remove(item: any) {
     this.insuranceCompanyService.delete(item.id).subscribe(() => {

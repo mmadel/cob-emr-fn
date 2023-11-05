@@ -16,4 +16,8 @@ export class ClinicService {
     return this.httpClient.get(url).pipe(
       map((response: any) => <Clinic[]>response));
   }
+  delete(id:number){
+    var createURL = environment.baseURL + 'insurance/company/delete/id/'+ id
+    return this.httpClient.delete(`${createURL}`)
+  }
 }
