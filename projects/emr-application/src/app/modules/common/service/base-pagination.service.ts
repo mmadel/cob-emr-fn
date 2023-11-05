@@ -4,6 +4,7 @@ import { BehaviorSubject, catchError, debounceTime, distinctUntilChanged, Observ
 import { PaginationData } from '../interfaces/pagination.data';
 
 import { IApiParams } from '../interfaces/api.params';
+import { ClinicService } from '../../administration/services/clinic/clinic.service';
 const httpOptions = {
   // headers: new HttpHeaders({
   //   'Content-Type': 'application/json',
@@ -16,7 +17,7 @@ const httpOptions = {
 })
 export class BasePaginationService {
   url: string;
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient, private clinicService: ClinicService) { }
   get(config$: BehaviorSubject<IApiParams>, url: string): Observable<any> {
     this.url = url;
     return config$.pipe(
@@ -37,12 +38,15 @@ export class BasePaginationService {
     const options = Object.keys(httpParams).length
       ? { params: httpParams, ...httpOptions }
       : { params: {}, ...httpOptions };
-    return this.httpClient
-      .get<PaginationData>(this.url, options)
-      .pipe(
-        retry({ count: 1, delay: 100000, resetOnSuccess: true }),
-        catchError(this.handleHttpError)
-      );
+    return this.clinicService.selectedClinic$.pipe(
+      switchMap(clinicId =>
+        this.httpClient
+          .get<PaginationData>(this.url + clinicId, options)
+          .pipe(
+            retry({ count: 1, delay: 100000, resetOnSuccess: true }),
+            catchError(this.handleHttpError)
+          )
+      ))
   }
   private handleHttpError(error: HttpErrorResponse) {
     return throwError(() => error);
