@@ -38,9 +38,6 @@ export class DefaultHeaderComponent extends HeaderComponent {
       if (loggedIn) {
         this.ksAuthService.loadUserProfile()
           .then((userProfile) => {
-
-            console.log('uuid  ' + userProfile.id!)
-            console.log('username  ' + userProfile.username!)
             this.cacheService.setLoggedinUserUUID(userProfile.id!)
             this.cacheService.setLoggedinUserName(userProfile.username!);
             this.userName = this.cacheService.getLoggedinUserName()?.charAt(0).toUpperCase()

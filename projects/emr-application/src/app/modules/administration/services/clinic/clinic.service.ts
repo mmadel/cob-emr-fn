@@ -9,7 +9,7 @@ import { Clinic } from '../../../patient/models/clinic';
 })
 export class ClinicService {
   public selectedClinic$: BehaviorSubject<number | null> = new BehaviorSubject<number | null>(null);
-  private userUrl = environment.baseURL + 'user'
+  private userUrl = environment.baseURL + 'clinic'
   constructor(private httpClient:HttpClient) { }
   getByUserId(userId: string | undefined) {
     const url = this.userUrl + '/find'+'/clinics/userUUID/' + userId;
