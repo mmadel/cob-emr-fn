@@ -32,7 +32,8 @@ export class ClinicService {
       map((response: any) => <Clinic[]>response));
   }
   delete(id: number) {
-
+    var createURL = this.userUrl + '/delete/clinic/'+ id
+    return this.httpClient.delete(`${createURL}`)
   }
   get(config$: BehaviorSubject<IApiParams>): Observable<any> {
     return config$.pipe(

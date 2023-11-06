@@ -85,15 +85,17 @@ export class ListTemplate {
             if (element === 'actions')
                 columns.push({
                     key: element,
+                    _style: { width: '10%' },
                     label: element.charAt(0).toUpperCase() + element.slice(1),
                     filter: false,
                     sorter: false
                 })
-            else
+            else {
                 columns.push({
                     key: element,
                     label: element.charAt(0).toUpperCase() + element.slice(1)
                 })
+            }
         });
         return columns;
     }

@@ -23,7 +23,7 @@ export class ListClinicComponent extends ListTemplate implements OnInit {
     , private sanitizer: DomSanitizer) { super(); }
 
   ngOnInit(): void {
-    this.columns = this.constructColumns(['name', 'address', 'actions']);
+    this.columns = this.constructColumns(['name', 'actions']);
     this.initListComponent();
     this.clinics$ = this.clinicService.get(this.apiParams$).pipe(
       retry({
@@ -51,11 +51,14 @@ export class ListClinicComponent extends ListTemplate implements OnInit {
     this.router.navigateByUrl('emr/administration/create/clinic');
   }
   remove(item: any) {
-
+    this.clinicService.delete(item.id).subscribe(() => {
+      this.toastr.success('Clinic Deleted..!!');
+      this.ngOnInit();
+    })
   }
-  constructAddress(billingAddress: Address) :string{
+  constructAddress(address: Address): string {
     var result: string = '';
-    for (const [key, value] of Object.entries(billingAddress)) {
+    for (const [key, value] of Object.entries(address)) {
       if (key === 'firstAddress')
         result = value + ',';
       if (key === 'state')
