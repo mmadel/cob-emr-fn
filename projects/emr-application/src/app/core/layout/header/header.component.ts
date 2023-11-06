@@ -5,6 +5,9 @@ import { ClassToggleService, HeaderComponent } from '@coreui/angular-pro';
 import { ClinicService } from '../../../modules/administration/services/clinic/clinic.service';
 import { CacheService } from '../../../modules/common/service/cahce/cache.service';
 import { Clinic } from '../../../modules/patient/models/clinic';
+
+
+
 import { KcAuthService } from '../../../modules/security/service/kc-auth.service';
 
 @Component({
@@ -34,7 +37,6 @@ export class DefaultHeaderComponent extends HeaderComponent {
   ngOnInit(): void {
     this.ksAuthService.isLoggedIn()
     .then((loggedIn) => {
-      console.log('is LoggedIn ' + loggedIn)
       if (loggedIn) {
         this.ksAuthService.loadUserProfile()
           .then((userProfile) => {

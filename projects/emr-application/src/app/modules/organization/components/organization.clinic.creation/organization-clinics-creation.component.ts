@@ -15,7 +15,7 @@ export class OrganizationClinicsCreationComponent implements OnInit {
   isValidDoctor: boolean = false;
   createdClinic: Clinic = {
     name: '',
-    address: ''
+    address: {}
   };
   administratorDoctor: ClinicalUser = {
     username: '',
@@ -80,7 +80,9 @@ export class OrganizationClinicsCreationComponent implements OnInit {
   clearClinic() {
     this.createdClinic = {
       name: '',
-      address: ''
+      address: {
+
+      }
     };
   }
   clearAll() {

@@ -25,13 +25,9 @@ export class ListClinicComponent extends ListTemplate implements OnInit {
     this.initListComponent();
   }
   create() {
-    this.router.navigateByUrl('/insurance/company/create');
+    this.router.navigateByUrl('emr/administration/create/clinic');
   }
   remove(item: any) {
-    this.clinicService.delete(item.id).subscribe(() => {
-      console.log(item);
-      this.toastr.success('Insurance Company Deleted..!!');
-      this.ngOnInit();
-    })
+   
   }
 }

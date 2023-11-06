@@ -13,6 +13,7 @@ import { SmartPaginationModule, SmartTableModule } from '@coreui/angular-pro';
 import { EmrCommonModule } from '../common/emr-common.module';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ListClinicComponent } from './components/clinic/list/list-clinic.component';
+import { CreateClinicComponent } from './components/clinic/create/create-clinic.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { ListClinicComponent } from './components/clinic/list/list-clinic.compon
     ListInsuranceCompanyComponent,
     CreateUserComponent,
     ListUserComponent,
-    ListClinicComponent
+    ListClinicComponent,
+    CreateClinicComponent
   ],
   imports: [
     CommonModule,

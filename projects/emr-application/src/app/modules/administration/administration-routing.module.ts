@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { CreateClinicComponent } from './components/clinic/create/create-clinic.component';
 import { ListClinicComponent } from './components/clinic/list/list-clinic.component';
 import { CreateInsuranceCompanyComponent } from './components/insurance.company/create/create-insurance-company.component';
 import { ListInsuranceCompanyComponent } from './components/insurance.company/list/list-insurance-company.component';
@@ -26,7 +27,6 @@ const routes: Routes = [{
         title: 'create Insurance Company'
       }
     },
-
     {
       path: 'list/user',
       component: ListUserComponent,
@@ -38,8 +38,15 @@ const routes: Routes = [{
       path: 'create/user',
       component: CreateUserComponent,
       data: {
-        title: 'create User'
+        title: 'Create User'
       }
+    },
+    {
+      path: 'create/clinic',
+      component: CreateClinicComponent,
+      data: {
+        title: 'Create Clinic',
+      },
     },
     {
       path: 'list/clinic',
