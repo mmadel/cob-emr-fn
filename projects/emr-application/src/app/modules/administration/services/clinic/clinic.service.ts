@@ -62,6 +62,10 @@ export class ClinicService {
         catchError(this.handleHttpError)
       );
   }
+  getById(clinicId:number){
+    var createURL = this.userUrl + '/find/clinic/'+ clinicId
+    return this.httpClient.get(`${createURL}`)
+  }
   private handleHttpError(error: HttpErrorResponse) {
     return throwError(() => error);
   }

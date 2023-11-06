@@ -49,6 +49,13 @@ const routes: Routes = [{
       },
     },
     {
+      path: 'edit/clinic/:id',
+      component: CreateClinicComponent,
+      data: {
+        title: 'Edit Clinic',
+      },
+    },
+    {
       path: 'list/clinic',
       component: ListClinicComponent,
       data: {

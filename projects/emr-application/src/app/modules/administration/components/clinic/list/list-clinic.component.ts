@@ -50,10 +50,15 @@ export class ListClinicComponent extends ListTemplate implements OnInit {
   create() {
     this.router.navigateByUrl('emr/administration/create/clinic');
   }
+  edit(item: any) {
+    this.router.navigate(['emr/administration/edit/clinic', item.id]);
+  }
   remove(item: any) {
     this.clinicService.delete(item.id).subscribe(() => {
-      this.toastr.success('Clinic Deleted..!!');
+      this.toastr.success('Clinic Deleted');
       this.ngOnInit();
+    }, (error: any) => {
+      this.toastr.error(error.error.message);
     })
   }
   constructAddress(address: Address): string {

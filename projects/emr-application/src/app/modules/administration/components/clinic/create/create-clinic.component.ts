@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Clinic } from '../../../../patient/models/clinic';
 import { ClinicService } from '../../../services/clinic/clinic.service';
@@ -23,9 +23,17 @@ export class CreateClinicComponent implements OnInit {
   };
   constructor(private clinicService: ClinicService
     , private toastr: ToastrService
-    , private router: Router) { }
+    , private router: Router
+    , private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+    var clinicId = this.route.snapshot.paramMap.get('id');
+    if (clinicId !== null) {
+      this.clinicService.getById(Number(clinicId))
+        .subscribe(selectedClinic => {
+          this.clinic = selectedClinic;
+        })
+    }
   }
   create() {
     this.clinic.organizationId = 1;
