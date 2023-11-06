@@ -45,7 +45,10 @@
             </c-col>
         </c-row>
         <div class="d-grid gap-2 col-2 mx-auto mb-5">
-            <button cButton color="primary" variant="outline" type="submit">Create</button>
+            <button cButton color="primary" variant="outline" type="submit">
+                <span *ngIf="isCreated">Create</span>
+                <span *ngIf="!isCreated">Update</span>
+            </button>
         </div>
     </form>
 </c-container>

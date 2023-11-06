@@ -14,6 +14,7 @@ export class CreateClinicComponent implements OnInit {
   @ViewChild('clinicCreateForm') clinicCreateForm: NgForm;
   submitted: boolean = false;
   validAddress: boolean = true;
+  isCreated: boolean = true;
   clinic: Clinic = {
     name: null,
     address: {
@@ -29,6 +30,7 @@ export class CreateClinicComponent implements OnInit {
   ngOnInit(): void {
     var clinicId = this.route.snapshot.paramMap.get('id');
     if (clinicId !== null) {
+      this.isCreated = false
       this.clinicService.getById(Number(clinicId))
         .subscribe(selectedClinic => {
           this.clinic = selectedClinic;
@@ -41,7 +43,10 @@ export class CreateClinicComponent implements OnInit {
     if (this.clinicCreateForm.valid && this.validAddress) {
       this.submitted = false;
       this.clinicService.create(this.clinic).subscribe(dd => {
-        this.toastr.success('Clinic Created.!!');
+        if (this.isCreated)
+          this.toastr.success('Clinic Created');
+        else
+          this.toastr.success('Clinic updated');
         this.router.navigateByUrl('emr/administration/list/clinic')
       })
     } else {
