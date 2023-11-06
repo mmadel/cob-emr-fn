@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { CacheService } from '../../../../common/service/cahce/cache.service';
 import { Clinic } from '../../../../patient/models/clinic';
 import { ClinicService } from '../../../services/clinic/clinic.service';
 
@@ -23,6 +24,7 @@ export class CreateClinicComponent implements OnInit {
     }
   };
   constructor(private clinicService: ClinicService
+    ,private cacheService:CacheService
     , private toastr: ToastrService
     , private router: Router
     , private route: ActivatedRoute) { }
@@ -38,7 +40,7 @@ export class CreateClinicComponent implements OnInit {
     }
   }
   create() {
-    this.clinic.organizationId = 1;
+    this.clinic.organizationId = this.cacheService.getOrganizationId();
     this.validAddress = this.isAddressValid();
     if (this.clinicCreateForm.valid && this.validAddress) {
       this.submitted = false;

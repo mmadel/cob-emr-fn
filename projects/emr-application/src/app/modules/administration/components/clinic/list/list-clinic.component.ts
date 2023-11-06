@@ -5,6 +5,7 @@ import { IColumn } from '@coreui/angular-pro/lib/smart-table/smart-table.type';
 import { ToastrService } from 'ngx-toastr';
 import { map, Observable, retry, tap } from 'rxjs';
 import { Address } from '../../../../common/models';
+import { CacheService } from '../../../../common/service/cahce/cache.service';
 import { ListTemplate } from '../../../../common/template/list.template';
 import { Clinic } from '../../../../patient/models/clinic';
 import { ClinicService } from '../../../services/clinic/clinic.service';
@@ -20,12 +21,13 @@ export class ListClinicComponent extends ListTemplate implements OnInit {
   constructor(private router: Router
     , private clinicService: ClinicService
     , private toastr: ToastrService
+    ,private cacheService : CacheService
     , private sanitizer: DomSanitizer) { super(); }
 
   ngOnInit(): void {
     this.columns = this.constructColumns(['name', 'actions']);
     this.initListComponent();
-    this.clinics$ = this.clinicService.get(this.apiParams$).pipe(
+    this.clinics$ = this.clinicService.get(this.apiParams$ , this.cacheService.getOrganizationId()).pipe(
       retry({
         delay: (error) => {
           console.warn('Retry: ', error);

@@ -10,6 +10,7 @@ export class CacheService {
   private selectedClinic: number;
   private loggedinUserUUID: string;
   private loggedinUserName: string;
+  private organizationId:number;
   constructor(private clinicService: ClinicService,
     @Optional() @SkipSelf() cacheService?: CacheService) {
     if (cacheService) {
@@ -20,6 +21,12 @@ export class CacheService {
     ).subscribe((selectedClinic) => {
       this.selectedClinic = selectedClinic!;
     })
+  }
+  getOrganizationId():number{
+    return this.organizationId;
+  }
+  setOrganizationId(id:number){
+    this.organizationId = id;
   }
   getSelectedClinic() {
     return this.selectedClinic;

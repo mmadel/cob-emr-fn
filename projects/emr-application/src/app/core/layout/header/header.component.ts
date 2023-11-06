@@ -45,6 +45,7 @@ export class DefaultHeaderComponent extends HeaderComponent {
             this.userName = this.cacheService.getLoggedinUserName()?.charAt(0).toUpperCase()
             this.clinicService.getByUserId(this.cacheService.getLoggedinUserUUID()).subscribe(response => {
               this.clinics = response;
+              this.cacheService.setOrganizationId(this.clinics[0].organizationId);
               this.clinicService.selectedClinic$.next(Number(this.clinics[0].id!))
             })
           })
