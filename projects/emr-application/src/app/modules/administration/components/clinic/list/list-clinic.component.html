@@ -29,6 +29,9 @@
               </button>
             </div>
           </ng-container>
+          <ng-container *ngSwitchCase="'address'" class="py-2">
+            {{constructAddress(tdContent)}}
+          </ng-container>
           <ng-container *ngSwitchDefault>
             {{tdContent}}
           </ng-container>
