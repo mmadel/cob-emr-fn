@@ -121,10 +121,16 @@ import {
   cilViewModule,
   cilBirthdayCake,
   cilInfinity,
-  cilMedicalCross
+  cilMedicalCross,
+  cibHockeyapp,
+  cibKeybase,
+  cibKeycdn
 } from '@coreui/icons';
 
 export const iconSubset = {
+  cibKeycdn,
+  cibKeybase,
+  cibHockeyapp,
   cilDevices,
   cibCcAmex,
   cibCcApplePay,
