@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Roles } from '../../../../common/models/enums/roles';
 import { User } from '../../../model/user/user';
 
 @Component({
@@ -9,8 +10,9 @@ import { User } from '../../../model/user/user';
 })
 export class CreateUserComponent implements OnInit {
   @ViewChild('userCreateForm') userCreateForm: NgForm;
+  roles = Roles;
   user:User={
-    
+    role:null
   }
   constructor() { }
 

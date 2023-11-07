@@ -85,7 +85,17 @@
                         <h3>Roles</h3>
                     </c-card-header>
                     <c-card-body>
-
+                        <small *ngIf="role.invalid && (role.dirty || role.touched)" class="form-text text-danger">
+                            Role is required
+                        </small>
+                        <select cFormControl cSelect class="mb-2" sizing="sm" id="IdType" name="IdType" required
+                        [ngClass]="{'is-invalid': role.invalid && (role.dirty || role.touched)}" [(ngModel)]="user.role"
+                        #role="ngModel">
+                        <option [ngValue]="null" disabled selected>Select Role</option>
+                        <option *ngFor="let role of roles | keyvalue" [value]="role.key">
+                            {{role.value}}
+                        </option>
+                    </select>
                     </c-card-body>
                 </c-card>
             </c-col>
@@ -97,7 +107,7 @@
                         <h3>Clinics</h3>
                     </c-card-header>
                     <c-card-body>
-
+                       
                     </c-card-body>
                 </c-card>
             </c-col>
