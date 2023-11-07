@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'projects/emr-application/src/environments/environment';
-import { BehaviorSubject, catchError, debounceTime, distinctUntilChanged, map, Observable, retry, switchMap, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, combineLatest, debounceTime, distinctUntilChanged, from, map, Observable, retry, switchMap, throwError } from 'rxjs';
 import { IApiParams } from '../../../common/interfaces/api.params';
 import { CacheService } from '../../../common/service/cahce/cache.service';
 import { IData } from '../../../patient/components/list/interfaces/i.data';
@@ -18,9 +18,9 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class ClinicService {
-  public selectedClinic$: BehaviorSubject<number | null> = new BehaviorSubject<number | null>(null);
+  
   private userUrl = environment.baseURL + 'clinic'
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient, private cahceService: CacheService) { }
 
   create(clinic: Clinic) {
     const headers = { 'content-type': 'application/json' }
@@ -36,7 +36,7 @@ export class ClinicService {
     var createURL = this.userUrl + '/delete/clinic/' + id
     return this.httpClient.delete(`${createURL}`)
   }
-  get(config$: BehaviorSubject<IApiParams>, organizationId: number): Observable<any> {
+  get(config$: BehaviorSubject<IApiParams>): Observable<any> {
     return config$.pipe(
       debounceTime(100),
       distinctUntilChanged(
@@ -44,10 +44,10 @@ export class ClinicService {
           return JSON.stringify(previous) === JSON.stringify(current);
         }
       ),
-      switchMap((config) => this.fetchData(config, organizationId))
+      switchMap((config) => this.fetchData(config))
     );
   }
-  private fetchData(params: IApiParams, organizationId: number): Observable<IData> {
+  private fetchData(params: IApiParams): Observable<IData> {
     const apiParams = {
       ...params
     };
@@ -56,12 +56,11 @@ export class ClinicService {
     const options = Object.keys(httpParams).length
       ? { params: httpParams, ...httpOptions }
       : { params: {}, ...httpOptions };
-    return this.httpClient
-      .get<IData>(this.userUrl + "/find/organization/" + organizationId, options)
+    return from(this.cahceService.getOrganizationId())
       .pipe(
-        retry({ count: 1, delay: 100000, resetOnSuccess: true }),
-        catchError(this.handleHttpError)
-      );
+        switchMap(result => this.httpClient
+          .get<IData>(this.userUrl + "/find/organization/" + result, options))
+      )
   }
   getById(clinicId: number) {
     var createURL = this.userUrl + '/find/clinic/' + clinicId
@@ -71,4 +70,8 @@ export class ClinicService {
     return throwError(() => error);
   }
 
+  getByOrganizationId(id: number) {
+    var createURL = this.userUrl + '/find/organization/' + id;
+    return this.httpClient.get(`${createURL}`)
+  }
 }

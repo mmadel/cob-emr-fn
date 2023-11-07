@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { ClinicService } from '../../../administration/services/clinic/clinic.service';
 import { IApiParams } from '../../../common/interfaces/api.params';
 import { BasePaginationService } from '../../../common/service/base-pagination.service';
+import { CacheService } from '../../../common/service/cahce/cache.service';
 
 
 @Injectable({
@@ -13,7 +14,7 @@ import { BasePaginationService } from '../../../common/service/base-pagination.s
 export class UpcomingAppointmentService extends BasePaginationService {
 
   private baseUrl = environment.baseURL + 'appointment/chart/incoming'
-  constructor(httpClient: HttpClient,clinicService: ClinicService) { super(httpClient,clinicService) }
+  constructor(httpClient: HttpClient,cahceService: CacheService) { super(httpClient,cahceService) }
 
   public findAllIncomingAppointments(config$: BehaviorSubject<IApiParams>, pateintId: number): Observable<any> {
     return this.get(config$, this.baseUrl + '/find/patientId/' + pateintId + '/clinicId/' + 2)

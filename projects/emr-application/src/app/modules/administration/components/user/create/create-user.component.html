@@ -107,7 +107,14 @@
                         <h3>Clinics</h3>
                     </c-card-header>
                     <c-card-body>
-                       
+                        <c-input-group class="mb-3">
+                            <c-multi-select *ngIf="clinics" multiple cSelect sizing="sm"
+                                autoComplete="selectedClinics" name="selectedClinics" id="selectedClinics"
+                                [(ngModel)]="user.clinics" #selectedClinics="ngModel">
+                                <c-multi-select-option *ngFor="let clinic of clinics"
+                                    [value]="clinic.id?.toString()">{{clinic.name}}</c-multi-select-option>
+                            </c-multi-select>
+                        </c-input-group>
                     </c-card-body>
                 </c-card>
             </c-col>

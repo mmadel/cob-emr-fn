@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { ClinicService } from '../../../administration/services/clinic/clinic.service';
 import { IApiParams } from '../../../common/interfaces/api.params';
 import { BasePaginationService } from '../../../common/service/base-pagination.service';
+import { CacheService } from '../../../common/service/cahce/cache.service';
 
 
 @Injectable({
@@ -14,7 +15,7 @@ export class PatientFinderPaginationService extends BasePaginationService {
 
   private baseUrl = environment.baseURL + 'patient'
 
-  constructor(httpClient: HttpClient,clinicService: ClinicService) { super(httpClient,clinicService) }
+  constructor(httpClient: HttpClient,chacheService: CacheService) { super(httpClient,chacheService) }
 
   getPateints(config$: BehaviorSubject<IApiParams>): Observable<any> {
     return this.get(config$, this.baseUrl + "/find/clinicId/")

@@ -3,7 +3,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { IColumn } from '@coreui/angular-pro/lib/smart-table/smart-table.type';
 import { ToastrService } from 'ngx-toastr';
-import { map, Observable, retry, tap } from 'rxjs';
+import { from, map, Observable, retry, tap } from 'rxjs';
 import { Address } from '../../../../common/models';
 import { CacheService } from '../../../../common/service/cahce/cache.service';
 import { ListTemplate } from '../../../../common/template/list.template';
@@ -27,7 +27,8 @@ export class ListClinicComponent extends ListTemplate implements OnInit {
   ngOnInit(): void {
     this.columns = this.constructColumns(['name', 'actions']);
     this.initListComponent();
-    this.clinics$ = this.clinicService.get(this.apiParams$ , this.cacheService.getOrganizationId()).pipe(
+    
+    this.clinics$ = this.clinicService.get(this.apiParams$).pipe(
       retry({
         delay: (error) => {
           console.warn('Retry: ', error);

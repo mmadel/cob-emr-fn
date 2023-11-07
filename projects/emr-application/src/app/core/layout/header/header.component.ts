@@ -2,8 +2,10 @@ import { Component, Input } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 
 import { ClassToggleService, HeaderComponent } from '@coreui/angular-pro';
+import { switchMap } from 'rxjs';
 import { ClinicService } from '../../../modules/administration/services/clinic/clinic.service';
 import { CacheService } from '../../../modules/common/service/cahce/cache.service';
+import { ClinicEmittingService } from '../../../modules/common/service/emitting/clinic-emitting.service';
 import { Clinic } from '../../../modules/patient/models/clinic';
 
 
@@ -30,27 +32,27 @@ export class DefaultHeaderComponent extends HeaderComponent {
 
   constructor(private classToggler: ClassToggleService
     , private ksAuthService: KcAuthService
+    , private emittingClinicService: ClinicEmittingService
     , private clinicService: ClinicService
-    , private cacheService :CacheService) {
+    , private cacheService: CacheService) {
     super();
   }
   ngOnInit(): void {
     this.ksAuthService.isLoggedIn()
-    .then((loggedIn) => {
-      if (loggedIn) {
-        this.ksAuthService.loadUserProfile()
-          .then((userProfile) => {
-            this.cacheService.setLoggedinUserUUID(userProfile.id!)
-            this.cacheService.setLoggedinUserName(userProfile.username!);
-            this.userName = this.cacheService.getLoggedinUserName()?.charAt(0).toUpperCase()
-            this.clinicService.getByUserId(this.cacheService.getLoggedinUserUUID()).subscribe(response => {
-              this.clinics = response;
-              this.cacheService.setOrganizationId(this.clinics[0].organizationId);
-              this.clinicService.selectedClinic$.next(Number(this.clinics[0].id!))
+      .then((loggedIn) => {
+        if (loggedIn) {
+          this.ksAuthService.loadUserProfile()
+            .then((userProfile) => {
+              this.cacheService.setLoggedinUserUUID(userProfile.id!)
+              this.cacheService.setLoggedinUserName(userProfile.username!);
+              this.userName = this.cacheService.getLoggedinUserName()?.charAt(0).toUpperCase()
+              this.clinicService.getByUserId(this.cacheService.getLoggedinUserUUID()).subscribe(response => {
+                this.clinics = response;
+                this.emittingClinicService.selectedClinic$.next(this.clinics[0])
+              })
             })
-          })
-      }
-    })
+        }
+      })
   }
 
   setTheme(value: string): void {
@@ -61,6 +63,8 @@ export class DefaultHeaderComponent extends HeaderComponent {
     this.ksAuthService.logout()
   }
   setSelectedClinic(event: any) {
-    this.clinicService.selectedClinic$.next(event.target.value)
+    this.clinicService.getById(event.target.value).subscribe(clinic => {
+      this.emittingClinicService.selectedClinic$.next(clinic)
+    })
   }
 }

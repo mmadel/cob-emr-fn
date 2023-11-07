@@ -1,10 +1,10 @@
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, debounceTime, distinctUntilChanged, Observable, retry, switchMap, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, debounceTime, distinctUntilChanged, from, Observable, retry, switchMap, throwError } from 'rxjs';
 import { PaginationData } from '../interfaces/pagination.data';
 
 import { IApiParams } from '../interfaces/api.params';
-import { ClinicService } from '../../administration/services/clinic/clinic.service';
+import { CacheService } from './cahce/cache.service';
 const httpOptions = {
   // headers: new HttpHeaders({
   //   'Content-Type': 'application/json',
@@ -17,7 +17,7 @@ const httpOptions = {
 })
 export class BasePaginationService {
   url: string;
-  constructor(private httpClient: HttpClient, private clinicService: ClinicService) { }
+  constructor(private httpClient: HttpClient, private cahceService: CacheService) { }
   get(config$: BehaviorSubject<IApiParams>, url: string): Observable<any> {
     this.url = url;
     return config$.pipe(
@@ -38,7 +38,8 @@ export class BasePaginationService {
     const options = Object.keys(httpParams).length
       ? { params: httpParams, ...httpOptions }
       : { params: {}, ...httpOptions };
-    return this.clinicService.selectedClinic$.pipe(
+
+    return from(this.cahceService.getSelectedClinic()).pipe(
       switchMap(clinicId =>
         this.httpClient
           .get<PaginationData>(this.url + clinicId, options)
