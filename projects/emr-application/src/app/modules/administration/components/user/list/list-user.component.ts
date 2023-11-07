@@ -22,7 +22,7 @@ export class ListUserComponent extends ListTemplate implements OnInit {
     this.initListComponent();
   }
   create() {
-    this.router.navigateByUrl('/insurance/company/create');
+    this.router.navigateByUrl('emr/administration/create/user');
   }
   remove(item: any) {
   }
