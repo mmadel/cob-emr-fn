@@ -9,7 +9,7 @@ import {
   CreateUserComponent,
   ListUserComponent
 } from './index'
-import { SmartPaginationModule, SmartTableModule } from '@coreui/angular-pro';
+import { CollapseModule, SmartPaginationModule, SmartTableModule } from '@coreui/angular-pro';
 import { EmrCommonModule } from '../common/emr-common.module';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ListClinicComponent } from './components/clinic/list/list-clinic.component';
@@ -32,6 +32,7 @@ import { ListDoctorUserComponent } from './components/user/list/list.doctor.user
     CommonModule,
     AdministrationRoutingModule,
     SmartPaginationModule,
+    CollapseModule,
     SmartTableModule,
     EmrCommonModule,
     NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' })

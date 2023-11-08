@@ -11,15 +11,11 @@ import { User } from '../../../model/user/user';
   templateUrl: './list-user.component.html',
   styleUrls: ['./list-user.component.css']
 })
-export class ListUserComponent extends ListTemplate implements OnInit {
+export class ListUserComponent {
   users$!: Observable<User[]>;
   columns: (string | IColumn)[];
-  constructor(private router: Router
-    , private toastr: ToastrService) { super(); }
-
+  constructor(private router: Router) {  }
   ngOnInit(): void {
-    this.columns = this.constructColumns(['name', 'insuranceType', 'phone', 'fax', 'actions']);
-    this.initListComponent();
   }
   create() {
     this.router.navigateByUrl('emr/administration/create/user');
