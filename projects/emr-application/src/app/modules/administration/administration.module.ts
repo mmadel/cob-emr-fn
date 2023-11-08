@@ -14,6 +14,8 @@ import { EmrCommonModule } from '../common/emr-common.module';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ListClinicComponent } from './components/clinic/list/list-clinic.component';
 import { CreateClinicComponent } from './components/clinic/create/create-clinic.component';
+import { ListClinicalUserComponent } from './components/user/list/list.clinical.user/list-clinical-user.component';
+import { ListDoctorUserComponent } from './components/user/list/list.doctor.user/list-doctor-user.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,9 @@ import { CreateClinicComponent } from './components/clinic/create/create-clinic.
     CreateUserComponent,
     ListUserComponent,
     ListClinicComponent,
-    CreateClinicComponent
+    CreateClinicComponent,
+    ListClinicalUserComponent,
+    ListDoctorUserComponent
   ],
   imports: [
     CommonModule,

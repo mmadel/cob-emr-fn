@@ -14,4 +14,11 @@ export class UserService {
     var createURL = this.userUrl + '/create'
     return this.httpClient.post(`${createURL}`, JSON.stringify(user), { 'headers': headers })
   }
+
+  getClinicalUsers(){
+
+  }
+  getDoctorUsers(){
+    
+  }
 }
