@@ -1,19 +1,18 @@
 <form cForm #clinicForm="ngForm" (ngSubmit)="add()">
-    <small *ngIf="clinicname.invalid && (clinicname.dirty || clinicname.touched)" class="form-text text-danger">
+    <small
+        *ngIf="submitted   && (clinicname.errors) || (clinicname.invalid && (clinicname.dirty || clinicname.touched))"
+        class="form-text text-danger">
         Clinic Name is required
     </small>
     <c-input-group class="mb-3">
         <input autoComplete="name" cFormControl id="firstAddress" name="firstAddress" sizing="sm"
             placeholder="Clinic Name" required [(ngModel)]="createdClinic.name" #clinicname="ngModel" />
     </c-input-group>
-    <small *ngIf="clinicAddress.invalid && (clinicAddress.dirty || clinicAddress.touched)"
-        class="form-text text-danger">
-        Clinic Address is required
+    <app-single-address #clinicAddress [address]="createdClinic.address"
+            [submitted]="submitted"></app-single-address>
+    <small *ngIf="submitted" class="form-text text-danger">
+        Administrator Doctor data is required
     </small>
-    <c-input-group class="mb-3">
-        <input autoComplete="name" cFormControl id="clinicAddress" name="clinicAddress" sizing="sm"
-            placeholder="Clinic Address" required [(ngModel)]="createdClinic.address" #clinicAddress="ngModel" />
-    </c-input-group>
     <c-input-group class="mb-3">
         <button cButton color="primary" class="mx-2" variant="outline" size="sm" (click)="openDoctorModal()">Create
             Clinic's Doctor
@@ -39,7 +38,7 @@
         <tr *ngFor="let clinic of clinics;let i=index;" scope="row">
             <th scope="row">1</th>
             <td>{{clinic.name}}</td>
-            <td>{{clinic.address}}</td>
+            <td>{{clinic.address |json}}</td>
             <td>
                 <div class="btn-group " role="group" aria-label="Basic example">
                     <button cButton color="primary" size="sm" variant="outline" (click)="remove(i)">
@@ -59,8 +58,8 @@
         <button (click)="closeShowDoctorsModal()" cButtonClose></button>
     </c-modal-header>
     <c-modal-body>
-            <strong>Doctor Name : </strong> {{selectedDoctor.username}} <br>
-            <strong>Doctor NPI : </strong> {{selectedDoctor.npi}} <br>
+        <strong>Doctor Name : </strong> {{selectedDoctor.username}} <br>
+        <strong>Doctor NPI : </strong> {{selectedDoctor.npi}} <br>
     </c-modal-body>
 </c-modal>
 <c-modal size="xl" [visible]="createDoctorVisible" (visibleChange)="handleCreateDoctorChange($event)">

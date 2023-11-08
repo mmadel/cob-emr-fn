@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { SingleAddressComponent } from '../../../common/components/single.address/single-address.component';
+import { Address } from '../../../common/models';
 import { ClinicalUser } from '../../../common/models/user/user';
 import { Clinic } from '../../../patient/models/clinic';
 
@@ -10,12 +12,19 @@ import { Clinic } from '../../../patient/models/clinic';
 })
 export class OrganizationClinicsCreationComponent implements OnInit {
   @ViewChild('doctorForm') doctorForm: NgForm;
+  @ViewChild('clinicAddress') clinicAddress: SingleAddressComponent;
+  validAddress: boolean = true;
+  submitted: boolean = false;
   createDoctorVisible: boolean = false
   showDoctorsVisible: boolean = false;
   isValidDoctor: boolean = false;
+
   createdClinic: Clinic = {
     name: '',
-    address: {}
+    address: {
+      addressType: null,
+      country: null
+    }
   };
   administratorDoctor: ClinicalUser = {
     username: '',
@@ -31,18 +40,22 @@ export class OrganizationClinicsCreationComponent implements OnInit {
   }
   @ViewChild('clinicForm') clinicForm: NgForm;
 
-  clinics: Clinic[] = new Array
+  clinics: Clinic[] = new Array();
   constructor() { }
 
   ngOnInit(): void {
   }
   add() {
-    if (this.clinicForm.valid) {
+    if (this.clinicForm.valid && this.isValidDoctor) {
       var users: ClinicalUser[] = new Array();
       users.push(this.administratorDoctor)
       this.createdClinic.users = users;
+       this.createdClinic.address= this.clinicAddress.getAddress();
       this.clinics.push(this.createdClinic);
       this.clearAll();
+      console.log(JSON.stringify(this.clinicAddress.getAddress()));
+    } else {
+      this.submitted = true;
     }
   }
   openDoctorModal() {
@@ -80,9 +93,7 @@ export class OrganizationClinicsCreationComponent implements OnInit {
   clearClinic() {
     this.createdClinic = {
       name: '',
-      address: {
-
-      }
+      address : {}
     };
   }
   clearAll() {
@@ -90,7 +101,9 @@ export class OrganizationClinicsCreationComponent implements OnInit {
     this.clearDoctormodel()
     this.clinicForm.reset();
     this.doctorForm.reset();
+    this.clinicAddress.resetSingleAddressForm();
     this.isValidDoctor = false
+    this.submitted = false
   }
   remove(index: number) {
     this.clinics.splice(index, 1);

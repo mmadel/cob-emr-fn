@@ -45,4 +45,7 @@ export class AddressComponent extends BasicComponent implements OnInit, AfterVie
   }
   ngOnInit(): void {
   }
+  public clearForm(){
+    this.addressForm.reset();
+  }
 }
