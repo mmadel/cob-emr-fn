@@ -14,16 +14,19 @@
                         <h3>Basic Information</h3>
                     </c-card-header>
                     <c-card-body>
-                        <small *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)"
-                            class="form-text text-danger">
+                        <small
+                            *ngIf="submitted   && (firstName.errors)  || (firstName.invalid && (firstName.dirty || firstName.touched))"
+                            class="form-text text-danger mx-1">
                             First Name is required
                         </small>
-                        <small *ngIf="middleName.invalid && (middleName.dirty || middleName.touched)"
-                            class="form-text text-danger">
+                        <small
+                            *ngIf="submitted   && (middleName.errors) || (middleName.invalid && (middleName.dirty || middleName.touched))"
+                            class="form-text text-danger mx-1">
                             Middle Name is required
                         </small>
-                        <small *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)"
-                            class="form-text text-danger">
+                        <small
+                            *ngIf="submitted   && (lastName.errors) || (lastName.invalid && (lastName.dirty || lastName.touched))"
+                            class="form-text text-danger mx-1">
                             Last Name is required
                         </small>
                         <c-input-group class="mb-3" sizing="sm">
@@ -34,7 +37,6 @@
                                 [(ngModel)]="user.firstName" #firstName="ngModel" />
 
                             <input cFormControl id="middleName" name="middleName" sizing="sm" placeholder="Middle Name"
-                                required
                                 [ngClass]="{'is-invalid': middleName.invalid && (middleName.dirty || middleName.touched)}"
                                 [(ngModel)]="user.middleName" #middleName="ngModel" />
 
@@ -43,7 +45,9 @@
                                 [ngClass]="{'is-invalid': lastName.invalid && (lastName.dirty || lastName.touched)}"
                                 [(ngModel)]="user.lastName" #lastName="ngModel" />
                         </c-input-group>
-                        <small *ngIf="email.invalid && (email.dirty || email.touched)" class="form-text text-danger">
+                        <small
+                            *ngIf="submitted   && (email.errors) || (email.invalid && (email.dirty || email.touched))"
+                            class="form-text text-danger">
                             Email is required
                         </small>
                         <c-input-group class="mb-3" sizing="sm">
@@ -51,7 +55,8 @@
                             <input aria-describedby="basic-addon1" id="email" name="email" cFormControl required
                                 placeholder="email" #email="ngModel" [(ngModel)]="user.email" />
                         </c-input-group>
-                        <small *ngIf="password.invalid && (password.dirty || password.touched)"
+                        <small
+                            *ngIf="submitted   && (password.errors) || (password.invalid && (password.dirty || password.touched))"
                             class="form-text text-danger">
                             Password is required
                         </small>
@@ -63,7 +68,8 @@
                                 placeholder="password" #password="ngModel" [(ngModel)]="user.password"
                                 type="password" />
                         </c-input-group>
-                        <small *ngIf="username.invalid && (username.dirty || username.touched)"
+                        <small
+                            *ngIf="submitted   && (username.errors) || (username.invalid && (username.dirty || username.touched))"
                             class="form-text text-danger">
                             Username is required
                         </small>
@@ -85,17 +91,18 @@
                         <h3>Roles</h3>
                     </c-card-header>
                     <c-card-body>
-                        <small *ngIf="role.invalid && (role.dirty || role.touched)" class="form-text text-danger">
+                        <small *ngIf="submitted   && (role.errors) || (role.invalid && (role.dirty || role.touched))"
+                            class="form-text text-danger">
                             Role is required
                         </small>
-                        <select cFormControl cSelect class="mb-2" sizing="sm" id="IdType" name="IdType" required
-                        [ngClass]="{'is-invalid': role.invalid && (role.dirty || role.touched)}" [(ngModel)]="user.role"
-                        #role="ngModel">
-                        <option [ngValue]="null" disabled selected>Select Role</option>
-                        <option *ngFor="let role of roles | keyvalue" [value]="role.key">
-                            {{role.value}}
-                        </option>
-                    </select>
+                        <select cFormControl cSelect class="mb-2" sizing="sm" id="role" name="role" required
+                            [ngClass]="{'is-invalid': role.invalid && (role.dirty || role.touched)}"
+                            [(ngModel)]="user.role" #role="ngModel">
+                            <option [ngValue]="null" disabled selected>Select Role</option>
+                            <option *ngFor="let role of roles | keyvalue" [value]="role.key">
+                                {{role.value}}
+                            </option>
+                        </select>
                     </c-card-body>
                 </c-card>
             </c-col>
@@ -107,14 +114,17 @@
                         <h3>Clinics</h3>
                     </c-card-header>
                     <c-card-body>
-                        <c-input-group class="mb-3">
-                            <c-multi-select *ngIf="clinics" multiple cSelect sizing="sm"
-                                autoComplete="selectedClinics" name="selectedClinics" id="selectedClinics"
-                                [(ngModel)]="user.clinics" #selectedClinics="ngModel">
-                                <c-multi-select-option *ngFor="let clinic of clinics"
-                                    [value]="clinic.id?.toString()">{{clinic.name}}</c-multi-select-option>
-                            </c-multi-select>
-                        </c-input-group>
+
+                        <small
+                            *ngIf="submitted   && (selectedClinic.errors) || (selectedClinic.invalid && (selectedClinic.dirty || selectedClinic.touched))"
+                            class="form-text text-danger">
+                            Clinics is required
+                        </small>
+                        <c-multi-select multiple size="sm" cSelect name="selectedClinic" id="selectedClinic" required 
+                            [(ngModel)]="user.clinics" #selectedClinic="ngModel">
+                            <c-multi-select-option *ngFor="let clinic of clinics"
+                                [value]="clinic.id?.toString()">{{clinic.name}}</c-multi-select-option>
+                        </c-multi-select>
                     </c-card-body>
                 </c-card>
             </c-col>
