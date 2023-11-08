@@ -88,7 +88,7 @@
             <c-col class="col">
                 <c-card class="mb-3 ustify-content-center">
                     <c-card-header>
-                        <h3>Roles</h3>
+                        <h3>User Type</h3>
                     </c-card-header>
                     <c-card-body>
                         <small *ngIf="submitted   && (role.errors) || (role.invalid && (role.dirty || role.touched))"
@@ -98,11 +98,68 @@
                         <select cFormControl cSelect class="mb-2" sizing="sm" id="role" name="role" required
                             [ngClass]="{'is-invalid': role.invalid && (role.dirty || role.touched)}"
                             [(ngModel)]="user.role" #role="ngModel">
-                            <option [ngValue]="null" disabled selected>Select Role</option>
+                            <option [ngValue]="null" disabled selected>Select User Type</option>
                             <option *ngFor="let role of roles | keyvalue" [value]="role.key">
                                 {{role.value}}
                             </option>
                         </select>
+                        <!--Doctor -->
+                        <span *ngIf="user.role === 'clinical_emr_role'">
+                            <!--NPI-->
+                            <small *ngIf="submitted   && (npi.errors) || (npi.invalid && (npi.dirty || npi.touched))"
+                                class="form-text text-danger">
+                                Doctor npi is required
+                            </small>
+                            <c-input-group class="mb-3">
+                                <input autoComplete="name" cFormControl id="npi" name="npi" sizing="sm"
+                                    placeholder="Enter Doctor npi" required
+                                    [ngClass]="{'is-invalid': npi.invalid && (npi.dirty || npi.touched)}"
+                                    [(ngModel)]="user.doctor.npi" #npi="ngModel" />
+                            </c-input-group>
+                            <!--licence-->
+                            <small
+                                *ngIf="submitted   && (licence.errors) || (licence.invalid && (licence.dirty || licence.touched))"
+                                class="form-text text-danger">
+                                Doctor npi is required
+                            </small>
+                            <c-input-group class="mb-3">
+                                <input autoComplete="name" cFormControl id="licence" name="licence" sizing="sm"
+                                    placeholder="Enter Doctor Licence" required
+                                    [ngClass]="{'is-invalid': licence.invalid && (licence.dirty || licence.touched)}"
+                                    [(ngModel)]="user.doctor.licence" #licence="ngModel" />
+                            </c-input-group>
+                            <!--speciality -->
+                            <small
+                                *ngIf="submitted   && (speciality.errors) || (speciality.invalid && (speciality.dirty || speciality.touched))"
+                                class="form-text text-danger">
+                                Doctor Speciality is required
+                            </small>
+                            <select cFormControl cSelect class="mb-2" sizing="sm" id="speciality" name="speciality"
+                                required
+                                [ngClass]="{'is-invalid': speciality.invalid && (speciality.dirty || speciality.touched)}"
+                                [(ngModel)]="user.doctor.speciality" #speciality="ngModel"
+                                (change)="getDoctorCredentials()">
+                                <option [ngValue]="null" disabled selected>Select Doctor Speciality</option>
+                                <option *ngFor="let specialty of specialties | keyvalue" [value]="specialty.key">
+                                    {{specialty.value}}
+                                </option>
+                            </select>
+                            <!--credential -->
+                            <small
+                                *ngIf="submitted   && (credential.errors) || (credential.invalid && (credential.dirty || credential.touched))"
+                                class="form-text text-danger">
+                                Doctor Credential is required
+                            </small>
+                            <select cFormControl cSelect class="mb-2" sizing="sm" id="credential" name="credential"
+                                required
+                                [ngClass]="{'is-invalid': credential.invalid && (credential.dirty || credential.touched)}"
+                                [(ngModel)]="user.doctor.credential" #credential="ngModel">
+                                <option [ngValue]="null" disabled selected>Select Doctor Credential</option>
+                                <option *ngFor="let credential of credentials" [value]="credential">
+                                    {{credential}}
+                                </option>
+                            </select>
+                        </span>
                     </c-card-body>
                 </c-card>
             </c-col>
@@ -120,7 +177,7 @@
                             class="form-text text-danger">
                             Clinics is required
                         </small>
-                        <c-multi-select multiple size="sm" cSelect name="selectedClinic" id="selectedClinic" required 
+                        <c-multi-select multiple size="sm" cSelect name="selectedClinic" id="selectedClinic"  required [selectAll]="false"
                             [(ngModel)]="user.clinics" #selectedClinic="ngModel">
                             <c-multi-select-option *ngFor="let clinic of clinics"
                                 [value]="clinic.id?.toString()">{{clinic.name}}</c-multi-select-option>

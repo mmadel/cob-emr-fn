@@ -3,10 +3,12 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { from, switchMap } from 'rxjs';
+import { Specialties } from '../../../../common/models/enums/doctor/specialties';
 import { Roles } from '../../../../common/models/enums/roles';
 import { CacheService } from '../../../../common/service/cahce/cache.service';
 import { EncryptService } from '../../../../common/service/encyrption/encrypt.service';
 import { Clinic } from '../../../../patient/models/clinic';
+import { DoctorUser } from '../../../model/user/doctor';
 import { User } from '../../../model/user/user';
 import { ClinicService } from '../../../services/clinic/clinic.service';
 import { UserService } from '../../../services/user/user.service';
@@ -21,10 +23,17 @@ export class CreateUserComponent implements OnInit {
   submitted: boolean = false;
   validAddress: boolean = true;
   roles = Roles;
+  specialties = Specialties;
+  credentials: string[];
   clinics: Clinic[];
   user: User = {
     role: null,
-    clinics: []
+    clinics: [],
+    doctor: {
+      speciality: null,
+      credential: null
+    }
+
   }
   constructor(private clinicService: ClinicService
     , private cacheService: CacheService
@@ -59,5 +68,19 @@ export class CreateUserComponent implements OnInit {
   }
   resetError() {
     this.submitted = false;
+  }
+  getDoctorCredentials() {
+    if (this.user.doctor.speciality === 'Physical_Therapy') {
+      this.credentials = ['DPT', 'PTA']
+    }
+    if (this.user.doctor.speciality === 'Occupational_Therapy') {
+      this.credentials = ['OTD', 'COTA']
+    }
+    if (this.user.doctor.speciality === 'Speech_Language_Pathology') {
+      this.credentials = ['SLP', 'SLPA']
+    }
+    if (this.user.doctor.speciality === 'Dentistry') {
+      this.credentials = ['DMD', 'DDS', 'CDA']
+    }
   }
 }
