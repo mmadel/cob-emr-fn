@@ -8,8 +8,7 @@
         <input autoComplete="name" cFormControl id="firstAddress" name="firstAddress" sizing="sm"
             placeholder="Clinic Name" required [(ngModel)]="createdClinic.name" #clinicname="ngModel" />
     </c-input-group>
-    <app-single-address #clinicAddress [address]="createdClinic.address"
-            [submitted]="submitted"></app-single-address>
+    <app-single-address #clinicAddress [address]="createdClinic.address" [submitted]="submitted"></app-single-address>
     <small *ngIf="submitted" class="form-text text-danger">
         Administrator Doctor data is required
     </small>
@@ -58,8 +57,7 @@
         <button (click)="closeShowDoctorsModal()" cButtonClose></button>
     </c-modal-header>
     <c-modal-body>
-        <strong>Doctor Name : </strong> {{selectedDoctor.username}} <br>
-        <strong>Doctor NPI : </strong> {{selectedDoctor.npi}} <br>
+
     </c-modal-body>
 </c-modal>
 <c-modal size="xl" [visible]="createDoctorVisible" (visibleChange)="handleCreateDoctorChange($event)">
@@ -68,98 +66,180 @@
         <button (click)="closeCreateDoctorModal()" cButtonClose></button>
     </c-modal-header>
     <c-modal-body>
-        <form cForm #doctorForm="ngForm" (ngSubmit)="saveDoctor()">
-            <!--User Name-->
-            <div class="form-group" class="mb-3">
-                <small *ngIf="doctorname.invalid && (doctorname.dirty || doctorname.touched)"
-                    class="form-text text-danger">
-                    Doctor User Name is required
-                </small>
-                <c-input-group class="mb-3">
-                    <input autoComplete="name" cFormControl id="firstAddress" name="firstAddress" sizing="sm"
-                        placeholder="Doctor User Name" required [(ngModel)]="administratorDoctor.username"
-                        [ngClass]="{'is-invalid': doctorname.invalid && (doctorname.dirty || doctorname.touched)}"
-                        #doctorname="ngModel" />
+        <p class="text-danger" *ngIf="errorMessage">{{ errorMessage }}</p>
+        <select cFormControl cSelect class="mb-2" sizing="sm" id="doctype" name="doctype" required
+            [ngClass]="{'is-invalid': doctype.invalid && (doctype.dirty || doctype.touched)}"
+            [(ngModel)]="isAssignDoctorFromDB" #doctype="ngModel">
+            <option [ngValue]="-1" disabled selected>Select User Type</option>
+            <option [ngValue]="1">Select from doctors</option>
+            <option [ngValue]="0">Create new doctor</option>
+
+        </select>
+        <span *ngIf="isAssignDoctorFromDB === 1">
+            <ng-autocomplete [data]="users" [searchKeyword]="'userName'" placeholder="Enter Doctor Name"
+                [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate" [(ngModel)]="administratorDoctor"
+                [ngModelOptions]="{standalone: true}" (selected)='pick($event)'
+                (inputCleared)="unpick($event)">
+            </ng-autocomplete>
+            <ng-template #itemTemplate let-item>
+                <a [innerHTML]="item.userName"></a>
+            </ng-template>
+
+            <ng-template #notFoundTemplate let-notFound>
+                <div [innerHTML]="notFound"></div>
+            </ng-template>
+            <span *ngIf="isDoctorSelected">
+                <c-input-group class="mb-3 my-3" sizing="sm">
+                    <span cInputGroupText id="basic-addon1" style="width: 120px;">npi</span>
+                    <input aria-describedby="basic-addon1" cFormControl readonly [value]="administratorDoctor.npi" />
                 </c-input-group>
-            </div>
-            <div class="form-group" class="mb-3">
-                <small *ngIf="npi.invalid && (npi.dirty || npi.touched)" class="form-text text-danger">
-                    Doctor NPI is required
-                </small>
-                <c-input-group class="mb-3">
-                    <input autoComplete="name" cFormControl id="npi" name="npi" sizing="sm"
-                        [ngClass]="{'is-invalid': npi.invalid && (npi.dirty || npi.touched)}" placeholder="Doctor NPI "
-                        required [(ngModel)]="administratorDoctor.npi" #npi="ngModel" />
-                </c-input-group>
-            </div>
-            <!--First Name-->
-            <div class="form-group" class="mb-3">
-                <small *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)"
-                    class="form-text text-danger">
-                    Doctor First Name is required
-                </small>
-                <c-input-group class="mb-3">
-                    <input autoComplete="firstName" cFormControl id="firstName" name="firstName" sizing="sm"
-                        [ngClass]="{'is-invalid': firstName.invalid && (firstName.dirty || firstName.touched)}"
-                        placeholder="Doctor First Name" required [(ngModel)]="administratorDoctor.firstName"
-                        #firstName="ngModel" />
-                </c-input-group>
-            </div>
-            <!--Middle Name-->
-            <div class="form-group" class="mb-3">
-                <small *ngIf="middleName.invalid && (middleName.dirty || middleName.touched)"
-                    class="form-text text-danger">
-                    Doctor Middle Name is required
-                </small>
-                <c-input-group class="mb-3">
-                    <input autoComplete="middleName" cFormControl id="middleName" name="middleName" sizing="sm"
-                        [ngClass]="{'is-invalid': middleName.invalid && (middleName.dirty || middleName.touched)}"
-                        placeholder="Doctor Middle Name" required [(ngModel)]="administratorDoctor.middleName"
-                        #middleName="ngModel" />
-                </c-input-group>
-            </div>
-            <!--Last Name-->
-            <div class="form-group" class="mb-3">
-                <small *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" class="form-text text-danger">
-                    Doctor Last Name is required
-                </small>
-                <c-input-group class="mb-3">
-                    <input autoComplete="lastName" cFormControl id="lastName" name="lastName" sizing="sm"
-                        [ngClass]="{'is-invalid': lastName.invalid && (lastName.dirty || lastName.touched)}"
-                        placeholder="Doctor Last Name" required [(ngModel)]="administratorDoctor.lastName"
-                        #lastName="ngModel" />
-                </c-input-group>
-            </div>
-            <!--Email-->
-            <div class="form-group" class="mb-3">
-                <small *ngIf="email.invalid && (email.dirty || email.touched)" class="form-text text-danger">
-                    Doctor Email is required
-                </small>
-                <c-input-group class="mb-3">
-                    <input autoComplete="email" cFormControl id="email" name="email" sizing="sm"
-                        [ngClass]="{'is-invalid': email.invalid && (email.dirty || email.touched)}"
-                        placeholder="Doctor Email" required [(ngModel)]="administratorDoctor.email" #email="ngModel" />
-                </c-input-group>
-            </div>
-            <!--Phone-->
-            <div class="form-group" class="mb-3">
-                <small *ngIf="doctorphone.invalid && (doctorphone.dirty || doctorphone.touched)"
-                    class="form-text text-danger">
-                    Doctor Phone is required
-                </small>
                 <c-input-group class="mb-3" sizing="sm">
-                    <span cInputGroupText id="basic-addon1">+1</span>
-                    <input placeholder="Doctor Phone" cFormControl sizing="sm" required
-                        [ngClass]="{'is-invalid': doctorphone.invalid && (doctorphone.dirty || doctorphone.touched)}"
-                        #doctorphone="ngModel" [ngModel]="administratorDoctor.phone| phone"
-                        (ngModelChange)="administratorDoctor.phone=$event" maxlength="15"
-                        [ngModelOptions]="{standalone: true}" />
+                    <span cInputGroupText id="basic-addon1" style="width: 120px;">Licence</span>
+                    <input aria-describedby="basic-addon1" cFormControl readonly
+                        [value]="administratorDoctor.licence" />
                 </c-input-group>
-            </div>
-        </form>
+                <c-input-group class="mb-3" sizing="sm">
+                    <span cInputGroupText id="basic-addon1" style="width: 120px;">Speciality</span>
+                    <input aria-describedby="basic-addon1" cFormControl readonly
+                        [value]="administratorDoctor.speciality" />
+                </c-input-group>
+                <c-input-group class="mb-3" sizing="sm">
+                    <span cInputGroupText id="basic-addon1" style="width: 120px;">Credential</span>
+                    <input aria-describedby="basic-addon1" cFormControl readonly
+                        [value]="administratorDoctor.credential" />
+                </c-input-group>
+                <c-input-group class="mb-3" sizing="sm">
+                    <span cInputGroupText id="basic-addon1" style="width: 120px;">First Middle Last</span>
+                    <input cFormControl sizing="sm" placeholder="First Name" readonly
+                        [value]="administratorDoctor.firstName" />
+
+                    <input cFormControl sizing="sm" placeholder="Middle Name" readonly
+                        (value)="administratorDoctor.middleName" />
+
+                    <input cFormControl sizing="sm" placeholder="Last Name" readonly
+                        [value]="administratorDoctor.lastName" />
+                </c-input-group>
+                <c-input-group class="mb-3" sizing="sm">
+                    <span cInputGroupText id="basic-addon1">&#64;</span>
+                    <input aria-describedby="basic-addon1" id="email" name="email" cFormControl required
+                        placeholder="email" [value]="administratorDoctor.email" />
+                </c-input-group>
+            </span>
+        </span>
+        <span *ngIf="isAssignDoctorFromDB === 0">
+            <form cForm #doctorForm="ngForm" (ngSubmit)="saveDoctor()">
+                <!--User Name-->
+                <div class="form-group" class="mb-3">
+                    <small *ngIf="doctorname.invalid && (doctorname.dirty || doctorname.touched)"
+                        class="form-text text-danger">
+                        Doctor User Name is required
+                    </small>
+                    <c-input-group class="mb-3">
+                        <input autoComplete="name" cFormControl id="firstAddress" name="firstAddress" sizing="sm"
+                            placeholder="Doctor User Name" required [(ngModel)]="administratorDoctor.userName"
+                            [ngClass]="{'is-invalid': doctorname.invalid && (doctorname.dirty || doctorname.touched)}"
+                            #doctorname="ngModel" />
+                    </c-input-group>
+                </div>
+                <div class="form-group" class="mb-3">
+                    <small *ngIf="npi.invalid && (npi.dirty || npi.touched)" class="form-text text-danger">
+                        Doctor NPI is required
+                    </small>
+                    <c-input-group class="mb-3">
+                        <input autoComplete="name" cFormControl id="npi" name="npi" sizing="sm"
+                            [ngClass]="{'is-invalid': npi.invalid && (npi.dirty || npi.touched)}"
+                            placeholder="Doctor NPI " required [(ngModel)]="administratorDoctor.npi" #npi="ngModel" />
+                    </c-input-group>
+                </div>
+                <div class="form-group" class="mb-3">
+                    <small *ngIf="password.invalid && (password.dirty || password.touched)"
+                        class="form-text text-danger">
+                        Doctor password is required
+                    </small>
+                    <c-input-group class="mb-3">
+                        <input cFormControl id="npi" name="npi" sizing="sm"
+                            [ngClass]="{'is-invalid': password.invalid && (password.dirty || password.touched)}"
+                            placeholder="password" type="password" required [(ngModel)]="administratorDoctor.password"
+                            #password="ngModel" />
+                    </c-input-group>
+                </div>
+                <!--First Name-->
+                <div class="form-group" class="mb-3">
+                    <small *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)"
+                        class="form-text text-danger">
+                        Doctor First Name is required
+                    </small>
+                    <c-input-group class="mb-3">
+                        <input autoComplete="firstName" cFormControl id="firstName" name="firstName" sizing="sm"
+                            [ngClass]="{'is-invalid': firstName.invalid && (firstName.dirty || firstName.touched)}"
+                            placeholder="Doctor First Name" required [(ngModel)]="administratorDoctor.firstName"
+                            #firstName="ngModel" />
+                    </c-input-group>
+                </div>
+                <!--Middle Name-->
+                <div class="form-group" class="mb-3">
+                    <small *ngIf="middleName.invalid && (middleName.dirty || middleName.touched)"
+                        class="form-text text-danger">
+                        Doctor Middle Name is required
+                    </small>
+                    <c-input-group class="mb-3">
+                        <input autoComplete="middleName" cFormControl id="middleName" name="middleName" sizing="sm"
+                            [ngClass]="{'is-invalid': middleName.invalid && (middleName.dirty || middleName.touched)}"
+                            placeholder="Doctor Middle Name" required [(ngModel)]="administratorDoctor.middleName"
+                            #middleName="ngModel" />
+                    </c-input-group>
+                </div>
+                <!--Last Name-->
+                <div class="form-group" class="mb-3">
+                    <small *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)"
+                        class="form-text text-danger">
+                        Doctor Last Name is required
+                    </small>
+                    <c-input-group class="mb-3">
+                        <input autoComplete="lastName" cFormControl id="lastName" name="lastName" sizing="sm"
+                            [ngClass]="{'is-invalid': lastName.invalid && (lastName.dirty || lastName.touched)}"
+                            placeholder="Doctor Last Name" required [(ngModel)]="administratorDoctor.lastName"
+                            #lastName="ngModel" />
+                    </c-input-group>
+                </div>
+                <!--Email-->
+                <div class="form-group" class="mb-3">
+                    <small *ngIf="email.invalid && (email.dirty || email.touched)" class="form-text text-danger">
+                        Doctor Email is required
+                    </small>
+                    <c-input-group class="mb-3">
+                        <input autoComplete="email" cFormControl id="email" name="email" sizing="sm"
+                            [ngClass]="{'is-invalid': email.invalid && (email.dirty || email.touched)}"
+                            placeholder="Doctor Email" required [(ngModel)]="administratorDoctor.email"
+                            #email="ngModel" />
+                    </c-input-group>
+                </div>
+                <!--Phone-->
+                <div class="form-group" class="mb-3">
+                    <small *ngIf="doctorphone.invalid && (doctorphone.dirty || doctorphone.touched)"
+                        class="form-text text-danger">
+                        Doctor Phone is required
+                    </small>
+                    <c-input-group class="mb-3" sizing="sm">
+                        <span cInputGroupText id="basic-addon1">+1</span>
+                        <input placeholder="Doctor Phone" cFormControl sizing="sm" required
+                            [ngClass]="{'is-invalid': doctorphone.invalid && (doctorphone.dirty || doctorphone.touched)}"
+                            #doctorphone="ngModel" [ngModel]="administratorDoctor.phone| phone"
+                            (ngModelChange)="administratorDoctor.phone=$event" maxlength="15"
+                            [ngModelOptions]="{standalone: true}" />
+                    </c-input-group>
+                </div>
+            </form>
+        </span>
     </c-modal-body>
     <hr>
     <div class="text-center mb-3">
-        <button cButton color="primary" (click)="saveDoctor()">Save </button>
+        <span *ngIf="isAssignDoctorFromDB === 1">
+            <button cButton color="primary" (click)="selectDoctor()">Select</button>
+        </span>
+        <span *ngIf="isAssignDoctorFromDB === 0">
+            <button cButton color="primary" (click)="saveDoctor()">Create</button>
+        </span>
+
     </div>
 </c-modal>

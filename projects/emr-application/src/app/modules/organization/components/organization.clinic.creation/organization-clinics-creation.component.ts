@@ -1,10 +1,17 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { DomSanitizer } from '@angular/platform-browser';
+import { User } from '../../../administration/model/user/user';
 import { SingleAddressComponent } from '../../../common/components/single.address/single-address.component';
-import { Address } from '../../../common/models';
-import { ClinicalUser } from '../../../common/models/user/user';
+import { EncryptService } from '../../../common/service/encyrption/encrypt.service';
 import { Clinic } from '../../../patient/models/clinic';
-
+import { AdministratorDoctor } from '../../models/administrator.doctor';
+import { DoctorUserService } from '../../services/doctor.user.autocomplete/doctor-user.service';
+import { Doctors } from './doctor.db';
+export interface Doctor {
+  name?: string,
+  npi?: string;
+}
 @Component({
   selector: 'app-organization-clinics-creation',
   templateUrl: './organization-clinics-creation.component.html',
@@ -13,12 +20,15 @@ import { Clinic } from '../../../patient/models/clinic';
 export class OrganizationClinicsCreationComponent implements OnInit {
   @ViewChild('doctorForm') doctorForm: NgForm;
   @ViewChild('clinicAddress') clinicAddress: SingleAddressComponent;
+  public users: User[];
   validAddress: boolean = true;
   submitted: boolean = false;
   createDoctorVisible: boolean = false
   showDoctorsVisible: boolean = false;
   isValidDoctor: boolean = false;
-
+  isAssignDoctorFromDB: number = -1;;
+  isDoctorSelected: boolean = false;
+  errorMessage: string | null;
   createdClinic: Clinic = {
     name: '',
     address: {
@@ -26,34 +36,31 @@ export class OrganizationClinicsCreationComponent implements OnInit {
       country: null
     }
   };
-  administratorDoctor: ClinicalUser = {
-    username: '',
+  administratorDoctor: AdministratorDoctor = {
+    userName: '',
     firstName: '',
     middleName: '',
     lastName: '',
     email: '',
     phone: '',
   }
-  selectedDoctor: ClinicalUser = {
-    username: '',
-    npi: ''
-  }
   @ViewChild('clinicForm') clinicForm: NgForm;
 
   clinics: Clinic[] = new Array();
-  constructor() { }
+  constructor(private encryptService: EncryptService
+    , private doctorUserService: DoctorUserService) { }
 
   ngOnInit(): void {
+    this.doctorUserService.find().subscribe((response) => {
+      this.users = response.body;
+    })
   }
   add() {
     if (this.clinicForm.valid && this.isValidDoctor) {
-      var users: ClinicalUser[] = new Array();
-      users.push(this.administratorDoctor)
-      this.createdClinic.users = users;
-       this.createdClinic.address= this.clinicAddress.getAddress();
+      this.createdClinic.administratorDoctor = this.administratorDoctor;
+      this.createdClinic.address = this.clinicAddress.getAddress();
       this.clinics.push(this.createdClinic);
       this.clearAll();
-      console.log(JSON.stringify(this.clinicAddress.getAddress()));
     } else {
       this.submitted = true;
     }
@@ -74,15 +81,36 @@ export class OrganizationClinicsCreationComponent implements OnInit {
     this.createDoctorVisible = !this.createDoctorVisible;
   }
   saveDoctor() {
-    if (this.doctorForm.valid) {
+    if (this.checkCreatedDoctor()) {
+      this.errorMessage = 'Doctor is already exsists';
+      
+    }
+    else if (this.doctorForm.valid) {
+      this.administratorDoctor.password = this.encryptService.encrypt(this.administratorDoctor.password);
       this.isValidDoctor = true;
       this.closeCreateDoctorModal();
       this.doctorForm.reset;
+      this.errorMessage = null;
+    } else {
+      this.errorMessage = 'Invalid data';
+      return;
     }
+  }
+  selectDoctor() {
+    this.isValidDoctor = true;
+    this.closeCreateDoctorModal();
+  }
+  private checkCreatedDoctor(): boolean {
+    var invalid: boolean = false;
+    this.users.forEach(user => {
+      if (user.userName === this.administratorDoctor.userName)
+        invalid = true
+    });
+    return invalid;
   }
   clearDoctormodel() {
     this.administratorDoctor = {
-      username: '',
+      userName: '',
       firstName: '',
       middleName: '',
       lastName: '',
@@ -93,14 +121,15 @@ export class OrganizationClinicsCreationComponent implements OnInit {
   clearClinic() {
     this.createdClinic = {
       name: '',
-      address : {}
+      address: {}
     };
   }
   clearAll() {
     this.clearClinic();
     this.clearDoctormodel()
     this.clinicForm.reset();
-    this.doctorForm.reset();
+    if (this.doctorForm !== undefined)
+      this.doctorForm.reset();
     this.clinicAddress.resetSingleAddressForm();
     this.isValidDoctor = false
     this.submitted = false
@@ -110,6 +139,16 @@ export class OrganizationClinicsCreationComponent implements OnInit {
   }
   showDoctor(clinic: Clinic) {
     this.showDoctorsVisible = !this.showDoctorsVisible;
-    this.selectedDoctor = clinic.users[0];
+  }
+  pick(event: any) {
+    this.isDoctorSelected = true;
+    this.administratorDoctor = event;
+    this.administratorDoctor.npi = event.doctor.npi;
+    this.administratorDoctor.licence = event.doctor.licence;
+    this.administratorDoctor.speciality = event.doctor.speciality;
+    this.administratorDoctor.credential = event.doctor.credential;
+  }
+  unpick(event: any) {
+    this.isDoctorSelected = false;
   }
 }

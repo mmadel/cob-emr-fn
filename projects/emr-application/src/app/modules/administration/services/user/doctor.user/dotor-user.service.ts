@@ -9,9 +9,9 @@ import { CacheService } from '../../../../common/service/cahce/cache.service';
 @Injectable({
   providedIn: 'root'
 })
-export class DotorUserService extends BasePaginationService  {
+export class DotorUserService extends BasePaginationService {
   private baseUrl = environment.baseURL + 'user'
-  constructor(httpClient: HttpClient,chacheService: CacheService) { super(httpClient,chacheService) }
+  constructor(httpClient: HttpClient, chacheService: CacheService) { super(httpClient, chacheService) }
 
   getDoctorUser(config$: BehaviorSubject<IApiParams>): Observable<any> {
     return this.get(config$, this.baseUrl + "/find/doctors/clinicId/")

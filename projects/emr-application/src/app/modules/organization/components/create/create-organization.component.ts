@@ -41,22 +41,21 @@ export class CreateOrganizationComponent extends BasicComponent implements OnIni
 
   }
   create() {
+
+    console.log(JSON.stringify(this.organization))
     this.valid = this.validate();
     if (this.valid) {
       this.organization.clinics = this.organizationClinicsCreationComponent.clinics
       this.organization.billingAddress = this.organizationBillingAddress.addresses[0];
-      console.log(JSON.stringify(this.organization))
       this.organizationService.create(this.organization)
-        .pipe(
-          catchError((error) => {
-            console.log(error)
-            return EMPTY;
-          })
-        )
         .subscribe(() => {
           this.reset();
-          this.toastr.success('Organization Created.!!');
+          this.toastr.success('Organization Created.');
           this.router.navigateByUrl('emr/organization/list')
+        }, (error) => {
+          console.log(error);
+          console.log(error)
+          this.toastr.error(error.error.message, 'Error In Creation');
         })
     } else {
       this.scrollUp();

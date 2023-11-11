@@ -12,6 +12,7 @@ import {
   ListOrganizationClinicsComponent,
   OrganizationClinicsCreationComponent
 } from './index';
+import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 @NgModule({
   declarations: [
     CreateOrganizationComponent,
@@ -29,6 +30,7 @@ import {
     ModalModule,
     DatePickerModule,
     AccordionModule,
+    AutocompleteLibModule,
     NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' })
 
   ]
