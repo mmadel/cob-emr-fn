@@ -1,13 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { DomSanitizer } from '@angular/platform-browser';
 import { User } from '../../../administration/model/user/user';
 import { SingleAddressComponent } from '../../../common/components/single.address/single-address.component';
 import { EncryptService } from '../../../common/service/encyrption/encrypt.service';
 import { Clinic } from '../../../patient/models/clinic';
 import { AdministratorDoctor } from '../../models/administrator.doctor';
 import { DoctorUserService } from '../../services/doctor.user.autocomplete/doctor-user.service';
-import { Doctors } from './doctor.db';
 export interface Doctor {
   name?: string,
   npi?: string;
@@ -83,7 +81,6 @@ export class OrganizationClinicsCreationComponent implements OnInit {
   saveDoctor() {
     if (this.checkCreatedDoctor()) {
       this.errorMessage = 'Doctor is already exsists';
-      
     }
     else if (this.doctorForm.valid) {
       this.administratorDoctor.password = this.encryptService.encrypt(this.administratorDoctor.password);
