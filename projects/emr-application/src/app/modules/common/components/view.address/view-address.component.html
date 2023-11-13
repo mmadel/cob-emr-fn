@@ -1,0 +1,19 @@
+<span *ngIf="addressView === 'column'">
+    <br />
+    <ul style="list-style-type:none;">
+        <li><strong>Address Type</strong> : {{addressType}}</li>
+        <li><strong>First Address</strong> : {{firstAddress}}</li>
+        <li *ngIf="secondAddress"><strong>Second Address</strong> : {{secondAddress}}</li>
+        <li><strong>Second Address</strong> : {{secondAddress}}</li>
+        <li><strong>Country</strong> : {{country}}</li>
+        <li><strong>City</strong> : {{city}}</li>
+        <li *ngIf="province"><strong>Province</strong> : {{province}}</li>
+        <li *ngIf="state"><strong>State</strong> : {{state}}</li>
+        <li><strong>zipCode</strong> : {{zipCode}}</li>
+    </ul>
+</span>
+<span *ngIf="addressView === 'row'">
+    {{firstAddress}} <span *ngIf="secondAddress">,{{secondAddress}}</span> , {{country}}, {{city}}
+    <span *ngIf="province">,{{province}}</span> <span *ngIf="state">,{{state}}</span> ,
+    {{zipCode}}
+</span>

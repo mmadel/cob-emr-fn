@@ -33,11 +33,13 @@ import { NumberonlyDirective } from './directives/numberonly.directive';
 import { IconModule } from '@coreui/icons-angular';
 import { SingleAddressComponent } from './components/single.address/single-address.component';
 import { ContactComponent } from './components/contact/contact.component';
+import { ViewAddressComponent } from './components/view.address/view-address.component';
 
 const APP_COMMON_COMPONENTS = [
   AddressComponent,
   SingleAddressComponent,
-  ContactComponent
+  ContactComponent,
+  ViewAddressComponent
 ]
 
 const APP_COMMON_PIPES = [
@@ -77,6 +79,7 @@ const COREUI_MODULES = [
     APP_COMMON_COMPONENTS,
     ...APP_COMMON_PIPES,
     ...APP_COMMON_DIRECTIVES,
+    ViewAddressComponent,
   ],
 
   imports: [

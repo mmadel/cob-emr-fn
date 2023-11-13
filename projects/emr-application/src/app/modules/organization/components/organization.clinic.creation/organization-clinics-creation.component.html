@@ -32,7 +32,8 @@
         <tr *ngFor="let clinic of clinics;let i=index;" scope="row">
             <th scope="row">1</th>
             <td>{{clinic.name}}</td>
-            <td>{{clinic.address |json}}</td>
+            <td><app-view-address [address]="clinic.address"[addressView] ="'row'"></app-view-address></td>
+            
             <td>
                 <div class="btn-group " role="group" aria-label="Basic example">
                     <button cButton color="primary" size="sm" variant="outline" (click)="remove(i)">

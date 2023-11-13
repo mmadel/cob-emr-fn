@@ -124,10 +124,17 @@ import {
   cilMedicalCross,
   cibHockeyapp,
   cibKeybase,
-  cibKeycdn
+  cibKeycdn,cilKeyboard,cilInfo,cilFolder,cilFlip,cilHandPointDown,cilThumbDown,cilExpandDown
 } from '@coreui/icons';
 
 export const iconSubset = {
+  cilExpandDown,
+  cilThumbDown,
+  cilHandPointDown,
+  cilFlip,
+  cilFolder,
+  cilInfo,
+  cilKeyboard,
   cibKeycdn,
   cibKeybase,
   cibHockeyapp,

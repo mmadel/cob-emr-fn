@@ -76,14 +76,7 @@ export class ListOrganizationComponent implements OnInit {
   }
   constructBillingAddress(billingAddress: Address) :string{
     var result: string = '';
-    for (const [key, value] of Object.entries(billingAddress)) {
-      if (key === 'firstAddress')
-        result = value + ',';
-      if (key === 'state')
-        result = value + ',';
-      if (key === 'zipCode')
-        result = value;
-    }
+    
     return result;
   }
   edit(item: any){

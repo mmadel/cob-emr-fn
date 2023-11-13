@@ -18,7 +18,8 @@
                     <c-card-body>
                         <strong>Organization Name : </strong> {{item['name']}}
                         <br>
-                        <strong>Billing Address : </strong> {{ constructBillingAddress(item['billingAddress'])}}
+                        <strong>Billing Address : </strong>
+                        <app-view-address [address]="item['billingAddress']" [addressView] ="'column'"></app-view-address>
                     </c-card-body>
                 </c-card>
             </div>
@@ -40,8 +41,7 @@
                                 (click)="openClinicModal(item['clinics'])">
                                 Clinics
                             </button>
-                            <button cButton color="primary" size="sm" variant="outline" 
-                            (click)="edit(item)">
+                            <button cButton color="primary" size="sm" variant="outline" (click)="edit(item)">
                                 Edit
                             </button>
                             <button cButton color="primary" size="sm" variant="outline">
