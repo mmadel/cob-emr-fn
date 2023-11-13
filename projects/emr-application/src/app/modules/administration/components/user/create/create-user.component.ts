@@ -55,6 +55,8 @@ export class CreateUserComponent implements OnInit {
       this.submitted = false;
       var encryptedPassword = this.encryptService.encrypt(this.user.password);
       this.user.password = encryptedPassword
+      if (this.user.role !== 'clinical_emr_role')
+        this.user.doctor = undefined;
       this.userService.create(this.user).subscribe(result => {
         this.toastr.success('Clinic Created');
         this.router.navigateByUrl('emr/administration/list/user')

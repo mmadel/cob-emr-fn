@@ -12,6 +12,6 @@ export interface User {
     role?: string;
     password?: string
     clinics?: Clinic[];
-    doctor?: DoctorUser
+    doctor?: DoctorUser | undefined
 
 }
