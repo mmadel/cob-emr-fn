@@ -40,6 +40,7 @@ export class CreateAdministratorDoctorComponent implements OnInit {
     this.administratorDoctor.credential = event.doctor.credential;
   }
   unpick(event: any) {
+    this.administratorDoctor={}
     this.isDoctorPicked = false;
   }
   saveDoctor() {

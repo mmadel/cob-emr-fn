@@ -7,7 +7,7 @@
 <hr />
 <div class="row alert alert-danger" *ngIf="!valid" role="alert">
     <h3>Messing Fields</h3><br>
-    <span *ngIf="basicInvalidFields.length > 0">
+    <!-- <span *ngIf="basicInvalidFields.length > 0">
         <strong>Essentials Inforamtion Messing Fields</strong>
         <br>
         <ul>
@@ -20,7 +20,7 @@
     <span *ngIf="!isvalidAddress">
         <strong>Organization Addresses</strong>
     </span>
-    <br><br>
+    <br><br> -->
     <span *ngIf="!isvalidClinics">
         <strong>Organization Clinics</strong>
     </span>
@@ -38,7 +38,7 @@
                     <c-card-body>
                         <div class="form-group" class="mb-3">
                             <small
-                                *ngIf="organizationname.invalid && (organizationname.dirty || organizationname.touched)"
+                                *ngIf="submitted   && (organizationname.errors) || organizationname.invalid && (organizationname.dirty || organizationname.touched)"
                                 class="form-text text-danger">
                                 Organization Name is required
                             </small>
@@ -49,7 +49,8 @@
                             </c-input-group>
                         </div>
                         <div class="form-group" class="mb-3">
-                            <small *ngIf="dba.invalid && (dba.dirty || dba.touched)" class="form-text text-danger">
+                            <small *ngIf="submitted   && (dba.errors) ||  dba.invalid && (dba.dirty || dba.touched)"
+                                class="form-text text-danger">
                                 Organization dba is required
                             </small>
                             <c-input-group>
@@ -58,7 +59,8 @@
                             </c-input-group>
                         </div>
                         <div class="form-group" class="mb-3">
-                            <small *ngIf="groupNPI.invalid && (groupNPI.dirty || groupNPI.touched)"
+                            <small
+                                *ngIf="submitted   && (groupNPI.errors) || groupNPI.invalid && (groupNPI.dirty || groupNPI.touched)"
                                 class="form-text text-danger">
                                 Organization Group-NPI is required
                             </small>
@@ -68,7 +70,8 @@
                             </c-input-group>
                         </div>
                         <div class="form-group" class="mb-3">
-                            <small *ngIf="taxID.invalid && (taxID.dirty || taxID.touched)"
+                            <small
+                                *ngIf="submitted   && (taxID.errors) ||  taxID.invalid && (taxID.dirty || taxID.touched)"
                                 class="form-text text-danger">
                                 Organization tax-ID is required
                             </small>
@@ -89,7 +92,8 @@
                     <h3>Address information</h3>
                 </c-card-header>
                 <c-card-body>
-                    <app-address></app-address>
+                    <app-single-address #organizationBillingAddress [address]="organization.billingAddress"
+                        [submitted]="submitted"></app-single-address>
                 </c-card-body>
             </c-card>
         </c-col>
@@ -107,6 +111,8 @@
         </c-col>
     </c-row>
 </c-container>
+
 <div class="d-grid gap-2 col-2 mx-auto mb-5">
-    <button cButton color="primary" variant="outline" type="button" (click)="create()">Create</button>
+    <button *ngIf="isCreated" cButton color="primary" variant="outline" (click)="create()">Create</button>
+    <button *ngIf="!isCreated" cButton color="primary" variant="outline" (click)="update()">Update</button>
 </div>

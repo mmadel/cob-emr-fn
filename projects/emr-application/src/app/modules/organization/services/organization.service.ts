@@ -17,9 +17,20 @@ export class OrganizationService {
       map((response: any) => <Organization[]>response.records));
   }
 
+  getById(organizationId:number){
+    var createURL = this.baseUrl + '/find/id/' + organizationId
+    return this.httpClient.get(createURL).pipe(
+      map((response: any) => <Organization>response.records));
+  }
+
   create(organization: Organization) {
     const createFollowupURL = this.baseUrl + '/create'
     const headers = { 'content-type': 'application/json' }
     return this.httpClient.post(`${createFollowupURL}`, JSON.stringify(organization), { 'headers': headers, observe: 'response' })
+  }
+  update(organization: Organization) {
+    const createFollowupURL = this.baseUrl + '/update'
+    const headers = { 'content-type': 'application/json' }
+    return this.httpClient.put(`${createFollowupURL}`, JSON.stringify(organization), { 'headers': headers, observe: 'response' })
   }
 }

@@ -18,6 +18,13 @@ const routes: Routes = [
         },
       },
       {
+        path: 'edit/:id',
+        component: CreateOrganizationComponent,
+        data: {
+          title: 'edit',
+        },
+      },
+      {
         path: 'list',
         component: ListOrganizationComponent,
         data: {

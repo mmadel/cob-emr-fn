@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { User } from '../../../administration/model/user/user';
 import { SingleAddressComponent } from '../../../common/components/single.address/single-address.component';
@@ -16,7 +16,7 @@ export interface Doctor {
   templateUrl: './organization-clinics-creation.component.html',
   styleUrls: ['./organization-clinics-creation.component.css']
 })
-export class OrganizationClinicsCreationComponent implements OnInit {
+export class OrganizationClinicsCreationComponent implements OnInit  {
   @ViewChild('clinicAddress') clinicAddress: SingleAddressComponent;
   @ViewChild('createAdministratorDoctorComponent') createAdministratorDoctorComponent: CreateAdministratorDoctorComponent;
   public users: User[];

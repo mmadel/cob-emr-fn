@@ -86,4 +86,7 @@ export class ListOrganizationComponent implements OnInit {
     }
     return result;
   }
+  edit(item: any){
+    this.router.navigate(['emr/organization/edit/', item.id]);
+  }
 }

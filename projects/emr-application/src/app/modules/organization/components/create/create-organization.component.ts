@@ -1,9 +1,8 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { BasicComponent } from 'projects/emr-application/src/app/util/basic.component';
-import { catchError, EMPTY } from 'rxjs';
 import { AddressComponent } from '../../../common/components/address/address.component';
 import { Organization } from '../../models/organiztion';
 import { OrganizationService } from '../../services/organization.service';
@@ -22,15 +21,22 @@ export class CreateOrganizationComponent extends BasicComponent implements OnIni
   isvalidClinics = false;
   basicInvalidFields: string[] = [];
   valid: boolean = true;
+  isCreated: boolean = true;
   organization: Organization = {
     name: '',
     dba: '',
     groupNPI: '',
-    taxID: ''
+    taxID: '',
+    billingAddress: {
+      addressType: null,
+      country: null
+    }
   }
+  submitted: boolean = false;
   constructor(private organizationService: OrganizationService
     , private router: Router
-    , private toastr: ToastrService) {
+    , private toastr: ToastrService
+    , private route: ActivatedRoute) {
     super()
   }
   ngAfterViewInit(): void {
@@ -38,15 +44,22 @@ export class CreateOrganizationComponent extends BasicComponent implements OnIni
   }
 
   ngOnInit(): void {
+    var organizationId = this.route.snapshot.paramMap.get('id');
+    console.log(organizationId)
+    if (organizationId !== null) {
+      this.isCreated = false
+      this.organizationService.getById(Number(organizationId))
+        .subscribe(organization => {
+          this.organization = organization
+          this.organizationClinicsCreationComponent.clinics = organization.clinics;
+        })
+    }
 
   }
   create() {
-
-    console.log(JSON.stringify(this.organization))
     this.valid = this.validate();
     if (this.valid) {
       this.organization.clinics = this.organizationClinicsCreationComponent.clinics
-      this.organization.billingAddress = this.organizationBillingAddress.addresses[0];
       this.organizationService.create(this.organization)
         .subscribe(() => {
           this.reset();
@@ -58,18 +71,40 @@ export class CreateOrganizationComponent extends BasicComponent implements OnIni
           this.toastr.error(error.error.message, 'Error In Creation');
         })
     } else {
+      this.submitted = true;
+      this.scrollUp();
+    }
+    this.scrollUp();
+  }
+  update() {
+    console.log('update ')
+    this.valid = this.validate();
+    if (this.valid) {
+      this.organization.clinics = this.organizationClinicsCreationComponent.clinics
+      this.organizationService.update(this.organization)
+        .subscribe(() => {
+          this.reset();
+          this.toastr.success('Organization updated.');
+          this.router.navigateByUrl('emr/organization/list')
+        }, (error) => {
+          console.log(error);
+          console.log(error)
+          this.toastr.error(error.error.message, 'Error In Creation');
+        })
+    } else {
+      this.submitted = true;
       this.scrollUp();
     }
     this.scrollUp();
   }
   reset() {
     this.organizationForm.reset();
+    this.submitted = false;
   }
   validate(): boolean {
     var valid: boolean = true;
-    this.isvalidAddress = this.organizationBillingAddress.addresses.length > 0
     this.isvalidClinics = this.organizationClinicsCreationComponent.clinics.length > 0
-    valid = valid && this.isValid() && this.isvalidAddress && this.isvalidClinics;
+    valid = valid && this.isValid() && this.isvalidClinics;
     this.basicInvalidFields = [];
     if (!valid)
       this.getInvalidControls().forEach(invalidControl => {
