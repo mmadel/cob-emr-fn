@@ -17,7 +17,7 @@ const httpOptions = {
 })
 export class BasePaginationService {
   url: string;
-  constructor(private httpClient: HttpClient, private cahceService: CacheService) { }
+  constructor(public httpClient: HttpClient, private cahceService: CacheService) { }
   get(config$: BehaviorSubject<IApiParams>, url: string): Observable<any> {
     this.url = url;
     return config$.pipe(

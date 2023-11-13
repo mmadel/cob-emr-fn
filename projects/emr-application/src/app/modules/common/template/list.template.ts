@@ -91,7 +91,6 @@ export class ListTemplate {
                     sorter: false
                 })
             else {
-                console.log(element)
                 columns.push({
                     key: element,
                     label: element.charAt(0).toUpperCase() + element.slice(1)

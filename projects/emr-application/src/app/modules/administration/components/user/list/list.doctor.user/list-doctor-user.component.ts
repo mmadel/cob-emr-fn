@@ -13,6 +13,8 @@ import { DotorUserService } from '../../../../services/user/doctor.user/dotor-us
 export class ListDoctorUserComponent extends ListTemplate implements OnInit {
   users$!: Observable<DoctorUser[]>;
   columns: (string | IColumn)[];
+  public visible = false;
+  selectedDoctor:string;
   constructor(private dotorUserService: DotorUserService) { super() }
 
   ngOnInit(): void {
@@ -43,5 +45,21 @@ export class ListDoctorUserComponent extends ListTemplate implements OnInit {
   details_visible = Object.create({});
   toggleDetails(item: any) {
     this.details_visible[item] = !this.details_visible[item];
+  }
+  toggleLiveDemo(item: any) {
+    this.selectedDoctor = item.uuid;
+    this.visible = !this.visible;
+  }
+  close() {
+    this.visible = !this.visible;
+  }
+  handleLiveDemoChange(event: any) {
+    console.log(event);
+    this.visible = event;
+  }
+  delete() {
+    this.dotorUserService.deleteDoctor(this.selectedDoctor).subscribe((result) => {
+      document.location.reload();
+    })
   }
 }

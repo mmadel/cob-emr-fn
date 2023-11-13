@@ -9,11 +9,16 @@ import { CacheService } from '../../../../common/service/cahce/cache.service';
 @Injectable({
   providedIn: 'root'
 })
-export class ClinicalUserService extends BasePaginationService  {
+export class ClinicalUserService extends BasePaginationService {
   private baseUrl = environment.baseURL + 'user'
-  constructor(httpClient: HttpClient,chacheService: CacheService) { super(httpClient,chacheService) }
+  constructor(httpClient: HttpClient, chacheService: CacheService) { super(httpClient, chacheService) }
 
   getClinicalUser(config$: BehaviorSubject<IApiParams>): Observable<any> {
     return this.get(config$, this.baseUrl + "/find/clinicals/clinicId/")
+  }
+  deleteUser(uuid: string) {
+    console.log('Service')
+    var url = this.baseUrl + '/delete/' + uuid
+    return this.httpClient.delete(url)
   }
 }

@@ -15,9 +15,11 @@ import { ClinicalUserService } from '../../../../services/user/clinical.user/cli
 export class ListClinicalUserComponent extends ListTemplate implements OnInit {
   users$!: Observable<User[]>;
   columns: (string | IColumn)[];
+  public visible = false;
+  selectedUser: string
   constructor(private router: Router
     , private toastr: ToastrService
-    , private clinicalUserService:ClinicalUserService) {super() }
+    , private clinicalUserService: ClinicalUserService) { super() }
 
   ngOnInit(): void {
     this.columns = this.constructColumns(['userName', 'email', 'actions']);
@@ -44,5 +46,20 @@ export class ListClinicalUserComponent extends ListTemplate implements OnInit {
       })
     );
   }
-
+  toggleLiveDemo(item: any) {
+    this.selectedUser = item.uuid;
+    this.visible = !this.visible;
+  }
+  close() {
+    this.visible = !this.visible;
+  }
+  handleLiveDemoChange(event: any) {
+    console.log(event);
+    this.visible = event;
+  }
+  delete() {
+    this.clinicalUserService.deleteUser(this.selectedUser).subscribe((result) => {
+      document.location.reload();
+    })
+  }
 }

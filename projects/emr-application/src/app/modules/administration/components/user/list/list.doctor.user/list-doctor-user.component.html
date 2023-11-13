@@ -30,7 +30,7 @@
               <button cButton variant="outline" size="sm" (click)="toggleDetails(item['id'])">
                 ShowDetails
               </button>
-              <button cButton variant="outline" size="sm">
+              <button cButton variant="outline" size="sm" (click)="toggleLiveDemo(item)">
                 <svg cIcon name="cilTrash"></svg>
               </button>
             </div>
@@ -49,3 +49,13 @@
   <hr>
   <c-alert>{{errorMessage}}</c-alert>
 </ng-container>
+<c-modal id="liveDemoModal" [visible]="visible" (visibleChange)="handleLiveDemoChange($event)">
+  <c-modal-header>
+    <h5 cModalTitle>Modal title</h5>
+    <button (click)="close()" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body>Are you sure to delete doctor.?</c-modal-body>
+  <c-modal-footer>
+    <button cButton color="primary" (click)="delete()">Delete</button>
+  </c-modal-footer>
+</c-modal>
