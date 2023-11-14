@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { environment } from 'projects/emr-application/src/environments/environment';
 import { BehaviorSubject, catchError, debounceTime, distinctUntilChanged, Observable, retry, switchMap, throwError } from 'rxjs';
 import { IApiParams } from '../../../common/interfaces/api.params';
+import { PaginationData } from '../../../common/interfaces/pagination.data';
+import { ClinicEmittingService } from '../../../common/service/emitting/clinic-emitting.service';
 import { IData } from '../../../patient/components/list/interfaces/i.data';
 import { InsuranceCompany } from '../../model/insurance.company/insurance.company';
 const httpOptions = {
@@ -18,16 +20,16 @@ const httpOptions = {
 })
 export class InsuranceCompanyService {
   private baseUrl = environment.baseURL + 'insurance/company'
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient, private clinicEmittingService: ClinicEmittingService) { }
 
   create(insuranceCompany: InsuranceCompany) {
     const headers = { 'content-type': 'application/json' }
     var createURL = environment.baseURL + 'insurance/company/create'
-    return this.httpClient.post(`${createURL}`, JSON.stringify(insuranceCompany), { 'headers': headers})
+    return this.httpClient.post(`${createURL}`, JSON.stringify(insuranceCompany), { 'headers': headers })
   }
 
-  delete(id:number){
-    var createURL = environment.baseURL + 'insurance/company/delete/id/'+ id
+  delete(id: number) {
+    var createURL = environment.baseURL + 'insurance/company/delete/id/' + id
     return this.httpClient.delete(`${createURL}`)
   }
   get(config$: BehaviorSubject<IApiParams>): Observable<any> {
@@ -51,12 +53,15 @@ export class InsuranceCompanyService {
     const options = Object.keys(httpParams).length
       ? { params: httpParams, ...httpOptions }
       : { params: {}, ...httpOptions };
-    return this.httpClient
-      .get<IData>(this.baseUrl + "/find/clinicId/" + 1, options)
-      .pipe(
-        retry({ count: 1, delay: 100000, resetOnSuccess: true }),
-        catchError(this.handleHttpError)
-      );
+    return this.clinicEmittingService.selectedClinic$.pipe(
+      switchMap(clinicId =>
+        this.httpClient
+          .get<PaginationData>(this.baseUrl + "/find/clinicId/" + clinicId, options)
+          .pipe(
+            retry({ count: 1, delay: 100000, resetOnSuccess: true }),
+            catchError(this.handleHttpError)
+          )
+      ));
   }
   private handleHttpError(error: HttpErrorResponse) {
     return throwError(() => error);
