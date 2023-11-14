@@ -11,36 +11,35 @@
         <c-col class="col">
             <c-card class="mb-3 ustify-content-center">
                 <c-card-header>
-                    <h3>Patient information</h3>
+                    <h4>Patient information</h4>
                 </c-card-header>
                 <c-card-body>
                     <c-card cBorder="primary" class="mb-2">
                         <c-card-body *ngIf="patientChartInfo">
                             <h5 cCardTitle>
 
-                                <small class="fw-bold fs-5"> Name : </small>
-                                <small class="fw-normal fs-5">{{patientChartInfo.name}}</small>
+                                <small class="fw-bold fs-6"> Name : </small>
+                                <small class="fw-normal fs-6">{{patientChartInfo.name}}</small>
                             </h5>
                             <h5 cCardTitle>
 
-                                <small class="fw-bold fs-5"> Date Of Birth : </small>
-                                <small class="fw-normal fs-5">{{patientChartInfo.dateOfBirth}}</small>
+                                <small class="fw-bold fs-6"> Date Of Birth : </small>
+                                <small class="fw-normal fs-6">{{patientChartInfo.dateOfBirth}}</small>
                             </h5>
                             <h5 cCardTitle>
 
-                                <small class="fw-bold fs-5"> Age : </small>
-                                <small class="fw-normal fs-5">{{patientChartInfo.age}}</small>
+                                <small class="fw-bold fs-6"> Age : </small>
+                                <small class="fw-normal fs-6">{{patientChartInfo.age}}</small>
                             </h5>
                             <h5 cCardTitle *ngIf="patientChartInfo.address">
 
-                                <small class="fw-bold fs-5"> Addresses : </small>
+                                <small class="fw-bold fs-6"> Addresses : </small>
                                 <ul class="list-unstyled">
                                     <ul>
                                         <li *ngFor="let address of patientChartInfo.address; let i = index">
-                                            <small class="fw-normal fs-5">{{address}}</small>
+                                            <small class="fw-normal fs-6">{{address}}</small>
                                         </li>
                                     </ul>
-
                                 </ul>
                             </h5>
                         </c-card-body>
@@ -53,7 +52,7 @@
                                 <option *ngFor="let case of patientCases" [value]="case.id">
                                     {{case.title}}</option>
                             </select>
-                            <c-accordion [alwaysOpen]="accordionAlwaysOpen" class="shadow m-3">
+                            <c-accordion [alwaysOpen]="accordionAlwaysOpen" class=" m-3">
                                 <c-accordion-item #item0="cAccordionItem" [visible]="false">
                                     <ng-template cTemplateId="accordionHeaderTemplate">
                                         <button (click)="item0.toggleItem()" [collapsed]="!item0.visible"
@@ -91,7 +90,7 @@
         <c-col class="col">
             <c-card class="mb-3 ustify-content-center">
                 <c-card-header>
-                    <h3>Patient Cases</h3>
+                    <h4>Patient Cases</h4>
                 </c-card-header>
                 <c-card-body>
                     <c-nav variant="tabs" *ngFor="let case of patientCases; let i = index">

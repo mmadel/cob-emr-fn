@@ -9,22 +9,21 @@
   <button cButton color="primary" class="me-md-2" variant="outline" (click)="create()">Create Patient</button>
 </div>
 <ng-container *ngIf="props$ | async as props" fluid="true">
-  <c-smart-table [columnSorter]="{resetable: true }" [columns]="columns" [columnFilter]="true"
-    [items]="(patient$ | async) ?? []" [itemsPerPage]="props.itemsPerPage"
-    (itemsPerPageChange)="handleItemsPerPageChange($event)" [itemsPerPageOptions]="[5,10,20]"
-    [itemsPerPageSelect]="true" [tableProps]="{ hover: true, striped: true, responsive: true }"
-    [columnFilterValue]="props.columnFilterValue?? []" [sorterValue]="props.sorterValue"
-    [tableProps]="{ hover: true, striped: true, responsive: true }" [tableBodyProps]="{ align: 'middle' }"
-    (sorterValueChange)="handleSorterValueChange($event)" cleaner header>
+  <c-smart-table [columnSorter]="{resetable: true }" [columns]="columns" [items]="(patient$ | async) ?? []"
+    [itemsPerPage]="props.itemsPerPage" (itemsPerPageChange)="handleItemsPerPageChange($event)"
+    [itemsPerPageOptions]="[5,10,20]" [itemsPerPageSelect]="true"
+    [tableProps]="{ hover: true, striped: true, small:true }" [columnFilterValue]="props.columnFilterValue?? []"
+    [sorterValue]="props.sorterValue" [tableBodyProps]="{ align: 'middle' }"
+    (sorterValueChange)="handleSorterValueChange($event)" header>
     <ng-template cTemplateId="tableData" let-columnName="columnName" let-item="item" let-tdContent="tdContent">
       <td>
         <ng-container [ngSwitch]="columnName">
           <ng-container *ngSwitchCase="'actions'" class="py-2">
             <div class="btn-group" role="group" aria-label="Basic example">
-              <button cButton variant="outline" (click)="remove(item)">
+              <button cButton variant="outline" (click)="remove(item)" size="sm">
                 <svg cIcon name="cilTrash"></svg>
               </button>
-              <button cButton variant="outline" (click)="chart(item.id)">
+              <button cButton variant="outline" (click)="chart(item.id)" size="sm">
                 <svg cIcon name="cilViewModule"></svg>
               </button>
             </div>

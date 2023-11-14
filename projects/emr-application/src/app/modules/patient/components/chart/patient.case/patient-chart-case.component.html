@@ -1,27 +1,32 @@
 <c-card class="mb-3 ustify-content-center">
     <c-card-body>
         <h5 cCardTitle>
-            <small class="fw-bold fs-5"> Case Information </small>
+            <small class="fw-bold fs-6"> treatingDoctor : </small>
+            <small class="fw-normal fs-6">{{treatingDoctor}}</small>
+        </h5>
+        <h5 cCardTitle>
+            <small class="fw-bold fs-6"> ReferringDoctor : </small>
+            <small class="fw-normal fs-6">{{referringDoctor}}</small><br />
+        </h5>
+        <h5 cCardTitle>
+            <small class="fw-bold fs-6"> ReferringNPI : </small>
+            <small class="fw-normal fs-6">{{referringNPI}}</small><br />
+        </h5>
+        <h5 cCardTitle>
+            <small class="fw-bold fs-6"> PlaceOfService : </small>
+            <small class="fw-normal fs-6">{{case.placeOfService | lowercase}}</small><br />
+        </h5>
+        <h5 cCardTitle>
+            <small class="fw-bold fs-6"> InjuryCase : </small>
+            <small class="fw-normal fs-6">{{case.injuryCase | lowercase}}</small><br />
         </h5>
         <h6 cCardTitle>
-            <small class="fs-5"> treatingDoctor : </small>
-            <small class="fw-normal fs-5">{{treatingDoctor}}</small><br />
-            <small class="fs-5"> ReferringDoctor : </small>
-            <small class="fw-normal fs-5">{{referringDoctor}}</small><br />
-            <small class="fs-5"> ReferringNPI : </small>
-            <small class="fw-normal fs-5">{{referringNPI}}</small><br />
-            <small class="fs-5"> PlaceOfService : </small>
-            <small class="fw-normal fs-5">{{case.placeOfService | lowercase}}</small><br />
-            <small class="fs-5"> InjuryCase : </small>
-            <small class="fw-normal fs-5">{{case.injuryCase | lowercase}}</small><br />
-        </h6>
-        <h6 cCardTitle>
-            <small class="fs-5"> CaseDiagnosis : </small>
+            <small class="fw-bold fs-6"> CaseDiagnosis : </small>
             <ul class="list-unstyled">
                 <ul>
                     <li *ngFor="let diagnosis of case.caseDiagnosis; let i = index">
                         <small
-                            class="fw-normal fs-5">{{diagnosis.diagnosisCode}}-{{diagnosis.diagnosisDescription}}</small>
+                            class="fw-normal fs-6">{{diagnosis.diagnosisCode}}-{{diagnosis.diagnosisDescription}}</small>
                     </li>
                 </ul>
 
