@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
 import { AddressUtil } from 'projects/emr-application/src/app/util/address.util';
 import { PatientName } from 'projects/emr-application/src/app/util/name.util';
+import { filter, switchMap } from 'rxjs';
+import { ClinicEmittingService } from '../../../common/service/emitting/clinic-emitting.service';
 import { ListTemplate } from '../../../common/template/list.template';
 import { PatientCase } from '../../models/case/patient.case';
 import { PatientChartInfo } from '../../models/chart/patient.chart.info';
@@ -30,23 +32,27 @@ export class PatientChartComponent extends ListTemplate implements OnInit {
   patientId: number;
   constructor(private route: ActivatedRoute
     , private patientFinderService: PatientFinderService,
-    private pateintCaseService: PateintCaseService) { super(); }
+    private pateintCaseService: PateintCaseService,
+    private clinicEmittingService: ClinicEmittingService) { super(); }
 
   ngOnInit(): void {
     this.patientId = Number(this.route.snapshot.paramMap.get('patientId'))
-    this.patientFinderService.getPatient(this.patientId, 1).subscribe((response: PateintResponse) => {
-      var patient: Patient = response.records
-      this.patientCases = patient.patientCaseModels;
-      this.patientChartInfo.name = PatientName.formatName(patient.firstName, patient.middleName, patient.lastName);
-      this.patientChartInfo.dateOfBirth = moment(patient.birthDate).format("MM-DD-YYYY");
+    this.clinicEmittingService.selectedClinic$
+      .pipe(
+        filter(clinicId => clinicId != null),
+        switchMap((clinicId) => this.patientFinderService.getPatient(this.patientId, clinicId)))
+      .subscribe((response: PateintResponse) => {
+        var patient: Patient = response.records
+        this.patientCases = patient.patientCaseModels;
+        this.patientChartInfo.name = PatientName.formatName(patient.firstName, patient.middleName, patient.lastName);
+        this.patientChartInfo.dateOfBirth = moment(patient.birthDate).format("MM-DD-YYYY");
 
-      for (var i = 0; i < patient.addresses.length; i++) {
+        for (var i = 0; i < patient.addresses.length; i++) {
 
-        this.patientChartInfo.address.push(AddressUtil.formatAddress(patient.addresses[i]))
-      }
-      console.log(this.patientChartInfo.address);
-      this.patientChartInfo.age = moment().diff(patient.birthDate, 'years');
-    })
+          this.patientChartInfo.address.push(AddressUtil.formatAddress(patient.addresses[i]))
+        }
+        this.patientChartInfo.age = moment().diff(patient.birthDate, 'years');
+      })
   }
   changeCase(event: any) {
     this.accordionAlwaysOpen = true;

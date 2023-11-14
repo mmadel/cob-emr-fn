@@ -15,7 +15,7 @@ export class PatientFinderService {
 
   getPatient(patientId: number, clinicId: number) {
     const headers = { 'content-type': 'application/json' }
-    var getPatientURL = this.baseUrl + '/find/clinicId/' + 1 + '/patient/' + patientId
+    var getPatientURL = this.baseUrl + '/find/clinicId/' + clinicId + '/patient/' + patientId
     return this.httpClient.get<PateintResponse>(`${getPatientURL}`, { 'headers': headers },)
   }
 
