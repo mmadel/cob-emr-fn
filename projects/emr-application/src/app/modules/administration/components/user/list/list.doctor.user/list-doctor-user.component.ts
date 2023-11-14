@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { IColumn } from '@coreui/angular-pro/lib/smart-table/smart-table.type';
 import { ListTemplate } from 'projects/emr-application/src/app/modules/common/template/list.template';
 import { map, Observable, retry, tap } from 'rxjs';
@@ -15,7 +16,8 @@ export class ListDoctorUserComponent extends ListTemplate implements OnInit {
   columns: (string | IColumn)[];
   public visible = false;
   selectedDoctor:string;
-  constructor(private dotorUserService: DotorUserService) { super() }
+  constructor(private router: Router
+    , private dotorUserService: DotorUserService) { super() }
 
   ngOnInit(): void {
     this.columns = this.constructColumns(['userName', 'email', 'actions']);
@@ -54,12 +56,14 @@ export class ListDoctorUserComponent extends ListTemplate implements OnInit {
     this.visible = !this.visible;
   }
   handleLiveDemoChange(event: any) {
-    console.log(event);
     this.visible = event;
   }
   delete() {
     this.dotorUserService.deleteDoctor(this.selectedDoctor).subscribe((result) => {
       document.location.reload();
     })
+  }
+  edit(item: any) {
+    this.router.navigate(['emr/administration/edit/user', item.uuid]);
   }
 }

@@ -9,9 +9,18 @@ import { User } from '../../model/user/user';
 export class UserService {
   private userUrl = environment.baseURL + 'user'
   constructor(private httpClient: HttpClient) { }
-  create(user: User){
+  create(user: User) {
     const headers = { 'content-type': 'application/json' }
     var createURL = this.userUrl + '/create'
     return this.httpClient.post(`${createURL}`, JSON.stringify(user), { 'headers': headers })
+  }
+  update(user:User){
+    const headers = { 'content-type': 'application/json' }
+    var createURL = this.userUrl + '/update'
+    return this.httpClient.put(`${createURL}`, JSON.stringify(user), { 'headers': headers })
+  }
+  getByUUID(uuid: string) {
+    var url = this.userUrl + '/find/uuid/' + uuid;
+    return this.httpClient.get(url);
   }
 }

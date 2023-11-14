@@ -8,4 +8,5 @@ export interface Clinic {
     address?:Address
     organizationId?:number
     administratorDoctor?:AdministratorDoctor;
+    selected?:boolean;
 }

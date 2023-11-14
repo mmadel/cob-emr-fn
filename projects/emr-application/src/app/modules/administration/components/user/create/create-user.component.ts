@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { from, switchMap } from 'rxjs';
 import { Specialties } from '../../../../common/models/enums/doctor/specialties';
@@ -26,6 +26,7 @@ export class CreateUserComponent implements OnInit {
   specialties = Specialties;
   credentials: string[];
   clinics: Clinic[];
+  isCreated: boolean = true;
   user: User = {
     role: null,
     clinics: [],
@@ -40,7 +41,8 @@ export class CreateUserComponent implements OnInit {
     , private userService: UserService
     , private toastr: ToastrService
     , private router: Router
-    , private encryptService: EncryptService) { }
+    , private encryptService: EncryptService
+    , private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     from(this.cacheService.getOrganizationId())
@@ -48,22 +50,47 @@ export class CreateUserComponent implements OnInit {
         switchMap(result => this.clinicService.getByOrganizationId(result))
       ).subscribe((response: any) => {
         this.clinics = response.records;
+        var useruuid = this.route.snapshot.paramMap.get('id');
+        if (useruuid !== null) {
+          this.isCreated = false;
+          this.userService.getByUUID(useruuid).subscribe((result: any) => {
+            this.user = result;
+            this.clinics.forEach(clinic => {
+              if (result.clinics.includes(clinic.id.toString()))
+                clinic.selected = true;
+              else
+                clinic.selected = false;
+            })
+            this.getDoctorCredentials()
+          })
+        }
       })
   }
   create() {
     if (this.userCreateForm.valid) {
       this.submitted = false;
-      var encryptedPassword = this.encryptService.encrypt(this.user.password);
-      this.user.password = encryptedPassword
       if (this.user.role !== 'clinical_emr_role')
         this.user.doctor = undefined;
-      this.userService.create(this.user).subscribe(result => {
-        this.toastr.success('Clinic Created');
-        this.router.navigateByUrl('emr/administration/list/user')
-      }, (error) => {
-        console.log(error);
-        this.toastr.error(error.error.message, 'Error In Creation');
-      })
+      if (this.isCreated) {
+        var encryptedPassword = this.encryptService.encrypt(this.user.password);
+        this.user.password = encryptedPassword
+        this.userService.create(this.user).subscribe(result => {
+          this.toastr.success('User created');
+          this.router.navigateByUrl('emr/administration/list/user')
+        }, (error) => {
+          console.log(error);
+          this.toastr.error(error.error.message, 'Error In Creation');
+        })
+      } else {
+        this,this.userService.update(this.user).subscribe((result)=>{
+          this.toastr.success('User updated');
+          this.router.navigateByUrl('emr/administration/list/user')
+        }, (error) => {
+          console.log(error);
+          this.toastr.error(error.error.message, 'Error In update');
+        })
+      }
+
     } else {
       this.submitted = true;
     }

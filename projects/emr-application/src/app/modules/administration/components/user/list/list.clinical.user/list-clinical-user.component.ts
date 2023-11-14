@@ -54,12 +54,14 @@ export class ListClinicalUserComponent extends ListTemplate implements OnInit {
     this.visible = !this.visible;
   }
   handleLiveDemoChange(event: any) {
-    console.log(event);
     this.visible = event;
   }
   delete() {
     this.clinicalUserService.deleteUser(this.selectedUser).subscribe((result) => {
       document.location.reload();
     })
+  }
+  edit(item: any) {
+    this.router.navigate(['emr/administration/edit/user', item.uuid]);
   }
 }

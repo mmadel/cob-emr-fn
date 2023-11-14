@@ -42,6 +42,13 @@ const routes: Routes = [{
       }
     },
     {
+      path: 'edit/user/:id',
+      component: CreateUserComponent,
+      data: {
+        title: 'Edit User'
+      }
+    },
+    {
       path: 'create/clinic',
       component: CreateClinicComponent,
       data: {
