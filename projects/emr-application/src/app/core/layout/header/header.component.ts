@@ -48,7 +48,8 @@ export class DefaultHeaderComponent extends HeaderComponent {
               this.userName = this.cacheService.getLoggedinUserName()?.charAt(0).toUpperCase()
               this.clinicService.getByUserId(this.cacheService.getLoggedinUserUUID()).subscribe(response => {
                 this.clinics = response;
-                this.emittingClinicService.selectedClinic$.next(this.clinics[0])
+                localStorage.setItem('org',this.clinics[0].organizationId.toString())
+                this.emittingClinicService.selectedClinic$.next(Number(this.clinics[0].id))
               })
             })
         }
@@ -63,8 +64,6 @@ export class DefaultHeaderComponent extends HeaderComponent {
     this.ksAuthService.logout()
   }
   setSelectedClinic(event: any) {
-    this.clinicService.getById(event.target.value).subscribe(clinic => {
-      this.emittingClinicService.selectedClinic$.next(clinic)
-    })
+    this.emittingClinicService.selectedClinic$.next(event.target.value)
   }
 }

@@ -45,26 +45,26 @@ export class CreateUserComponent implements OnInit {
     , private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    from(this.cacheService.getOrganizationId())
-      .pipe(
-        switchMap(result => this.clinicService.getByOrganizationId(result))
-      ).subscribe((response: any) => {
-        this.clinics = response.records;
-        var useruuid = this.route.snapshot.paramMap.get('id');
-        if (useruuid !== null) {
-          this.isCreated = false;
-          this.userService.getByUUID(useruuid).subscribe((result: any) => {
-            this.user = result;
-            this.clinics.forEach(clinic => {
-              if (result.clinics.includes(clinic.id.toString()))
-                clinic.selected = true;
-              else
-                clinic.selected = false;
-            })
-            this.getDoctorCredentials()
+    var organizationId: number = Number(localStorage.getItem('org'));
+    this.clinicService.getByOrganizationId(organizationId).subscribe((response: any) => {
+      this.clinics = response.records;
+      var useruuid = this.route.snapshot.paramMap.get('id');
+      if (useruuid !== null) {
+        this.isCreated = false;
+        this.userService.getByUUID(useruuid).subscribe((result: any) => {
+          
+          this.user = result;
+          this.clinics.forEach(clinic => {
+            if (result.clinics.includes(clinic.id.toString()))
+              clinic.selected = true;
+            else
+              clinic.selected = false;
           })
-        }
-      })
+          if (result.doctor !== null)
+            this.getDoctorCredentials()
+        })
+      }
+    })
   }
   create() {
     if (this.userCreateForm.valid) {
@@ -82,7 +82,7 @@ export class CreateUserComponent implements OnInit {
           this.toastr.error(error.error.message, 'Error In Creation');
         })
       } else {
-        this,this.userService.update(this.user).subscribe((result)=>{
+        this, this.userService.update(this.user).subscribe((result) => {
           this.toastr.success('User updated');
           this.router.navigateByUrl('emr/administration/list/user')
         }, (error) => {

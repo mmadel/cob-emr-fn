@@ -56,11 +56,8 @@ export class ClinicService {
     const options = Object.keys(httpParams).length
       ? { params: httpParams, ...httpOptions }
       : { params: {}, ...httpOptions };
-    return from(this.cahceService.getOrganizationId())
-      .pipe(
-        switchMap(result => this.httpClient
-          .get<IData>(this.userUrl + "/find/organization/" + result, options))
-      )
+    return this.httpClient
+    .get<IData>(this.userUrl + "/find/organization/" + localStorage.getItem('org'), options)
   }
   getById(clinicId: number) {
     var createURL = this.userUrl + '/find/clinic/' + clinicId

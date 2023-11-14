@@ -19,12 +19,12 @@ export class CacheService {
       throw new Error('PatientStoreService is already loaded')
     }
 
-    this.clinicEmittingService.selectedClinic$.pipe(
-      filter(result => result != null)
-    ).subscribe((clinic: Clinic) => {
-      this.selectedClinic = Number(clinic.id);
-      this.organizationId = clinic.organizationId;
-    })
+    // this.clinicEmittingService.selectedClinic$.pipe(
+    //   filter(result => result != null)
+    // ).subscribe((clinic: Clinic) => {
+    //   this.selectedClinic = Number(clinic.id);
+    //   this.organizationId = clinic.organizationId;
+    // })
   }
   async getOrganizationId(): Promise<number> {
     return this.organizationId;

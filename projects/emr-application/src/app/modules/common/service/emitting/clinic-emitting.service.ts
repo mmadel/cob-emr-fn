@@ -6,6 +6,6 @@ import { Clinic } from '../../../patient/models/clinic';
   providedIn: 'root'
 })
 export class ClinicEmittingService {
-  public selectedClinic$: BehaviorSubject<Clinic | null> = new BehaviorSubject<Clinic | null>(null);
+  public selectedClinic$: BehaviorSubject<number | null> = new BehaviorSubject<number | null>(null);
   constructor() { }
 }

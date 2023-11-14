@@ -6,6 +6,7 @@ import { ClinicService } from '../../../administration/services/clinic/clinic.se
 import { IApiParams } from '../../../common/interfaces/api.params';
 import { BasePaginationService } from '../../../common/service/base-pagination.service';
 import { CacheService } from '../../../common/service/cahce/cache.service';
+import { ClinicEmittingService } from '../../../common/service/emitting/clinic-emitting.service';
 
 
 @Injectable({
@@ -13,8 +14,8 @@ import { CacheService } from '../../../common/service/cahce/cache.service';
 })
 export class PreviousAppointmentService extends BasePaginationService {
   private baseUrl = environment.baseURL + 'appointment/chart/previous'
-  constructor(httpClient: HttpClient,cahceService: CacheService) {
-    super(httpClient,cahceService);
+  constructor(httpClient: HttpClient,cahceService: CacheService,clinicEmittingService :ClinicEmittingService) {
+    super(httpClient,cahceService,clinicEmittingService);
   }
 
   public findAllPreviousAppointments(config$: BehaviorSubject<IApiParams>, pateintId: number): Observable<any> {

@@ -5,6 +5,7 @@ import { PaginationData } from '../interfaces/pagination.data';
 
 import { IApiParams } from '../interfaces/api.params';
 import { CacheService } from './cahce/cache.service';
+import { ClinicEmittingService } from './emitting/clinic-emitting.service';
 const httpOptions = {
   // headers: new HttpHeaders({
   //   'Content-Type': 'application/json',
@@ -17,7 +18,7 @@ const httpOptions = {
 })
 export class BasePaginationService {
   url: string;
-  constructor(public httpClient: HttpClient, private cahceService: CacheService) { }
+  constructor(public httpClient: HttpClient, private cahceService: CacheService , private clinicEmittingService :ClinicEmittingService) { }
   get(config$: BehaviorSubject<IApiParams>, url: string): Observable<any> {
     this.url = url;
     return config$.pipe(
@@ -30,7 +31,7 @@ export class BasePaginationService {
       switchMap((config) => this.fetchData(config))
     );
   }
-  private fetchData(params: IApiParams): Observable<PaginationData> {
+  private fetchData(params: IApiParams): Observable<PaginationData> {    
     const apiParams = {
       ...params
     };
@@ -39,7 +40,7 @@ export class BasePaginationService {
       ? { params: httpParams, ...httpOptions }
       : { params: {}, ...httpOptions };
 
-    return from(this.cahceService.getSelectedClinic()).pipe(
+    return this.clinicEmittingService.selectedClinic$.pipe(
       switchMap(clinicId =>
         this.httpClient
           .get<PaginationData>(this.url + clinicId, options)

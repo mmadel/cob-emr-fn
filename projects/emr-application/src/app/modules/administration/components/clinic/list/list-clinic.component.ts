@@ -21,7 +21,6 @@ export class ListClinicComponent extends ListTemplate implements OnInit {
   constructor(private router: Router
     , private clinicService: ClinicService
     , private toastr: ToastrService
-    ,private cacheService : CacheService
     , private sanitizer: DomSanitizer) { super(); }
 
   ngOnInit(): void {

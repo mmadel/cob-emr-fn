@@ -45,13 +45,9 @@ export class CreateClinicComponent implements OnInit {
     this.validAddress = this.isAddressValid();
     if (this.clinicCreateForm.valid && this.validAddress) {
       this.submitted = false;
-      from(this.cacheService.getOrganizationId())
-        .pipe(
-          switchMap(result => {
-            this.clinic.organizationId = result
-            return this.clinicService.create(this.clinic)
-          })
-        ).subscribe(dd => {
+      this.clinic.organizationId = Number(localStorage.getItem('org'))
+      this.clinicService.create(this.clinic)
+        .subscribe(dd => {
           if (this.isCreated)
             this.toastr.success('Clinic Created');
           else
