@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'projects/emr-application/src/environments/environment';
+import { Observable } from 'rxjs';
+import { InsuranceCompany } from '../../../administration/model/insurance.company/insurance.company';
 import { PateintResponse } from '../../models/response/patient.response';
 
 @Injectable({
@@ -14,5 +16,11 @@ export class PatientFinderService {
     const headers = { 'content-type': 'application/json' }
     var getPatientURL = this.baseUrl + '/find/clinicId/' + 1 + '/patient/' + patientId
     return this.httpClient.get<PateintResponse>(`${getPatientURL}`, { 'headers': headers },)
+  }
+
+  getInsuranceCompaniesForPatient(clinicId: number): Observable<any>{
+    console.log('service ' + clinicId)
+    var getPatientURL = environment.baseURL + 'insurance/company/find/all/clinicId/' +clinicId
+    return this.httpClient.get<InsuranceCompany[]>(`${getPatientURL}`, { observe: 'response' });
   }
 }

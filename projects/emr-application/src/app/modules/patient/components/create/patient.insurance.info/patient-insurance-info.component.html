@@ -3,11 +3,13 @@
         class="form-text text-danger">
         Insurance Company is required
     </small>
-
-    <select cFormControl cSelect class="mb-2" sizing="sm" id="insuranceCompany" name="insuranceCompany" 
+        
+    <select cFormControl cSelect class="mb-2" sizing="sm" id="insuranceCompany" name="insuranceCompany"
         [ngClass]="{'is-invalid': insuranceCompany.invalid && (insuranceCompany.dirty || insuranceCompany.touched)}"
         [(ngModel)]="patientInsurance.insuranceCompany" #insuranceCompany="ngModel">
         <option [ngValue]="null" disabled selected>Select Insurance Company</option>
+        <option *ngFor="let insuranceCompany of insuranceCompanies | async"
+            [value]="insuranceCompany.id?.toString()">{{insuranceCompany.name}}</option>
     </select>
 
     <small *ngIf="insuranceNumber.invalid && (insuranceNumber.dirty || insuranceNumber.touched)"
@@ -67,8 +69,9 @@
         Visit Allowed is required
     </small>
     <c-input-group class="mb-3" sizing="sm">
-        <input type="number" placeholder="Enter Visit Allowed" cFormControl id="visitAllowed" name="visitAllowed" sizing="sm"
-            required [ngClass]="{'is-invalid': visitAllowed.invalid && (visitAllowed.dirty || visitAllowed.touched)}"
+        <input type="number" placeholder="Enter Visit Allowed" cFormControl id="visitAllowed" name="visitAllowed"
+            sizing="sm" required
+            [ngClass]="{'is-invalid': visitAllowed.invalid && (visitAllowed.dirty || visitAllowed.touched)}"
             #visitAllowed="ngModel" [(ngModel)]="patientInsurance.visitAllowed" />
     </c-input-group>
 
