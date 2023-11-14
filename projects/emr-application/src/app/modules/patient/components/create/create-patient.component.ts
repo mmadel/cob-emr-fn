@@ -94,7 +94,6 @@ export class CreatePatientComponent implements OnInit, AfterViewInit {
     this.valid = this.isPatientFeildsAreValid();
     if (this.valid) {
       this.converPatientFields();
-      console.log(JSON.stringify(this.patient))
       this.patientCreationService.create(this.patient)
         .pipe(
           catchError((error) => {
@@ -106,8 +105,8 @@ export class CreatePatientComponent implements OnInit, AfterViewInit {
         )
         .subscribe(() => {
           this.resetFormComponents();
-          this.toastr.success('Pateint Created.!!');
-          this.router.navigateByUrl('patient/list')
+          this.toastr.success('Pateint Created.');
+          this.router.navigateByUrl('emr/patient/list')
         })
     } else {
       this.toastr.error('Missing Fields', 'Error In Creation');

@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { map, Observable } from 'rxjs';
 import { Clinic } from '../../../models/clinic';
 import { Patient } from '../../../models/patient';
+import { PatientFinderService } from '../../../services/patient/patient-finder.service';
 
 @Component({
   selector: 'app-patient-clinic-info',
@@ -9,17 +11,17 @@ import { Patient } from '../../../models/patient';
 })
 export class PatientClinicInfoComponent implements OnInit {
   @Input() patient: Patient;
-  clinics: Clinic[] = [{
-    id: "1",
-    name: "clinic1"
-  },
-  {
-    id: "2",
-    name: "clinic2"
-  }]
-  constructor() { }
+  clinics: Observable<Clinic[]>;
+  constructor(private patientFinderService:PatientFinderService) { }
 
   ngOnInit(): void {
+    var organizationId:number = Number(localStorage.getItem('org'));
+    this.clinics = this.patientFinderService.getClinicsForPatientByOrganizationId(organizationId)
+    .pipe(
+      map((response:any)=>{
+          return response.body.records;
+      })
+    )
   }
   ddd(clinicIds: any) {
     clinicIds.forEach((element: string) => {

@@ -1,4 +1,4 @@
 <c-multi-select  multiple [(ngModel)]="patient.clinicsId" placeholder="Select Clinic(s)">
-    <c-multi-select-option *ngFor="let clinic of clinics" [value]="clinic.id">
+    <c-multi-select-option *ngFor="let clinic of clinics | async" [value]="clinic.id">
         {{clinic.name}}</c-multi-select-option>
 </c-multi-select>
