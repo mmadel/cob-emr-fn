@@ -125,12 +125,12 @@ export class PatientCaseInfoComponent extends BasicComponent implements OnInit, 
       patientCase.caseInsuranceInformation = Object.assign({}, this.case.caseInsuranceInformation);
       patientCase.referralCase = Object.assign({}, this.case.referralCase);
       patientCase.caseOtherInformation = Object.assign({}, this.case.caseOtherInformation);
-      this.pateint.patientCaseModels.push(patientCase);
+      this.pateint.cases.push(patientCase);
       this.caseForm.reset();
     }
   }
   remove(index: number) {
-    this.pateint.patientCaseModels.splice(index, 1);
+    this.pateint.cases.splice(index, 1);
   }
 
 }

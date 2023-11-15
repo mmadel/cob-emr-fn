@@ -3,6 +3,7 @@ import { AppointmentType } from './appointment.type';
 import { AppointmentRepeat } from './appointment.repeat';
 import { AppointementStatus } from './appointment.status';
 import { Patient } from '../../patient/models/patient';
+import { PatientCase } from '../../patient/models/case/patient.case';
 
 export class Appointment {
     id: number;
@@ -10,7 +11,7 @@ export class Appointment {
     doctorUUID: string;
     isAllUsers: boolean;
     patient: Patient;
-    patientCaseId: number;
+    patientCase: PatientCase = null;;
     startDate: number;
     endDate: number;
     title: string;

@@ -4,26 +4,28 @@
             <c-card class="mb-3 ustify-content-center">
                 <c-card-header><strong>Patient</strong></c-card-header>
                 <c-card-body>
-                    <ng-autocomplete [data]="patient$ | async" [searchKeyword]="'fullName'" placeholder="Enter Patient Name"
-                        [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate"
-                        [(ngModel)]="appointment.patient" [ngModelOptions]="{standalone: true}"
-                        (selected)='pick($event)' (inputCleared)="unpick($event)">
+                    <div class="mb-1">
+                        <ng-autocomplete [data]="patient$ | async" [searchKeyword]="'fullName'"
+                        placeholder="Enter Patient Name" [itemTemplate]="itemTemplate"
+                        [notFoundTemplate]="notFoundTemplate" [(ngModel)]="appointment.patient"
+                        [ngModelOptions]="{standalone: true}" (selected)='pick($event)' (inputCleared)="unpick($event)">
                     </ng-autocomplete>
                     <ng-template #itemTemplate let-item>
                         <a [innerHTML]="item.fullName"></a>
                     </ng-template>
-                
+
                     <ng-template #notFoundTemplate let-notFound>
                         <div [innerHTML]="notFound"></div>
                     </ng-template>
-                    <!-- <select cFormControl cSelect class="mb-2" sizing="sm" id="role" name="role"
+                    </div>
+                    <select cFormControl cSelect class="mb-2" sizing="sm" id="role" name="role"
                         [ngClass]="{'is-invalid': appatient.invalid && (appatient.dirty || appatient.touched)}"
-                        [(ngModel)]="appointmentPatient" #appatient="ngModel">
-                        <option [ngValue]="null" disabled selected>Select User Type</option>
-                        <option *ngFor="let patient of patients | keyvalue" [value]="patient.key">
-                            {{patient.value}}
+                        [(ngModel)]="appointment.patientCase" #appatient="ngModel">
+                        <option [ngValue]="null" disabled selected>Select patient case</option>
+                        <option *ngFor="let case of appointment.patient?.cases" [value]="case.id">
+                            {{case.title}}
                         </option>
-                    </select> -->
+                    </select>
                 </c-card-body>
             </c-card>
         </c-col>

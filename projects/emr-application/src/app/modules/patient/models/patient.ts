@@ -36,7 +36,7 @@ export interface Patient {
     isDependent: boolean
     dependent: Dependent;
     clinicsId: number[];
-    patientCaseModels: PatientCase[];
+    cases: PatientCase[];
     patientInsuranceModels: PatientInsurance[];
     
 }

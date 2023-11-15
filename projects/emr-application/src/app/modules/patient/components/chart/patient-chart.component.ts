@@ -43,7 +43,7 @@ export class PatientChartComponent extends ListTemplate implements OnInit {
         switchMap((clinicId) => this.patientFinderService.getPatient(this.patientId, clinicId)))
       .subscribe((response: PateintResponse) => {
         var patient: Patient = response.records
-        this.patientCases = patient.patientCaseModels;
+        this.patientCases = patient.cases;
         this.patientChartInfo.name = PatientName.formatName(patient.firstName, patient.middleName, patient.lastName);
         this.patientChartInfo.dateOfBirth = moment(patient.birthDate).format("MM-DD-YYYY");
 
