@@ -4,22 +4,26 @@
             <c-card class="mb-3 ustify-content-center">
                 <c-card-header><strong>Patient</strong></c-card-header>
                 <c-card-body>
-                    <select cFormControl cSelect class="mb-2" sizing="sm" id="role" name="role"
+                    <ng-autocomplete [data]="patient$ | async" [searchKeyword]="'fullName'" placeholder="Enter Patient Name"
+                        [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate"
+                        [(ngModel)]="appointment.patient" [ngModelOptions]="{standalone: true}"
+                        (selected)='pick($event)' (inputCleared)="unpick($event)">
+                    </ng-autocomplete>
+                    <ng-template #itemTemplate let-item>
+                        <a [innerHTML]="item.fullName"></a>
+                    </ng-template>
+                
+                    <ng-template #notFoundTemplate let-notFound>
+                        <div [innerHTML]="notFound"></div>
+                    </ng-template>
+                    <!-- <select cFormControl cSelect class="mb-2" sizing="sm" id="role" name="role"
                         [ngClass]="{'is-invalid': appatient.invalid && (appatient.dirty || appatient.touched)}"
                         [(ngModel)]="appointmentPatient" #appatient="ngModel">
                         <option [ngValue]="null" disabled selected>Select User Type</option>
                         <option *ngFor="let patient of patients | keyvalue" [value]="patient.key">
                             {{patient.value}}
                         </option>
-                    </select>
-                    <select cFormControl cSelect class="mb-2" sizing="sm" id="role" name="role"
-                        [ngClass]="{'is-invalid': appatient.invalid && (appatient.dirty || appatient.touched)}"
-                        [(ngModel)]="appointmentPatient" #appatient="ngModel">
-                        <option [ngValue]="null" disabled selected>Select User Type</option>
-                        <option *ngFor="let patient of patients | keyvalue" [value]="patient.key">
-                            {{patient.value}}
-                        </option>
-                    </select>
+                    </select> -->
                 </c-card-body>
             </c-card>
         </c-col>
@@ -52,14 +56,14 @@
                         <input cFormCheckInput type="checkbox" name="isDependent" />
                         <label cFormCheckLabel>Dependent</label>
                     </c-form-check>
-                    <select cFormControl cSelect class="mb-2" sizing="sm" id="role" name="role"
+                    <!-- <select cFormControl cSelect class="mb-2" sizing="sm" id="role" name="role"
                         [ngClass]="{'is-invalid': appatient.invalid && (appatient.dirty || appatient.touched)}"
                         [(ngModel)]="appointmentPatient" #appatient="ngModel">
                         <option [ngValue]="null" disabled selected>Select User Type</option>
                         <option *ngFor="let patient of patients | keyvalue" [value]="patient.key">
                             {{patient.value}}
                         </option>
-                    </select>
+                    </select> -->
                 </c-card-body>
             </c-card>
         </c-col>
@@ -69,14 +73,14 @@
             <c-card class="mb-3 ustify-content-center">
                 <c-card-header><strong>Appointment Type</strong></c-card-header>
                 <c-card-body>
-                    <select cFormControl cSelect class="mb-2" sizing="sm" id="role" name="role"
+                    <!-- <select cFormControl cSelect class="mb-2" sizing="sm" id="role" name="role"
                         [ngClass]="{'is-invalid': appatient.invalid && (appatient.dirty || appatient.touched)}"
                         [(ngModel)]="appointmentPatient" #appatient="ngModel">
                         <option [ngValue]="null" disabled selected>Select User Type</option>
                         <option *ngFor="let patient of patients | keyvalue" [value]="patient.key">
                             {{patient.value}}
                         </option>
-                    </select>
+                    </select> -->
                     <textarea cFormControl id="exampleFormControlTextarea1" rows="3"></textarea>
                 </c-card-body>
             </c-card>
@@ -87,14 +91,14 @@
             <c-card class="mb-3 ustify-content-center">
                 <c-card-header><strong>Appointment Repetition</strong></c-card-header>
                 <c-card-body>
-                    <select cFormControl cSelect class="mb-2" sizing="sm" id="role" name="role"
+                    <!-- <select cFormControl cSelect class="mb-2" sizing="sm" id="role" name="role"
                         [ngClass]="{'is-invalid': appatient.invalid && (appatient.dirty || appatient.touched)}"
                         [(ngModel)]="appointmentPatient" #appatient="ngModel">
                         <option [ngValue]="null" disabled selected>Select User Type</option>
                         <option *ngFor="let patient of patients | keyvalue" [value]="patient.key">
                             {{patient.value}}
                         </option>
-                    </select>
+                    </select> -->
                 </c-card-body>
             </c-card>
         </c-col>

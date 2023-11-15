@@ -2,13 +2,14 @@ import { AppointmentMetaData } from './appointment.meta.data';
 import { AppointmentType } from './appointment.type';
 import { AppointmentRepeat } from './appointment.repeat';
 import { AppointementStatus } from './appointment.status';
+import { Patient } from '../../patient/models/patient';
 
 export class Appointment {
     id: number;
     clinicId: number;
     doctorUUID: string;
     isAllUsers: boolean;
-    patientId: number;
+    patient: Patient;
     patientCaseId: number;
     startDate: number;
     endDate: number;

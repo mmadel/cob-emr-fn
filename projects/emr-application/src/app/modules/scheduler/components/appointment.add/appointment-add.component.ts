@@ -1,12 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { PatientCase } from '../../../patient/models/case/patient.case';
-import { Clinic } from '../../../patient/models/clinic';
+import { filter, map, Observable, switchMap } from 'rxjs';
+import { ClinicEmittingService } from '../../../common/service/emitting/clinic-emitting.service';
 import { Patient } from '../../../patient/models/patient';
+import { Appointment } from '../../models/appointment';
 import { AppointmentRepeat } from '../../models/appointment.repeat';
-import { AppointmentType } from '../../models/appointment.type';
 import { AppointmentService } from '../../service/appointment.service';
+import { PatientAppointmentService } from '../../service/patient-appointment.service';
 
 export interface TreatingDoctor {
   doctorName,
@@ -22,26 +21,8 @@ export interface days {
   styleUrls: ['./appointment-add.component.css']
 })
 export class AppointmentAddComponent implements OnInit {
-  allTherapists: boolean = false;
-  listClinics: Clinic[];
-  patients: Patient[]
-  appoitnemntTypes: AppointmentType[] = new Array();
-  appointmentclinic: Clinic;
-  appointmentPatient: Patient;
-  appointmentPatientCase: PatientCase;
-  patientCaseId: number;
-  appointmentDoctor: TreatingDoctor;
-  appointmentType: AppointmentType;
-  appointmentTitle: string;
-  appointmentNote: string;
-  appointmentStatus: string;
-  patientCases: PatientCase[];
-  treatingDoctors: TreatingDoctor[] = new Array();
-  cancelDate: Date;
-  repeatsLookups: string[];
-  dayMonth: days[];
-  patientControl = new FormControl();
-  filteredPatientsOptions: Observable<Patient[]>;
+  patient$!: Observable<Patient[]>;
+  appointment: Appointment = new Appointment();
   @Input() visible = false;
   weekDays: days[] = [
     {
@@ -69,8 +50,23 @@ export class AppointmentAddComponent implements OnInit {
   appointmentRepeat: AppointmentRepeat = new AppointmentRepeat();
   startBoundary: Date;
   endBoundary: Date;
-  constructor(public appointmentService: AppointmentService,) { }
-  ngOnInit(): void {
+  constructor(private appointmentService: AppointmentService
+    , private patientAppointmentService: PatientAppointmentService
+    , private clinicEmittingService: ClinicEmittingService) { }
+  ngOnInit() {
+    this.patient$ = this.clinicEmittingService.selectedClinic$.pipe(
+      switchMap(clinicId => this.patientAppointmentService.getPateint(clinicId)),
+      filter(patients => patients !== null),
+      map(response => {
+        return response;
+      })
+    )
+  }
+  pick(event: any) {
+
+  }
+  unpick(event: any) {
+
   }
 
 }

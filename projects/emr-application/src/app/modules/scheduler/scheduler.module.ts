@@ -12,6 +12,7 @@ import { AppointmentAddComponent } from './components/appointment.add/appointmen
 import { AppointmentCancelNoshowComponent } from './components/appointment.cancel.noshow/appointment-cancel-noshow.component';
 import { AppointmentConfirmComponent } from './components/appointment.confirm/appointment-confirm.component';
 import { AppointmentStatusComponent } from './components/appointment.status/appointment-status.component';
+import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 @NgModule({
     declarations: [
         ViewSchdulerComponent,
@@ -28,7 +29,7 @@ import { AppointmentStatusComponent } from './components/appointment.status/appo
         DatePickerModule,
         TimePickerModule,
         DropdownModule,
-        FormModule,
+        AutocompleteLibModule,
         FlatpickrModule.forRoot(),
         CalendarModule.forRoot({
             provide: DateAdapter,

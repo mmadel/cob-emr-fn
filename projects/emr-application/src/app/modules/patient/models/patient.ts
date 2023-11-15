@@ -12,6 +12,7 @@ import { Contact } from "./patient.contact";
 
 export interface Patient {
     id: number | null;
+    fullName?:string;
     firstName: string;
     middleName: string;
     lastName: string;
@@ -37,4 +38,5 @@ export interface Patient {
     clinicsId: number[];
     patientCaseModels: PatientCase[];
     patientInsuranceModels: PatientInsurance[];
+    
 }
