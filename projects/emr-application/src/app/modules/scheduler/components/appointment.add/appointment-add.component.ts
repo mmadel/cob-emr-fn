@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { PatientCase } from '../../../patient/models/case/patient.case';
@@ -42,6 +42,7 @@ export class AppointmentAddComponent implements OnInit {
   dayMonth: days[];
   patientControl = new FormControl();
   filteredPatientsOptions: Observable<Patient[]>;
+  @Input() visible = false;
   weekDays: days[] = [
     {
       dayName: 'Mon', dayNumber: 2

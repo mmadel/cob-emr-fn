@@ -27,6 +27,7 @@ import { AppointmentService } from "../../service/appointment.service";
 import { ToastrService } from "ngx-toastr";
 import { SchedulerConfigurationService } from "../../service/scheduler-configuration.service";
 import { SchedulerConfiguration } from "../../models/configuration";
+import { AppointmentAddComponent } from "../appointment.add/appointment-add.component";
 
 const colors: Record<string, EventColor> = {
   red: {
@@ -47,22 +48,13 @@ const colors: Record<string, EventColor> = {
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
-      h3 {
-        margin: 0 0 10px;
-      }
-
-      pre {
-        background-color: #f5f5f5;
-        padding: 15px;
-      }
     `,
   ],
   templateUrl: './view-schduler.component.html',
 })
 export class ViewSchdulerComponent implements OnInit {
   @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
- 
- 
+  public visible = false;
   
   clinicSchedulerConfiguration: SchedulerConfiguration = new SchedulerConfiguration();
 
@@ -78,6 +70,13 @@ export class ViewSchdulerComponent implements OnInit {
   };
   ngOnInit(): void {
     //this.getSchedulerConfiguration();
+  }
+  toggleLiveDemo() {
+    this.visible = !this.visible;
+  }
+
+  handleLiveDemoChange(event: any) {
+    this.visible = event;
   }
   actions: CalendarEventAction[] = [
     {
@@ -100,44 +99,7 @@ export class ViewSchdulerComponent implements OnInit {
   refresh = new Subject<void>();
 
   events: CalendarEvent[] = [
-    {
-      start: subDays(startOfDay(new Date()), 1),
-      end: addDays(new Date(), 1),
-      title: 'A 3 day event',
-      color: { ...colors["red"] },
-      actions: this.actions,
-      allDay: true,
-      resizable: {
-        beforeStart: true,
-        afterEnd: true,
-      },
-      draggable: true,
-    },
-    {
-      start: startOfDay(new Date()),
-      title: 'An event with no end date',
-      color: { ...colors["yellow"] },
-      actions: this.actions,
-    },
-    {
-      start: subDays(endOfMonth(new Date()), 3),
-      end: addDays(endOfMonth(new Date()), 3),
-      title: 'A long event that spans 2 months',
-      color: { ...colors["blue"] },
-      allDay: true,
-    },
-    {
-      start: addHours(startOfDay(new Date()), 2),
-      end: addHours(new Date(), 2),
-      title: 'A draggable and resizable event',
-      color: { ...colors["yellow"] },
-      actions: this.actions,
-      resizable: {
-        beforeStart: true,
-        afterEnd: true,
-      },
-      draggable: true,
-    },
+   
   ];
 
   activeDayIsOpen: boolean = true;
@@ -160,7 +122,8 @@ export class ViewSchdulerComponent implements OnInit {
       }
       this.viewDate = date;
     }
-    this.modal.open(this.modalContent, { size: 'lg' });
+    //this.modal.open(this.modalContent, { size: 'lg' });
+    this.visible = !this.visible;
   }
 
   eventTimesChanged({

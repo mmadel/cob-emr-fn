@@ -93,17 +93,20 @@
 <!-- Everything you see below is just for the demo, you don't need to include it in your app -->
 
 <br /><br /><br />
-<ng-template #modalContent let-close="close">
-  <div class="modal-header">
-    <h5 class="modal-title">Event action occurred</h5>
-    <button (click)="close()" cButtonClose></button>
-  </div>
-  <div class="modal-body">
-   <app-appointment-add></app-appointment-add>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-outline-secondary" (click)="close()">
-      OK
+<span *ngIf="visible">
+<c-modal id="liveDemoModal" [visible]="true" scrollable size="xl">
+  <c-modal-header>
+    <h5 cModalTitle>Add Appointment </h5>
+    <button (click)="toggleLiveDemo()" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body>
+    <app-appointment-add></app-appointment-add>
+  </c-modal-body>
+  <c-modal-footer>
+    <button (click)="toggleLiveDemo()" cButton color="secondary">
+      Close
     </button>
-  </div>
-</ng-template>
+    <button cButton color="primary">Save changes</button>
+  </c-modal-footer>
+</c-modal>
+</span>
