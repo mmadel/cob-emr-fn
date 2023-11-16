@@ -10,6 +10,7 @@ import {
   endOfDay, isSameDay,
   isSameMonth, startOfDay
 } from 'date-fns';
+import * as moment from "moment";
 import { ToastrService } from "ngx-toastr";
 import { Subject } from 'rxjs';
 import { Appointment } from "../../models/appointment";
@@ -91,8 +92,7 @@ export class ViewSchdulerComponent implements OnInit {
 
   events: CalendarEvent[] = [];
 
-  activeDayIsOpen: boolean = true;
-
+  activeDayIsOpen: boolean = false;
   constructor(
     private appointmentService: AppointmentService,
     private toastr: ToastrService,
@@ -113,7 +113,6 @@ export class ViewSchdulerComponent implements OnInit {
     }
     this.visible = !this.visible;
   }
-
   eventTimesChanged({
     event,
     newStart,
@@ -135,23 +134,6 @@ export class ViewSchdulerComponent implements OnInit {
   handleEvent(action: string, event: CalendarEvent): void {
     this.modalData = { event, action };
     // this.modal.open(this.modalContent, { size: 'lg' });
-  }
-
-  addEvent(): void {
-    this.events = [
-      ...this.events,
-      {
-        title: 'New event',
-        start: startOfDay(new Date()),
-        end: endOfDay(new Date()),
-        color: colors["red"],
-        draggable: true,
-        resizable: {
-          beforeStart: true,
-          afterEnd: true,
-        },
-      },
-    ];
   }
 
   deleteEvent(eventToDelete: CalendarEvent) {
@@ -178,6 +160,7 @@ export class ViewSchdulerComponent implements OnInit {
       var appointment: Appointment = this.appointmentAddComponent.appointment
       this.appointmentAddComponent.submitted = false
       var event: CalendarEvent = this.appointmentEventConverterService.convertToEvent(appointment)
+      console.log(JSON.stringify(event))
       this.events.push(event);
       this.refresh.next();
       this.visible = !this.visible;

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import * as moment from 'moment';
 import { filter, map, Observable, switchMap } from 'rxjs';
@@ -28,6 +28,7 @@ export interface days {
 })
 export class AppointmentAddComponent implements OnInit {
   @ViewChild('appontmentForm') appontmentForm: NgForm;
+  @Input() startDate:Date;
   submitted: boolean = false;
   patient$!: Observable<Patient[]>;
   therapists$!: Observable<User[]>;
@@ -36,7 +37,6 @@ export class AppointmentAddComponent implements OnInit {
   visible = false;
   appointmentType = SchedulerType;
   appointmentRepetition = SchedulerRepetition;
-  
   weekDays: days[] = [
     {
       dayName: 'Mon', dayNumber: 2
@@ -85,8 +85,8 @@ export class AppointmentAddComponent implements OnInit {
     )
   }
   initAppointmentDate() {
-    this.appointment.appointmentDate.startDate = moment(new Date()).toDate();;
-    this.appointment.appointmentDate.startTime= moment(new Date()).set("hour", 8).set("minute", 0).toDate();;
+    this.appointment.appointmentDate.startDate = this.startDate;
+    this.appointment.appointmentDate.startTime = moment(this.startDate).set("hour", 8).set("minute", 0).toDate();;
     this.appointment.appointmentDate.endDate = moment(this.appointment.appointmentDate.startDate).toDate();
     this.appointment.appointmentDate.endTime = moment(this.appointment.appointmentDate.startTime).add(30, 'minutes').toDate()
   }

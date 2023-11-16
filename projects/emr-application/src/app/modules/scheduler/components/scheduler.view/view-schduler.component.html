@@ -100,7 +100,7 @@
     <button (click)="toggleLiveDemo()" cButtonClose></button>
   </c-modal-header>
   <c-modal-body>
-    <app-appointment-add #appointmentAddComponent></app-appointment-add>
+    <app-appointment-add #appointmentAddComponent [startDate]="viewDate"></app-appointment-add>
   </c-modal-body>
   <c-modal-footer>
     <button (click)="toggleLiveDemo()" cButton color="secondary">
