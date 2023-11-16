@@ -1,32 +1,22 @@
-import { Component, OnInit } from "@angular/core";
-import {
-  ChangeDetectionStrategy,
-  ViewChild,
-  TemplateRef,
-} from '@angular/core';
-import {
-  startOfDay,
-  endOfDay,
-  subDays,
-  addDays,
-  endOfMonth,
-  isSameDay,
-  isSameMonth,
-  addHours,
-} from 'date-fns';
-import { Subject } from 'rxjs';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ChangeDetectionStrategy, Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
 import {
   CalendarEvent,
   CalendarEventAction,
   CalendarEventTimesChangedEvent,
-  CalendarView,
+  CalendarView
 } from 'angular-calendar';
 import { EventColor } from 'calendar-utils';
-import { AppointmentService } from "../../service/appointment.service";
+import {
+  endOfDay, isSameDay,
+  isSameMonth, startOfDay
+} from 'date-fns';
 import { ToastrService } from "ngx-toastr";
-import { SchedulerConfigurationService } from "../../service/scheduler-configuration.service";
+import { Subject } from 'rxjs';
+import { Appointment } from "../../models/appointment";
 import { SchedulerConfiguration } from "../../models/configuration";
+import { AppointmentEventConverterService } from "../../service/appointment-event-converter.service";
+import { AppointmentService } from "../../service/appointment.service";
+import { SchedulerConfigurationService } from "../../service/scheduler-configuration.service";
 import { AppointmentAddComponent } from "../appointment.add/appointment-add.component";
 
 const colors: Record<string, EventColor> = {
@@ -99,17 +89,15 @@ export class ViewSchdulerComponent implements OnInit {
 
   refresh = new Subject<void>();
 
-  events: CalendarEvent[] = [
-
-  ];
+  events: CalendarEvent[] = [];
 
   activeDayIsOpen: boolean = true;
 
   constructor(
-    private modal: NgbModal,
     private appointmentService: AppointmentService,
     private toastr: ToastrService,
-    private schedulerConfigurationService: SchedulerConfigurationService) { }
+    private schedulerConfigurationService: SchedulerConfigurationService,
+    private appointmentEventConverterService: AppointmentEventConverterService) { }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
     if (isSameMonth(date, this.viewDate)) {
@@ -123,7 +111,6 @@ export class ViewSchdulerComponent implements OnInit {
       }
       this.viewDate = date;
     }
-    //this.modal.open(this.modalContent, { size: 'lg' });
     this.visible = !this.visible;
   }
 
@@ -186,11 +173,15 @@ export class ViewSchdulerComponent implements OnInit {
       this.clinicSchedulerConfiguration.endHour = result.endHour === 0 ? 19 : result.endHour
     })
   }
-  save(){
-    if(this.appointmentAddComponent.appontmentForm.valid){
+  save() {
+    if (this.appointmentAddComponent.appontmentForm.valid) {
+      var appointment: Appointment = this.appointmentAddComponent.appointment
       this.appointmentAddComponent.submitted = false
-      console.log(JSON.stringify(this.appointmentAddComponent.appointment))
-    }else{
+      var event: CalendarEvent = this.appointmentEventConverterService.convertToEvent(appointment)
+      this.events.push(event);
+      this.refresh.next();
+      this.visible = !this.visible;
+    } else {
       this.appointmentAddComponent.submitted = true
     }
   }

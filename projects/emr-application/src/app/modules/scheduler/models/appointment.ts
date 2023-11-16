@@ -21,8 +21,10 @@ export class Appointment {
     repeatId: number;
     appointmentType: string | null = null;
     appointmentRepetition: string | null = null;
-    metaData: AppointmentMetaData;
     repeat: AppointmentRepeat;
     appointmentStatus: string;
     statusHistory: AppointementStatus[]
+    public constructTitle():string{
+        return this.patient.fullName+ ':' + this.patientCase.title
+    }
 }

@@ -113,5 +113,4 @@ export class AppointmentAddComponent implements OnInit {
         })
       )
   }
-
 }
