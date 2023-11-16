@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { filter, map, Observable, switchMap } from 'rxjs';
-import { DoctorUser } from '../../../administration/model/user/doctor';
 import { User } from '../../../administration/model/user/user';
+import { SchedulerRepetition } from '../../../common/models/enums/scheduler/scheduler.repetition';
+import { SchedulerType } from '../../../common/models/enums/scheduler/scheduler.type';
 import { ClinicEmittingService } from '../../../common/service/emitting/clinic-emitting.service';
 import { Patient } from '../../../patient/models/patient';
 import { Appointment } from '../../models/appointment';
@@ -29,6 +30,8 @@ export class AppointmentAddComponent implements OnInit {
   appointment: Appointment = new Appointment();
   isAllTherapists: boolean = false;
   visible = false;
+  appointmentType = SchedulerType;
+  appointmentRepetition = SchedulerRepetition;
   weekDays: days[] = [
     {
       dayName: 'Mon', dayNumber: 2

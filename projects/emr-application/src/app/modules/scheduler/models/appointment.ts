@@ -5,6 +5,7 @@ import { AppointementStatus } from './appointment.status';
 import { Patient } from '../../patient/models/patient';
 import { PatientCase } from '../../patient/models/case/patient.case';
 import { User } from '../../administration/model/user/user';
+import { SchedulerType } from '../../common/models/enums/scheduler/scheduler.type';
 
 export class Appointment {
     id: number;
@@ -18,7 +19,8 @@ export class Appointment {
     title: string;
     note: string;
     repeatId: number;
-    appointmentType: AppointmentType = new AppointmentType();
+    appointmentType: string | null = null;
+    appointmentRepetition: string | null = null;
     metaData: AppointmentMetaData;
     repeat: AppointmentRepeat;
     appointmentStatus: string;
