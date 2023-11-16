@@ -100,13 +100,13 @@
     <button (click)="toggleLiveDemo()" cButtonClose></button>
   </c-modal-header>
   <c-modal-body>
-    <app-appointment-add></app-appointment-add>
+    <app-appointment-add #appointmentAddComponent></app-appointment-add>
   </c-modal-body>
   <c-modal-footer>
     <button (click)="toggleLiveDemo()" cButton color="secondary">
       Close
     </button>
-    <button cButton color="primary">Save changes</button>
+    <button cButton color="primary" (click)="save()">Save changes</button>
   </c-modal-footer>
 </c-modal>
 </span>

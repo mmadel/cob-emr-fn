@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { filter, map, Observable, switchMap } from 'rxjs';
 import { User } from '../../../administration/model/user/user';
 import { SchedulerRepetition } from '../../../common/models/enums/scheduler/scheduler.repetition';
@@ -25,6 +26,8 @@ export interface days {
   styleUrls: ['./appointment-add.component.css']
 })
 export class AppointmentAddComponent implements OnInit {
+  @ViewChild('appontmentForm') appontmentForm: NgForm;
+  submitted: boolean = false;
   patient$!: Observable<Patient[]>;
   therapists$!: Observable<User[]>;
   appointment: Appointment = new Appointment();

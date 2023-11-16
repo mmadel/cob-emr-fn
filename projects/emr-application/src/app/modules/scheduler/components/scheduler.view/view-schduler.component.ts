@@ -54,8 +54,9 @@ const colors: Record<string, EventColor> = {
 })
 export class ViewSchdulerComponent implements OnInit {
   @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
+  @ViewChild('appointmentAddComponent') appointmentAddComponent: AppointmentAddComponent;
   public visible = false;
-  
+
   clinicSchedulerConfiguration: SchedulerConfiguration = new SchedulerConfiguration();
 
   view: CalendarView = CalendarView.Month;
@@ -99,7 +100,7 @@ export class ViewSchdulerComponent implements OnInit {
   refresh = new Subject<void>();
 
   events: CalendarEvent[] = [
-   
+
   ];
 
   activeDayIsOpen: boolean = true;
@@ -184,5 +185,13 @@ export class ViewSchdulerComponent implements OnInit {
       this.clinicSchedulerConfiguration.startHour = result.startHour === 0 ? 8 : result.startHour;
       this.clinicSchedulerConfiguration.endHour = result.endHour === 0 ? 19 : result.endHour
     })
+  }
+  save(){
+    if(this.appointmentAddComponent.appontmentForm.valid){
+      this.appointmentAddComponent.submitted = false
+      console.log(JSON.stringify(this.appointmentAddComponent.appointment))
+    }else{
+      this.appointmentAddComponent.submitted = true
+    }
   }
 }
