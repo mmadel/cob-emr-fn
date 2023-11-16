@@ -6,6 +6,7 @@ import { Patient } from '../../patient/models/patient';
 import { PatientCase } from '../../patient/models/case/patient.case';
 import { User } from '../../administration/model/user/user';
 import { SchedulerType } from '../../common/models/enums/scheduler/scheduler.type';
+import { AppointmentDate } from './appointment.date';
 
 export class Appointment {
     id: number;
@@ -14,8 +15,7 @@ export class Appointment {
     patient: Patient;
     patientCase: PatientCase = null;;
     therapy: User = null;
-    startDate: number;
-    endDate: number;
+    appointmentDate:AppointmentDate={}
     title: string;
     note: string;
     repeatId: number;

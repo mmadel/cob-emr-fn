@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import * as moment from 'moment';
 import { filter, map, Observable, switchMap } from 'rxjs';
 import { User } from '../../../administration/model/user/user';
 import { SchedulerRepetition } from '../../../common/models/enums/scheduler/scheduler.repetition';
@@ -35,6 +36,7 @@ export class AppointmentAddComponent implements OnInit {
   visible = false;
   appointmentType = SchedulerType;
   appointmentRepetition = SchedulerRepetition;
+  
   weekDays: days[] = [
     {
       dayName: 'Mon', dayNumber: 2
@@ -66,6 +68,7 @@ export class AppointmentAddComponent implements OnInit {
     , private clinicEmittingService: ClinicEmittingService
     , private doctorAppointmentService: DoctorAppointmentService) { }
   ngOnInit() {
+    this.initAppointmentDate();
     this.patient$ = this.clinicEmittingService.selectedClinic$.pipe(
       switchMap(clinicId => this.patientAppointmentService.getPateint(clinicId)),
       filter(patients => patients !== null),
@@ -80,6 +83,12 @@ export class AppointmentAddComponent implements OnInit {
         return response;
       })
     )
+  }
+  initAppointmentDate() {
+    this.appointment.appointmentDate.startDate = moment(new Date()).toDate();;
+    this.appointment.appointmentDate.startTime= moment(new Date()).set("hour", 8).set("minute", 0).toDate();;
+    this.appointment.appointmentDate.endDate = moment(this.appointment.appointmentDate.startDate).toDate();
+    this.appointment.appointmentDate.endTime = moment(this.appointment.appointmentDate.startTime).add(30, 'minutes').toDate()
   }
   pick(event: any) {
 
