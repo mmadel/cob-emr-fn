@@ -4,14 +4,15 @@ import { AppointmentRepeat } from './appointment.repeat';
 import { AppointementStatus } from './appointment.status';
 import { Patient } from '../../patient/models/patient';
 import { PatientCase } from '../../patient/models/case/patient.case';
+import { User } from '../../administration/model/user/user';
 
 export class Appointment {
     id: number;
     clinicId: number;
-    doctorUUID: string;
     isAllUsers: boolean;
     patient: Patient;
     patientCase: PatientCase = null;;
+    therapy: User = null;
     startDate: number;
     endDate: number;
     title: string;

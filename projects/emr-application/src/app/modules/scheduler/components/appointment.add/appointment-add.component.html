@@ -22,7 +22,7 @@
                         [ngClass]="{'is-invalid': appatient.invalid && (appatient.dirty || appatient.touched)}"
                         [(ngModel)]="appointment.patientCase" #appatient="ngModel">
                         <option [ngValue]="null" disabled selected>Select patient case</option>
-                        <option *ngFor="let case of appointment.patient?.cases" [value]="case.id">
+                        <option *ngFor="let case of appointment.patient?.cases" [ngValue]="case">
                             {{case.title}}
                         </option>
                     </select>
@@ -55,17 +55,17 @@
                 <c-card-header><strong>Therapist</strong></c-card-header>
                 <c-card-body>
                     <c-form-check [switch]="true">
-                        <input cFormCheckInput type="checkbox" name="isDependent" />
-                        <label cFormCheckLabel>Dependent</label>
+                        <input cFormCheckInput type="checkbox"  name="isDependent" (change)="checkAllTherapists($event)"/>
+                        <label cFormCheckLabel>All Therapists</label>
                     </c-form-check>
-                    <!-- <select cFormControl cSelect class="mb-2" sizing="sm" id="role" name="role"
+                    <select cFormControl cSelect class="mb-2" sizing="sm" id="role" name="role"
                         [ngClass]="{'is-invalid': appatient.invalid && (appatient.dirty || appatient.touched)}"
-                        [(ngModel)]="appointmentPatient" #appatient="ngModel">
-                        <option [ngValue]="null" disabled selected>Select User Type</option>
-                        <option *ngFor="let patient of patients | keyvalue" [value]="patient.key">
-                            {{patient.value}}
+                        [(ngModel)]="appointment.therapy" #appatient="ngModel">
+                        <option [ngValue]="null" disabled selected>Select Therapy</option>
+                        <option *ngFor="let therapy of this.therapists$ | async" [ngValue]="therapy">
+                            {{therapy.userName}}
                         </option>
-                    </select> -->
+                    </select> 
                 </c-card-body>
             </c-card>
         </c-col>
