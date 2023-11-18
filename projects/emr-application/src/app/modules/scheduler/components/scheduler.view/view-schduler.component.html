@@ -112,13 +112,24 @@
 </span>
 
 <span *ngIf="appointmentActionsVisibility">
-  <c-modal id="addAppointment" [visible]="true">
+  <c-modal id="AppointmentAction" [visible]="true">
     <c-modal-header>
       <h5 cModalTitle>Appointment Details</h5>
       <button (click)="toggleAppointmentActions()" cButtonClose></button>
     </c-modal-header>
     <c-modal-body>
-      <app-appointment-actions></app-appointment-actions>
+      <app-appointment-actions (changeVisibility)="changeAppointmentVisibility($event)"></app-appointment-actions>
+    </c-modal-body>
+  </c-modal>
+</span>
+<span *ngIf="appointmentStatusVisibility">
+  <c-modal id="AppointmentStatus" [visible]="true">
+    <c-modal-header>
+      <h5 cModalTitle>Appointment Details</h5>
+      <button (click)="toggleAppointmentStatus()" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+      dsdksl
     </c-modal-body>
   </c-modal>
 </span>

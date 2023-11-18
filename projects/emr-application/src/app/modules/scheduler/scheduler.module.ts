@@ -13,13 +13,15 @@ import { AppointmentCancelNoshowComponent } from './components/appointment.cance
 import { AppointmentConfirmComponent } from './components/appointment.confirm/appointment-confirm.component';
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 import { AppointmentActionsComponent } from './components/appointment.actions/appointment-actions.component';
+import { AppointmentStatusComponent } from './components/appointment.status/appointment-status.component';
 @NgModule({
     declarations: [
         ViewSchdulerComponent,
         AppointmentAddComponent,
         AppointmentCancelNoshowComponent,
         AppointmentConfirmComponent,
-        AppointmentActionsComponent
+        AppointmentActionsComponent,
+        AppointmentStatusComponent
     ],
     imports: [
         CommonModule,

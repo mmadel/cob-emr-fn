@@ -47,6 +47,9 @@ export class ViewSchdulerComponent implements OnInit {
   @ViewChild('appointmentAddComponent') appointmentAddComponent: AppointmentAddComponent;
   addAppointmentVisibility = false;
   appointmentActionsVisibility = false;
+  appointmentStatusVisibility = false;
+  appointmentEditVisibility = false;
+  appointmentDeleteVisibility = false
   clinicSchedulerConfiguration: SchedulerConfiguration = new SchedulerConfiguration();
 
   view: CalendarView = CalendarView.Month;
@@ -61,27 +64,30 @@ export class ViewSchdulerComponent implements OnInit {
   activeDayIsOpen: boolean = false;
 
   ngOnInit(): void {
-      var tmpEvent:CalendarEvent = {
-        start: new Date("2023-11-14T06:00:00.000Z"),
-        end: new Date("2023-11-14T06:30:00.000Z"),
-        title: "mohamed smay khaled:dkdkd",
-        draggable: true,
-        resizable: {
-          "beforeStart": true,
-          "afterEnd": true
-        },
-        color: {
-          "primary": "#9aff00",
-          "secondary": "#ffd500"
-        }
+    var tmpEvent: CalendarEvent = {
+      start: new Date("2023-11-14T06:00:00.000Z"),
+      end: new Date("2023-11-14T06:30:00.000Z"),
+      title: "mohamed smay khaled:dkdkd",
+      draggable: true,
+      resizable: {
+        "beforeStart": true,
+        "afterEnd": true
+      },
+      color: {
+        "primary": "#9aff00",
+        "secondary": "#ffd500"
       }
-      this.events.push(tmpEvent);
+    }
+    this.events.push(tmpEvent);
   }
   toggleAddAppointment() {
     this.addAppointmentVisibility = !this.addAppointmentVisibility;
   }
   toggleAppointmentActions() {
     this.appointmentActionsVisibility = !this.appointmentActionsVisibility;
+  }
+  toggleAppointmentStatus() {
+    this.appointmentStatusVisibility = !this.appointmentStatusVisibility;
   }
 
   actions: CalendarEventAction[] = [
@@ -102,7 +108,7 @@ export class ViewSchdulerComponent implements OnInit {
     },
   ];
 
-  
+
   constructor(
     private appointmentService: AppointmentService,
     private toastr: ToastrService,
@@ -142,7 +148,7 @@ export class ViewSchdulerComponent implements OnInit {
   }
 
   handleEvent(action: string, event: CalendarEvent): void {
-    this.appointmentActionsVisibility=!this.appointmentActionsVisibility
+    this.appointmentActionsVisibility = !this.appointmentActionsVisibility
   }
 
   deleteEvent(eventToDelete: CalendarEvent) {
@@ -176,5 +182,12 @@ export class ViewSchdulerComponent implements OnInit {
     } else {
       this.appointmentAddComponent.submitted = true
     }
+  }
+  changeAppointmentVisibility(event: any) {
+    if (event === 'status')
+      this.appointmentStatusVisibility = !this.appointmentStatusVisibility;
+    if (event === 'edit')
+      this.addAppointmentVisibility = !this.addAppointmentVisibility;
+    this.appointmentActionsVisibility = !this.appointmentActionsVisibility;
   }
 }
