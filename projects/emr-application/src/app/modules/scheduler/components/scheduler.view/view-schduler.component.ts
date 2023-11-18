@@ -14,6 +14,7 @@ import { ToastrService } from "ngx-toastr";
 import { Subject } from 'rxjs';
 import { Appointment } from "../../models/appointment";
 import { SchedulerConfiguration } from "../../models/configuration";
+import { AppointmentEmittingService } from "../../service/appointment-emitting.service";
 import { AppointmentEventConverterService } from "../../service/appointment-event-converter.service";
 import { AppointmentService } from "../../service/appointment.service";
 import { SchedulerConfigurationService } from "../../service/scheduler-configuration.service";
@@ -113,7 +114,8 @@ export class ViewSchdulerComponent implements OnInit {
     private appointmentService: AppointmentService,
     private toastr: ToastrService,
     private schedulerConfigurationService: SchedulerConfigurationService,
-    private appointmentEventConverterService: AppointmentEventConverterService) { }
+    private appointmentEventConverterService: AppointmentEventConverterService,
+    private appointmentEmittingService: AppointmentEmittingService) { }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
     if (isSameMonth(date, this.viewDate)) {
@@ -144,10 +146,11 @@ export class ViewSchdulerComponent implements OnInit {
       }
       return iEvent;
     });
-    //this.handleEvent('Dropped or resized', event);
+
   }
 
   handleEvent(action: string, event: CalendarEvent): void {
+    this.appointmentEmittingService.selectedAppointment$.next(event);
     this.appointmentActionsVisibility = !this.appointmentActionsVisibility
   }
 
