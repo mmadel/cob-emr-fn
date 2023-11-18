@@ -112,13 +112,13 @@
 </span>
 
 <span *ngIf="appointmentActionsVisibility">
-  <c-modal id="addAppointment" [visible]="true" scrollable size="xl">
+  <c-modal id="addAppointment" [visible]="true">
     <c-modal-header>
-      <h5 cModalTitle>Appointment Actions</h5>
+      <h5 cModalTitle>Appointment Details</h5>
       <button (click)="toggleAppointmentActions()" cButtonClose></button>
     </c-modal-header>
     <c-modal-body>
-      <app-appointment-status></app-appointment-status>
+      <app-appointment-actions></app-appointment-actions>
     </c-modal-body>
   </c-modal>
 </span>

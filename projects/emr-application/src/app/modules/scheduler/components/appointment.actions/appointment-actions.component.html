@@ -1,0 +1,24 @@
+<c-container fluid>
+    <div class="mb-2">
+        <c-row>
+            <ul cListGroup flush>
+                <li cListGroupItem><strong>Patient-Name</strong> : ee </li>
+                <li cListGroupItem><strong>Patient-Case</strong> :ddd </li>
+                <li cListGroupItem><strong>Patient-StartDate</strong> :dddsss</li>
+                <li cListGroupItem><strong>Appointmet-EndDate</strong> : dsmlds </li>
+                <li cListGroupItem><strong>Appointmet-Type</strong> : dsldksl </li>
+                <li cListGroupItem><strong>Appointmet-Status</strong> : dsldjsd </li>
+            </ul>
+        </c-row>
+    </div>
+    <c-row class="justify-content-center">
+        <c-button-group  role="group">
+            <button id="btnSearch" class="btn btn-primary btn-sm " Style="width: 100px;"
+                (click)="editAppointmentAction()">Edit</button>
+            <button id="btnClear" class="btn btn-info btn-sm " Style="width: 100px;"
+                (click)="changeStatusAppointmentAction()">Status</button>
+            <button id="btnClear" class="btn btn-danger btn-sm " Style="width: 100px;"
+                (click)="deleteAppointmentAction()">Delete</button>
+        </c-button-group>
+    </c-row>
+</c-container>
