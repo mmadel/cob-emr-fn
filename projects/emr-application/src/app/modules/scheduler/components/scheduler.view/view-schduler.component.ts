@@ -54,13 +54,28 @@ export class ViewSchdulerComponent implements OnInit {
   CalendarView = CalendarView;
 
   viewDate: Date = new Date();
+  refresh = new Subject<void>();
 
-  modalData: {
-    action: string;
-    event: CalendarEvent;
-  };
+  events: CalendarEvent[] = [];
+
+  activeDayIsOpen: boolean = false;
+
   ngOnInit(): void {
-    //this.getSchedulerConfiguration();
+      var tmpEvent:CalendarEvent = {
+        start: new Date("2023-11-14T06:00:00.000Z"),
+        end: new Date("2023-11-14T06:30:00.000Z"),
+        title: "mohamed smay khaled:dkdkd",
+        draggable: true,
+        resizable: {
+          "beforeStart": true,
+          "afterEnd": true
+        },
+        color: {
+          "primary": "#9aff00",
+          "secondary": "#ffd500"
+        }
+      }
+      this.events.push(tmpEvent);
   }
   toggleAddAppointment() {
     this.addAppointmentVisibility = !this.addAppointmentVisibility;
@@ -87,11 +102,7 @@ export class ViewSchdulerComponent implements OnInit {
     },
   ];
 
-  refresh = new Subject<void>();
-
-  events: CalendarEvent[] = [];
-
-  activeDayIsOpen: boolean = false;
+  
   constructor(
     private appointmentService: AppointmentService,
     private toastr: ToastrService,
@@ -131,7 +142,6 @@ export class ViewSchdulerComponent implements OnInit {
   }
 
   handleEvent(action: string, event: CalendarEvent): void {
-    this.modalData = { event, action };
     this.appointmentActionsVisibility=!this.appointmentActionsVisibility
   }
 
@@ -160,6 +170,7 @@ export class ViewSchdulerComponent implements OnInit {
       this.appointmentAddComponent.submitted = false
       var event: CalendarEvent = this.appointmentEventConverterService.convertToEvent(appointment)
       this.events.push(event);
+      console.log(JSON.stringify(event))
       this.refresh.next();
       this.addAppointmentVisibility = !this.addAppointmentVisibility;
     } else {
