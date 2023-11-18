@@ -28,14 +28,12 @@ import { AutocompleteLibModule } from 'angular-ng-autocomplete';
         ModalModule,
         DatePickerModule,
         TimePickerModule,
-        DropdownModule,
         AutocompleteLibModule,
         FlatpickrModule.forRoot(),
         CalendarModule.forRoot({
             provide: DateAdapter,
             useFactory: adapterFactory,
         })
-
     ]
 })
 export class SchedulerModule { }

@@ -7,10 +7,9 @@ import {
 } from 'angular-calendar';
 import { EventColor } from 'calendar-utils';
 import {
-  endOfDay, isSameDay,
-  isSameMonth, startOfDay
+  isSameDay,
+  isSameMonth
 } from 'date-fns';
-import * as moment from "moment";
 import { ToastrService } from "ngx-toastr";
 import { Subject } from 'rxjs';
 import { Appointment } from "../../models/appointment";
@@ -46,8 +45,8 @@ const colors: Record<string, EventColor> = {
 export class ViewSchdulerComponent implements OnInit {
   @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
   @ViewChild('appointmentAddComponent') appointmentAddComponent: AppointmentAddComponent;
-  public visible = false;
-
+  addAppointmentVisibility = false;
+  appointmentActionsVisibility = false;
   clinicSchedulerConfiguration: SchedulerConfiguration = new SchedulerConfiguration();
 
   view: CalendarView = CalendarView.Month;
@@ -63,13 +62,13 @@ export class ViewSchdulerComponent implements OnInit {
   ngOnInit(): void {
     //this.getSchedulerConfiguration();
   }
-  toggleLiveDemo() {
-    this.visible = !this.visible;
+  toggleAddAppointment() {
+    this.addAppointmentVisibility = !this.addAppointmentVisibility;
+  }
+  toggleAppointmentActions() {
+    this.appointmentActionsVisibility = !this.appointmentActionsVisibility;
   }
 
-  handleLiveDemoChange(event: any) {
-    this.visible = event;
-  }
   actions: CalendarEventAction[] = [
     {
       label: '<i class="fas fa-fw fa-pencil-alt"></i>',
@@ -111,7 +110,7 @@ export class ViewSchdulerComponent implements OnInit {
       }
       this.viewDate = date;
     }
-    this.visible = !this.visible;
+    this.addAppointmentVisibility = !this.addAppointmentVisibility;
   }
   eventTimesChanged({
     event,
@@ -133,7 +132,7 @@ export class ViewSchdulerComponent implements OnInit {
 
   handleEvent(action: string, event: CalendarEvent): void {
     this.modalData = { event, action };
-    // this.modal.open(this.modalContent, { size: 'lg' });
+    this.appointmentActionsVisibility=!this.appointmentActionsVisibility
   }
 
   deleteEvent(eventToDelete: CalendarEvent) {
@@ -160,10 +159,9 @@ export class ViewSchdulerComponent implements OnInit {
       var appointment: Appointment = this.appointmentAddComponent.appointment
       this.appointmentAddComponent.submitted = false
       var event: CalendarEvent = this.appointmentEventConverterService.convertToEvent(appointment)
-      console.log(JSON.stringify(event))
       this.events.push(event);
       this.refresh.next();
-      this.visible = !this.visible;
+      this.addAppointmentVisibility = !this.addAppointmentVisibility;
     } else {
       this.appointmentAddComponent.submitted = true
     }

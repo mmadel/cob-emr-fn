@@ -34,9 +34,10 @@ export class AppointmentAddComponent implements OnInit {
   therapists$!: Observable<User[]>;
   appointment: Appointment = new Appointment();
   isAllTherapists: boolean = false;
-  visible = false;
+
   appointmentType = SchedulerType;
   appointmentRepetition = SchedulerRepetition;
+  addAppointmentVisibility = false;
   weekDays: days[] = [
     {
       dayName: 'Mon', dayNumber: 2
@@ -112,5 +113,20 @@ export class AppointmentAddComponent implements OnInit {
           return response;
         })
       )
+  }
+  toggleAddAppointment() {
+    this.addAppointmentVisibility = !this.addAppointmentVisibility;
+  }
+  changeStartTime(event:Date){
+    var startTime:Date= moment(this.startDate).toDate();
+    startTime.setHours(event.getHours());
+    startTime.setMinutes(event.getMinutes());
+    this.appointment.appointmentDate.startTime =startTime;
+  }
+  chnageEndTime(event:Date){
+    var endTime:Date= moment(this.appointment.appointmentDate.endDate).toDate();
+    endTime.setHours(event.getHours());
+    endTime.setMinutes(event.getMinutes());
+    this.appointment.appointmentDate.endTime =endTime;
   }
 }

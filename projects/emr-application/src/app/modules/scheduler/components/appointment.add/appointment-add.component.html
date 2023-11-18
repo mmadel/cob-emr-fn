@@ -49,18 +49,19 @@
                     <c-card-body>
                         <div class="mb-1">
                             <c-row>
-                                <c-col xs="8"><c-date-picker size="sm" [date]="appointment.appointmentDate.startDate"></c-date-picker></c-col>
+                                <c-col xs="8"><c-date-picker size="sm"
+                                        [date]="appointment.appointmentDate.startDate"></c-date-picker></c-col>
                                 <c-col xs="4"><c-time-picker size="sm" id="startTime" name="startTime"
-                                    [(ngModel)]="appointment.appointmentDate.startTime"
-                                    [time]="appointment.appointmentDate.startTime"></c-time-picker></c-col>
+                                        [(ngModel)]="appointment.appointmentDate.startTime"
+                                        (timeChange)="changeStartTime($event)"></c-time-picker></c-col>
                             </c-row>
                         </div>
                         <c-row>
-                            <c-col xs="8"><c-date-picker size="sm" [date]="appointment.appointmentDate.endDate"></c-date-picker></c-col>
+                            <c-col xs="8"><c-date-picker size="sm"
+                                    [date]="appointment.appointmentDate.endDate"></c-date-picker></c-col>
                             <c-col xs="4"><c-time-picker size="sm" id="endTime" name="endTime"
-                                [(ngModel)]="appointment.appointmentDate.endTime"
-                                [time]="this.appointment.appointmentDate.endTime"
-                                ></c-time-picker></c-col>
+                                    [(ngModel)]="appointment.appointmentDate.endTime"
+                                    (timeChange)="chnageEndTime($event)"></c-time-picker></c-col>
                         </c-row>
                     </c-card-body>
                 </c-card>
