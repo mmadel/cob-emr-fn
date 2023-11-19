@@ -6,6 +6,7 @@ import { User } from '../../../administration/model/user/user';
 import { SchedulerRepetition } from '../../../common/models/enums/scheduler/scheduler.repetition';
 import { SchedulerType } from '../../../common/models/enums/scheduler/scheduler.type';
 import { ClinicEmittingService } from '../../../common/service/emitting/clinic-emitting.service';
+import { PatientCase } from '../../../patient/models/case/patient.case';
 import { Patient } from '../../../patient/models/patient';
 import { Appointment } from '../../models/appointment';
 import { AppointmentRepeat } from '../../models/appointment.repeat';
@@ -95,11 +96,14 @@ export class AppointmentAddComponent implements OnInit {
     this.appointment.appointmentDate.endDate = moment(this.appointment.appointmentDate.startDate).toDate();
     this.appointment.appointmentDate.endTime = moment(this.appointment.appointmentDate.startTime).add(30, 'minutes').toDate()
   }
-  pick(event: any) {
-
+  pick(selectedPatient: Patient) {
+    this.appointment.patientId = selectedPatient.id;
   }
   unpick(event: any) {
-
+    this.appointment.patientId = null;
+  }
+  onCaseSelected(selectedCase: PatientCase) {
+    this.appointment.patientCaseId = selectedCase.id;
   }
   checkAllTherapists(event: any) {
     if (event.currentTarget.checked)
@@ -126,11 +130,13 @@ export class AppointmentAddComponent implements OnInit {
     startTime.setHours(event.getHours());
     startTime.setMinutes(event.getMinutes());
     this.appointment.appointmentDate.startTime = startTime;
+    this.appointment.startDate = moment(this.appointment.appointmentDate.startTime).unix() * 1000;
   }
   chnageEndTime(event: Date) {
     var endTime: Date = moment(this.appointment.appointmentDate.endDate).toDate();
     endTime.setHours(event.getHours());
     endTime.setMinutes(event.getMinutes());
     this.appointment.appointmentDate.endTime = endTime;
+    this.appointment.endDate = moment(this.appointment.appointmentDate.endTime).unix() * 1000;
   }
 }

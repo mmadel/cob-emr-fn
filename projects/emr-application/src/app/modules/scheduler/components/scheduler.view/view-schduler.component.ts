@@ -75,19 +75,7 @@ export class ViewSchdulerComponent implements OnInit {
     private clinicEmittingService: ClinicEmittingService) { }
 
   ngOnInit(): void {
-    var startOfMonth = moment(this.viewDate).startOf('month').unix() * 1000
-    var endOfMonth = moment(this.viewDate).endOf('month').unix() * 1000;
-    this.clinicEmittingService.selectedClinic$.pipe(
-      filter((clinicId) => clinicId != null),
-      switchMap(clinicId => this.appointmentService.retrieveAppointments(startOfMonth, endOfMonth, clinicId)),
-      map((response: any) => response.records)
-    ).subscribe((appointments: any[]) => {
-      for (var i = 0; i < appointments.length; i++) {
-        var varevent: CalendarEvent = this.appointmentEventConverterService.convertToEvent(appointments[i])
-        this.events.push(varevent);
-      }
-      this.refresh.next()
-    })
+    this.getAppointments();
   }
   toggleAddAppointment() {
     this.addAppointmentVisibility = !this.addAppointmentVisibility;
@@ -166,6 +154,7 @@ export class ViewSchdulerComponent implements OnInit {
   }
 
   closeOpenMonthViewDay() {
+    this.getAppointments();
     this.activeDayIsOpen = false;
   }
   getSchedulerConfiguration() {
@@ -180,11 +169,6 @@ export class ViewSchdulerComponent implements OnInit {
     if (this.appointmentAddComponent.appontmentForm.valid) {
       this.appointmentAddComponent.submitted = false
       var appointment: Appointment = this.appointmentAddComponent.appointment
-      appointment.patientId = appointment.patient.id
-      appointment.patientCaseId = appointment.patientCase.id
-      appointment.startDate = moment(appointment.appointmentDate.startTime).unix() * 1000;
-      appointment.endDate = moment(appointment.appointmentDate.endTime).unix() * 1000;
-      console.log(JSON.stringify(appointment));
       this.appointmentService.createAppointment(appointment)
         .subscribe((result) => {
           var event: CalendarEvent = this.appointmentEventConverterService.convertToEvent(appointment)
@@ -192,10 +176,27 @@ export class ViewSchdulerComponent implements OnInit {
           this.refresh.next();
           this.addAppointmentVisibility = !this.addAppointmentVisibility;
           this.toastr.success('Appointment created Successfully');
+          this.getAppointments();
         })
     } else {
       this.appointmentAddComponent.submitted = true
     }
+  }
+  getAppointments() {
+    var startOfMonth = moment(this.viewDate).startOf('month').unix() * 1000
+    var endOfMonth = moment(this.viewDate).endOf('month').unix() * 1000;
+    this.events = [];
+    this.clinicEmittingService.selectedClinic$.pipe(
+      filter((clinicId) => clinicId != null),
+      switchMap(clinicId => this.appointmentService.retrieveAppointments(startOfMonth, endOfMonth, clinicId)),
+      map((response: any) => response.records)
+    ).subscribe((appointments: any[]) => {
+      for (var i = 0; i < appointments.length; i++) {
+        var varevent: CalendarEvent = this.appointmentEventConverterService.convertToEvent(appointments[i])
+        this.events.push(varevent);
+      }
+      this.refresh.next()
+    })
   }
   changeAppointmentVisibility(event: any) {
     if (event === 'status')

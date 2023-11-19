@@ -32,7 +32,7 @@
                         </small>
                         <select cFormControl cSelect class="mb-2" sizing="sm" id="patientcase" name="patientcase"
                             [ngClass]="{'is-invalid': patientcase.invalid && (patientcase.dirty || patientcase.touched)}"
-                            [(ngModel)]="appointment.patientCase" #patientcase="ngModel" required>
+                            [ngModel]="appointment.patientCase" #patientcase="ngModel"  (ngModelChange)="onCaseSelected($event)"required>
                             <option [ngValue]="null" disabled selected>Select patient case</option>
                             <option *ngFor="let case of appointment.patient?.cases" [ngValue]="case">
                                 {{case.title}}
