@@ -11,32 +11,32 @@ import { PatientInsurance } from "./insurance/patient.insurance";
 import { Contact } from "./patient.contact";
 
 export interface Patient {
-    id: number | null;
+    id?: number | null;
     fullName?:string;
-    firstName: string;
-    middleName: string;
-    lastName: string;
-    birthDate: number;
-    birthDate_date: Date | null;
-    gender: Gender | null;
-    maritalStatus: MaritalStatus | null;
-    suffix: Suffix | null;
-    employerName: string;
-    title: Title | null;
-    addtionalInfo: string;
-    idType: IdType | null;
-    patientId: string;
-    effectiveFromDate: number;
-    effectiveFromDate_Date: Date | null;
-    effectiveToDate: number;
-    effectiveToDate_Date: Date | null;
-    addresses: Address[];
-    contacts: Contact[];
-    emergencies: Emergency[];
-    isDependent: boolean
-    dependent: Dependent;
-    clinicsId: number[];
-    cases: PatientCase[];
-    patientInsuranceModels: PatientInsurance[];
+    firstName?: string;
+    middleName?: string;
+    lastName?: string;
+    birthDate?: number;
+    birthDate_date?: Date | null;
+    gender?: Gender | null;
+    maritalStatus?: MaritalStatus | null;
+    suffix?: Suffix | null;
+    employerName?: string;
+    title?: Title | null;
+    addtionalInfo?: string;
+    idType?: IdType | null;
+    patientId?: string;
+    effectiveFromDate?: number;
+    effectiveFromDate_Date?: Date | null;
+    effectiveToDate?: number;
+    effectiveToDate_Date?: Date | null;
+    addresses?: Address[];
+    contacts?: Contact[];
+    emergencies?: Emergency[];
+    isDependent?: boolean
+    dependent?: Dependent;
+    clinicsId?: number[];
+    cases?: PatientCase[];
+    patientInsuranceModels?: PatientInsurance[];
     
 }

@@ -55,7 +55,7 @@
       <button (click)="toggleAddAppointment()" cButtonClose></button>
     </c-modal-header>
     <c-modal-body>
-      <app-appointment-add #appointmentAddComponent [startDate]="viewDate"></app-appointment-add>
+      <app-appointment-add #appointmentAddComponent [startDate]="viewDate" [iscreate]="isCreate"></app-appointment-add>
     </c-modal-body>
     <c-modal-footer>
       <button (click)="toggleAddAppointment()" cButton color="secondary">

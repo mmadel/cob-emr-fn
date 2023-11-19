@@ -32,9 +32,11 @@
                         </small>
                         <select cFormControl cSelect class="mb-2" sizing="sm" id="patientcase" name="patientcase"
                             [ngClass]="{'is-invalid': patientcase.invalid && (patientcase.dirty || patientcase.touched)}"
-                            [ngModel]="appointment.patientCase" #patientcase="ngModel"  (ngModelChange)="onCaseSelected($event)"required>
-                            <option [ngValue]="null" disabled selected>Select patient case</option>
-                            <option *ngFor="let case of appointment.patient?.cases" [ngValue]="case">
+                            [ngModel]="appointment.patientCase" #patientcase="ngModel"
+                            (ngModelChange)="onCaseSelected($event)" required>
+                            <option [ngValue]="null" disabled>Select patient case</option>
+                            <option *ngFor="let case of appointment.patient?.cases" [ngValue]="case"
+                                [selected]="case.id === appointment.patientCaseId">
                                 {{case.title}}
                             </option>
                         </select>
@@ -112,7 +114,8 @@
                                 {{type.key}}
                             </option>
                         </select>
-                        <textarea cFormControl id="exampleFormControlTextarea1" rows="2"
+                        <textarea cFormControl id="exampleFormControlTextarea1" rows="2" id="appointmentnote"
+                            name="appointmentnote" [(ngModel)]="appointment.note"
                             placeholder="Appointment Note"></textarea>
                     </c-card-body>
                 </c-card>

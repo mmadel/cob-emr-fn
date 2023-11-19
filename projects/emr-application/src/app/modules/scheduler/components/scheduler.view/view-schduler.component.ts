@@ -55,7 +55,7 @@ export class ViewSchdulerComponent implements OnInit {
   appointmentEditVisibility = false;
   appointmentDeleteVisibility = false
   clinicSchedulerConfiguration: SchedulerConfiguration = new SchedulerConfiguration();
-
+  isCreate:boolean;
   view: CalendarView = CalendarView.Month;
 
   CalendarView = CalendarView;
@@ -120,6 +120,7 @@ export class ViewSchdulerComponent implements OnInit {
       }
       this.viewDate = date;
     }
+    this.isCreate = true;
     this.addAppointmentVisibility = !this.addAppointmentVisibility;
   }
   eventTimesChanged({
@@ -158,12 +159,7 @@ export class ViewSchdulerComponent implements OnInit {
     this.activeDayIsOpen = false;
   }
   getSchedulerConfiguration() {
-    const clinicId = JSON.parse(localStorage.getItem('user')).selectedClinic.id;
-    const organizationId = JSON.parse(localStorage.getItem('user')).organizationId;
-    this.schedulerConfigurationService.retrieveCliniSchedulerConfigurationByClinicId(clinicId, organizationId).subscribe(result => {
-      this.clinicSchedulerConfiguration.startHour = result.startHour === 0 ? 8 : result.startHour;
-      this.clinicSchedulerConfiguration.endHour = result.endHour === 0 ? 19 : result.endHour
-    })
+   
   }
   save() {
     if (this.appointmentAddComponent.appontmentForm.valid) {
@@ -201,8 +197,10 @@ export class ViewSchdulerComponent implements OnInit {
   changeAppointmentVisibility(event: any) {
     if (event === 'status')
       this.appointmentStatusVisibility = !this.appointmentStatusVisibility;
-    if (event === 'edit')
+    if (event === 'edit'){
       this.addAppointmentVisibility = !this.addAppointmentVisibility;
+      this.isCreate = false;
+    }
     this.appointmentActionsVisibility = !this.appointmentActionsVisibility;
   }
 }

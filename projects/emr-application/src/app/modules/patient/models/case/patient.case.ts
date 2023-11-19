@@ -7,13 +7,13 @@ import { PlaceOfService } from "../../../common/models/enums/place.service";
 import { InjuryCase } from "../../../common/models/enums/injury.case";
 
 export interface PatientCase {
-    id: number| null;
-    title: string;
-    placeOfService: PlaceOfService | null;
-    treatingDoctor: TreatingDoctor | null;
-    injuryCase: InjuryCase | null;
-    caseInsuranceInformation: CaseInsuranceInformation;
-    caseDiagnosis: CaseDiagnosis[] ;
-    referralCase: ReferralCase ;
-    caseOtherInformation: CaseOtherInformation;
+    id?: number| null;
+    title?: string;
+    placeOfService?: PlaceOfService | null;
+    treatingDoctor?: TreatingDoctor | null;
+    injuryCase?: InjuryCase | null;
+    caseInsuranceInformation?: CaseInsuranceInformation;
+    caseDiagnosis?: CaseDiagnosis[] ;
+    referralCase?: ReferralCase ;
+    caseOtherInformation?: CaseOtherInformation;
 }

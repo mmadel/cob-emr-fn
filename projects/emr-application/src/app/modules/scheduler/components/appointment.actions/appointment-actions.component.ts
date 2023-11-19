@@ -32,7 +32,8 @@ export class AppointmentActionsComponent implements OnInit {
         this.appointmentType = event.meta.type
       })
   }
-  editAppointmentAction() {
+  editAppointmentAction(event:any) {
+    this.appointmentEmittingService.selectedAppointment$.next(Number(this.event.id))
     this.changeVisibility.emit("edit");
   }
   changeStatusAppointmentAction() {

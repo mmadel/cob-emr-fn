@@ -31,12 +31,12 @@ export interface days {
 export class AppointmentAddComponent implements OnInit {
   @ViewChild('appontmentForm') appontmentForm: NgForm;
   @Input() startDate: Date;
+  @Input() iscreate: boolean;
   submitted: boolean = false;
   patient$!: Observable<Patient[]>;
   therapists$!: Observable<User[]>;
   appointment: Appointment = new Appointment();
   isAllTherapists: boolean = false;
-
   appointmentType = SchedulerType;
   appointmentRepetition = SchedulerRepetition;
   addAppointmentVisibility = false;
@@ -88,7 +88,25 @@ export class AppointmentAddComponent implements OnInit {
         return response;
       })
     )
-    this.appointmentEmittingService.selectedAppointment$
+    if (!this.iscreate)
+      this.appointmentEmittingService.selectedAppointment$.pipe(
+        filter((appointmentId) => appointmentId !== null),
+        switchMap((appointmentId) => this.appointmentService.retrieveAppointment(appointmentId))
+      ).subscribe((result) => {
+        this.populateAppointment(result)
+      })
+  }
+  populateAppointment(appointment: Appointment) {
+    var start: Date = moment.unix(appointment.startDate / 1000).toDate();
+    var end: Date = moment.unix(appointment.endDate / 1000).toDate()
+    this.appointment.appointmentDate.startDate = start;
+    this.appointment.appointmentDate.startTime = start;
+    this.appointment.appointmentDate.endDate = end;
+    this.appointment.appointmentDate.endTime = end;;
+    this.appointment.appointmentType = appointment.appointmentType;
+    this.appointment.patient = appointment.patient
+    this.appointment.patient.fullName = appointment.title.split(':')[0]
+    this.appointment.note = appointment.note;
   }
   initAppointmentDate() {
     this.appointment.appointmentDate.startDate = this.startDate;
@@ -102,7 +120,8 @@ export class AppointmentAddComponent implements OnInit {
   unpick(event: any) {
     this.appointment.patientId = null;
   }
-  onCaseSelected(selectedCase: PatientCase) {
+  onCaseSelected(selectedCase: any) {
+    console.log(JSON.stringify(selectedCase))
     this.appointment.patientCaseId = selectedCase.id;
   }
   checkAllTherapists(event: any) {
