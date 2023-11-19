@@ -99,6 +99,7 @@ export class AppointmentAddComponent implements OnInit {
   populateAppointment(appointment: Appointment) {
     var start: Date = moment.unix(appointment.startDate / 1000).toDate();
     var end: Date = moment.unix(appointment.endDate / 1000).toDate()
+    this.appointment.id = appointment.id
     this.appointment.appointmentDate.startDate = start;
     this.appointment.appointmentDate.startTime = start;
     this.appointment.appointmentDate.endDate = end;
@@ -106,6 +107,9 @@ export class AppointmentAddComponent implements OnInit {
     this.appointment.appointmentType = appointment.appointmentType;
     this.appointment.patient = appointment.patient
     this.appointment.patient.fullName = appointment.title.split(':')[0]
+    this.appointment.patientId = appointment.patientId;
+    this.appointment.patientCase = { id: appointment.patientCaseId }
+    this.appointment.patientCaseId = appointment.patientCaseId;
     this.appointment.note = appointment.note;
   }
   initAppointmentDate() {
@@ -115,13 +119,13 @@ export class AppointmentAddComponent implements OnInit {
     this.appointment.appointmentDate.endTime = moment(this.appointment.appointmentDate.startTime).add(30, 'minutes').toDate()
   }
   pick(selectedPatient: Patient) {
+    console.log(selectedPatient)
     this.appointment.patientId = selectedPatient.id;
   }
   unpick(event: any) {
     this.appointment.patientId = null;
   }
   onCaseSelected(selectedCase: any) {
-    console.log(JSON.stringify(selectedCase))
     this.appointment.patientCaseId = selectedCase.id;
   }
   checkAllTherapists(event: any) {
@@ -144,18 +148,21 @@ export class AppointmentAddComponent implements OnInit {
   toggleAddAppointment() {
     this.addAppointmentVisibility = !this.addAppointmentVisibility;
   }
-  changeStartTime(event: Date) {
-    var startTime: Date = moment(this.startDate).toDate();
-    startTime.setHours(event.getHours());
-    startTime.setMinutes(event.getMinutes());
-    this.appointment.appointmentDate.startTime = startTime;
-    this.appointment.startDate = moment(this.appointment.appointmentDate.startTime).unix() * 1000;
+
+  compareFn = this._compareFn.bind(this);
+  _compareFn(a, b) {
+    return a?.id === b?.id;
   }
-  chnageEndTime(event: Date) {
-    var endTime: Date = moment(this.appointment.appointmentDate.endDate).toDate();
-    endTime.setHours(event.getHours());
-    endTime.setMinutes(event.getMinutes());
-    this.appointment.appointmentDate.endTime = endTime;
-    this.appointment.endDate = moment(this.appointment.appointmentDate.endTime).unix() * 1000;
+
+  public populateAppointmentDate() {
+    var startDate: Date = moment(this.appointment.appointmentDate.startDate).toDate();
+    startDate.setHours(this.appointment.appointmentDate.startTime.getHours())
+    startDate.setMinutes(this.appointment.appointmentDate.startTime.getMinutes())
+    this.appointment.startDate = moment(startDate).unix() * 1000;
+
+    var endDate: Date = moment(this.appointment.appointmentDate.endDate).toDate();
+    endDate.setHours(this.appointment.appointmentDate.endTime.getHours())
+    endDate.setMinutes(this.appointment.appointmentDate.endTime.getMinutes())
+    this.appointment.endDate = moment(endDate).unix() * 1000;
   }
 }

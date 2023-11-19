@@ -31,12 +31,12 @@
                             Patient Case is required
                         </small>
                         <select cFormControl cSelect class="mb-2" sizing="sm" id="patientcase" name="patientcase"
+                            [compareWith]="compareFn"
                             [ngClass]="{'is-invalid': patientcase.invalid && (patientcase.dirty || patientcase.touched)}"
-                            [ngModel]="appointment.patientCase" #patientcase="ngModel"
+                            [(ngModel)]="appointment.patientCase" #patientcase="ngModel"
                             (ngModelChange)="onCaseSelected($event)" required>
                             <option [ngValue]="null" disabled>Select patient case</option>
-                            <option *ngFor="let case of appointment.patient?.cases" [ngValue]="case"
-                                [selected]="case.id === appointment.patientCaseId">
+                            <option *ngFor="let case of appointment.patient?.cases" [ngValue]="case">
                                 {{case.title}}
                             </option>
                         </select>
@@ -51,19 +51,17 @@
                     <c-card-body>
                         <div class="mb-1">
                             <c-row>
-                                <c-col xs="8"><c-date-picker size="sm"
-                                        [date]="appointment.appointmentDate.startDate"></c-date-picker></c-col>
+                                <c-col xs="8"><c-date-picker size="sm" [date]="appointment.appointmentDate.startDate" name="startDate"
+                                        [(ngModel)]="appointment.appointmentDate.startDate"></c-date-picker></c-col>
                                 <c-col xs="4"><c-time-picker size="sm" id="startTime" name="startTime"
-                                        [(ngModel)]="appointment.appointmentDate.startTime"
-                                        (timeChange)="changeStartTime($event)"></c-time-picker></c-col>
+                                        [(ngModel)]="appointment.appointmentDate.startTime"></c-time-picker></c-col>
                             </c-row>
                         </div>
                         <c-row>
-                            <c-col xs="8"><c-date-picker size="sm"
-                                    [date]="appointment.appointmentDate.endDate"></c-date-picker></c-col>
+                            <c-col xs="8"><c-date-picker size="sm" [date]="appointment.appointmentDate.endDate" name="endDate"
+                                    [(ngModel)]="appointment.appointmentDate.endDate"></c-date-picker></c-col>
                             <c-col xs="4"><c-time-picker size="sm" id="endTime" name="endTime"
-                                    [(ngModel)]="appointment.appointmentDate.endTime"
-                                    (timeChange)="chnageEndTime($event)"></c-time-picker></c-col>
+                                    [(ngModel)]="appointment.appointmentDate.endTime"></c-time-picker></c-col>
                         </c-row>
                     </c-card-body>
                 </c-card>

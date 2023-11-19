@@ -55,7 +55,7 @@ export class ViewSchdulerComponent implements OnInit {
   appointmentEditVisibility = false;
   appointmentDeleteVisibility = false
   clinicSchedulerConfiguration: SchedulerConfiguration = new SchedulerConfiguration();
-  isCreate:boolean;
+  isCreate: boolean;
   view: CalendarView = CalendarView.Month;
 
   CalendarView = CalendarView;
@@ -159,11 +159,12 @@ export class ViewSchdulerComponent implements OnInit {
     this.activeDayIsOpen = false;
   }
   getSchedulerConfiguration() {
-   
+
   }
   save() {
     if (this.appointmentAddComponent.appontmentForm.valid) {
       this.appointmentAddComponent.submitted = false
+      this.appointmentAddComponent.populateAppointmentDate();
       var appointment: Appointment = this.appointmentAddComponent.appointment
       this.appointmentService.createAppointment(appointment)
         .subscribe((result) => {
@@ -171,7 +172,10 @@ export class ViewSchdulerComponent implements OnInit {
           this.events.push(event);
           this.refresh.next();
           this.addAppointmentVisibility = !this.addAppointmentVisibility;
-          this.toastr.success('Appointment created Successfully');
+          if (this.isCreate)
+            this.toastr.success('Appointment created Successfully');
+          else
+            this.toastr.success('Appointment updated Successfully');
           this.getAppointments();
         })
     } else {
@@ -197,7 +201,7 @@ export class ViewSchdulerComponent implements OnInit {
   changeAppointmentVisibility(event: any) {
     if (event === 'status')
       this.appointmentStatusVisibility = !this.appointmentStatusVisibility;
-    if (event === 'edit'){
+    if (event === 'edit') {
       this.addAppointmentVisibility = !this.addAppointmentVisibility;
       this.isCreate = false;
     }
