@@ -189,9 +189,9 @@ export class ViewSchdulerComponent implements OnInit {
         .subscribe((result) => {
           var event: CalendarEvent = this.appointmentEventConverterService.convertToEvent(appointment)
           this.events.push(event);
-          console.log(JSON.stringify(event))
           this.refresh.next();
           this.addAppointmentVisibility = !this.addAppointmentVisibility;
+          this.toastr.success('Appointment created Successfully');
         })
     } else {
       this.appointmentAddComponent.submitted = true
