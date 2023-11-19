@@ -153,16 +153,4 @@ export class AppointmentAddComponent implements OnInit {
   _compareFn(a, b) {
     return a?.id === b?.id;
   }
-
-  public populateAppointmentDate() {
-    var startDate: Date = moment(this.appointment.appointmentDate.startDate).toDate();
-    startDate.setHours(this.appointment.appointmentDate.startTime.getHours())
-    startDate.setMinutes(this.appointment.appointmentDate.startTime.getMinutes())
-    this.appointment.startDate = moment(startDate).unix() * 1000;
-
-    var endDate: Date = moment(this.appointment.appointmentDate.endDate).toDate();
-    endDate.setHours(this.appointment.appointmentDate.endTime.getHours())
-    endDate.setMinutes(this.appointment.appointmentDate.endTime.getMinutes())
-    this.appointment.endDate = moment(endDate).unix() * 1000;
-  }
 }

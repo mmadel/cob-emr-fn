@@ -13,7 +13,7 @@ import {
 
 import * as moment from "moment";
 import { ToastrService } from "ngx-toastr";
-import { filter, map, Subject, switchMap } from 'rxjs';
+import { filter, map, Subject, switchMap, tap } from 'rxjs';
 import { ClinicEmittingService } from "../../../common/service/emitting/clinic-emitting.service";
 import { Appointment } from "../../models/appointment";
 import { SchedulerConfiguration } from "../../models/configuration";
@@ -21,6 +21,7 @@ import { AppointmentEmittingService } from "../../service/appointment-emitting.s
 import { AppointmentEventConverterService } from "../../service/appointment-event-converter.service";
 import { AppointmentService } from "../../service/appointment.service";
 import { SchedulerConfigurationService } from "../../service/scheduler-configuration.service";
+import { AppointmentDateAdjustor } from "../../util/appointment.date.adjustor";
 import { AppointmentAddComponent } from "../appointment.add/appointment-add.component";
 
 const colors: Record<string, EventColor> = {
@@ -138,7 +139,16 @@ export class ViewSchdulerComponent implements OnInit {
       }
       return iEvent;
     });
-
+    this.appointmentService.retrieveAppointment(Number(event.id)).pipe(
+      map(appintment => {
+        appintment.startDate = moment(newStart).unix() * 1000;
+        appintment.endDate = moment(newEnd).unix() * 1000;
+        return appintment;
+      }),
+      switchMap(appointmet => this.appointmentService.createAppointment(appointmet))
+    ).subscribe(()=>{
+      this.toastr.success('Appointment Dates updated Successfully');
+    })
   }
 
   handleEvent(action: string, event: CalendarEvent): void {
@@ -164,8 +174,8 @@ export class ViewSchdulerComponent implements OnInit {
   save() {
     if (this.appointmentAddComponent.appontmentForm.valid) {
       this.appointmentAddComponent.submitted = false
-      this.appointmentAddComponent.populateAppointmentDate();
       var appointment: Appointment = this.appointmentAddComponent.appointment
+      AppointmentDateAdjustor.adjust(appointment);
       this.appointmentService.createAppointment(appointment)
         .subscribe((result) => {
           var event: CalendarEvent = this.appointmentEventConverterService.convertToEvent(appointment)
