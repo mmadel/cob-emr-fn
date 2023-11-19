@@ -195,12 +195,12 @@ export class ViewSchdulerComponent implements OnInit {
   getAppointments() {
     var startOfMonth = moment(this.viewDate).startOf('month').unix() * 1000
     var endOfMonth = moment(this.viewDate).endOf('month').unix() * 1000;
-    this.events = [];
     this.clinicEmittingService.selectedClinic$.pipe(
       filter((clinicId) => clinicId != null),
       switchMap(clinicId => this.appointmentService.retrieveAppointments(startOfMonth, endOfMonth, clinicId)),
       map((response: any) => response.records)
     ).subscribe((appointments: any[]) => {
+      this.events = [];
       for (var i = 0; i < appointments.length; i++) {
         var varevent: CalendarEvent = this.appointmentEventConverterService.convertToEvent(appointments[i])
         this.events.push(varevent);
