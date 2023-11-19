@@ -22,8 +22,8 @@ export class AppointmentEventConverterService {
         afterEnd: true
       },
       color: {
-        primary: SchedulerType.OK,
-        secondary: SchedulerType.Warning
+        primary: SchedulerType[appointment.appointmentType],
+        secondary: SchedulerType[appointment.appointmentType]
       },
       meta: {
         'status': appointment.appointmentStatus,
