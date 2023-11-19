@@ -6,8 +6,7 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class AppointmentEmittingService {
-  public selectedAppointment$: BehaviorSubject<CalendarEvent | null> = new BehaviorSubject<CalendarEvent | null>(null);
-  public EditedAppointment$: BehaviorSubject<CalendarEvent | null> = new BehaviorSubject<CalendarEvent | null>(null);
-  public stautsAppointment$: BehaviorSubject<CalendarEvent | null> = new BehaviorSubject<CalendarEvent | null>(null);
+  public event$: BehaviorSubject<CalendarEvent | null> = new BehaviorSubject<CalendarEvent | null>(null);
+  public selectedAppointment$: BehaviorSubject<number | null> = new BehaviorSubject<number | null>(null);
   constructor() { }
 }

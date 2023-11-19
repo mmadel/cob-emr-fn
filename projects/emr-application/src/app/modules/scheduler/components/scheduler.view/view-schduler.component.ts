@@ -10,8 +10,11 @@ import {
   isSameDay,
   isSameMonth
 } from 'date-fns';
+
+import * as moment from "moment";
 import { ToastrService } from "ngx-toastr";
-import { Subject } from 'rxjs';
+import { filter, map, Subject, switchMap } from 'rxjs';
+import { ClinicEmittingService } from "../../../common/service/emitting/clinic-emitting.service";
 import { Appointment } from "../../models/appointment";
 import { SchedulerConfiguration } from "../../models/configuration";
 import { AppointmentEmittingService } from "../../service/appointment-emitting.service";
@@ -63,23 +66,28 @@ export class ViewSchdulerComponent implements OnInit {
   events: CalendarEvent[] = [];
 
   activeDayIsOpen: boolean = false;
+  constructor(
+    private appointmentService: AppointmentService,
+    private toastr: ToastrService,
+    private schedulerConfigurationService: SchedulerConfigurationService,
+    private appointmentEventConverterService: AppointmentEventConverterService,
+    private appointmentEmittingService: AppointmentEmittingService,
+    private clinicEmittingService: ClinicEmittingService) { }
 
   ngOnInit(): void {
-    var tmpEvent: CalendarEvent = {
-      start: new Date("2023-11-14T06:00:00.000Z"),
-      end: new Date("2023-11-14T06:30:00.000Z"),
-      title: "mohamed smay khaled:dkdkd",
-      draggable: true,
-      resizable: {
-        "beforeStart": true,
-        "afterEnd": true
-      },
-      color: {
-        "primary": "#9aff00",
-        "secondary": "#ffd500"
+    var startOfMonth = moment(this.viewDate).startOf('month').unix() * 1000
+    var endOfMonth = moment(this.viewDate).endOf('month').unix() * 1000;
+    this.clinicEmittingService.selectedClinic$.pipe(
+      filter((clinicId) => clinicId != null),
+      switchMap(clinicId => this.appointmentService.retrieveAppointments(startOfMonth, endOfMonth, clinicId)),
+      map((response: any) => response.records)
+    ).subscribe((appointments: any[]) => {
+      for (var i = 0; i < appointments.length; i++) {
+        var varevent: CalendarEvent = this.appointmentEventConverterService.convertToEvent(appointments[i])
+        this.events.push(varevent);
       }
-    }
-    this.events.push(tmpEvent);
+      this.refresh.next()
+    })
   }
   toggleAddAppointment() {
     this.addAppointmentVisibility = !this.addAppointmentVisibility;
@@ -110,12 +118,7 @@ export class ViewSchdulerComponent implements OnInit {
   ];
 
 
-  constructor(
-    private appointmentService: AppointmentService,
-    private toastr: ToastrService,
-    private schedulerConfigurationService: SchedulerConfigurationService,
-    private appointmentEventConverterService: AppointmentEventConverterService,
-    private appointmentEmittingService: AppointmentEmittingService) { }
+
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
     if (isSameMonth(date, this.viewDate)) {
@@ -150,7 +153,7 @@ export class ViewSchdulerComponent implements OnInit {
   }
 
   handleEvent(action: string, event: CalendarEvent): void {
-    this.appointmentEmittingService.selectedAppointment$.next(event);
+    this.appointmentEmittingService.event$.next(event);
     this.appointmentActionsVisibility = !this.appointmentActionsVisibility
   }
 
@@ -175,13 +178,21 @@ export class ViewSchdulerComponent implements OnInit {
   }
   save() {
     if (this.appointmentAddComponent.appontmentForm.valid) {
-      var appointment: Appointment = this.appointmentAddComponent.appointment
       this.appointmentAddComponent.submitted = false
-      var event: CalendarEvent = this.appointmentEventConverterService.convertToEvent(appointment)
-      this.events.push(event);
-      console.log(JSON.stringify(event))
-      this.refresh.next();
-      this.addAppointmentVisibility = !this.addAppointmentVisibility;
+      var appointment: Appointment = this.appointmentAddComponent.appointment
+      appointment.patientId = appointment.patient.id
+      appointment.patientCaseId = appointment.patientCase.id
+      appointment.startDate = moment(appointment.appointmentDate.startTime).unix() * 1000;
+      appointment.endDate = moment(appointment.appointmentDate.endTime).unix() * 1000;
+      console.log(JSON.stringify(appointment));
+      this.appointmentService.createAppointment(appointment)
+        .subscribe((result) => {
+          var event: CalendarEvent = this.appointmentEventConverterService.convertToEvent(appointment)
+          this.events.push(event);
+          console.log(JSON.stringify(event))
+          this.refresh.next();
+          this.addAppointmentVisibility = !this.addAppointmentVisibility;
+        })
     } else {
       this.appointmentAddComponent.submitted = true
     }

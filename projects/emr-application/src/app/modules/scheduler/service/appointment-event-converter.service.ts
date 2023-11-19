@@ -13,9 +13,9 @@ export class AppointmentEventConverterService {
   public convertToEvent(appointment: Appointment): CalendarEvent {
     var event: CalendarEvent = {
       id: appointment.id,
-      start: appointment.appointmentDate.startTime,
-      end: appointment.appointmentDate.endTime,
-      title: appointment.constructTitle(),
+      start: moment.unix(appointment.startDate / 1000).toDate(),
+      end: moment.unix(appointment.endDate / 1000).toDate(),
+      title: appointment.title,
       draggable: true,
       resizable: {
         beforeStart: true,
@@ -24,7 +24,11 @@ export class AppointmentEventConverterService {
       color: {
         primary: SchedulerType.OK,
         secondary: SchedulerType.Warning
-    },
+      },
+      meta: {
+        'status': appointment.appointmentStatus,
+        'type': appointment.appointmentType,
+      }
     }
     return event;
   }

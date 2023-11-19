@@ -14,26 +14,28 @@ export class AppointmentActionsComponent implements OnInit {
   pateintCase: string
   appointmentStartDate: Date;
   appointmentEndDate: Date;
+  appointmentStatus: string;
+  appointmentType: string;
   event: CalendarEvent;
 
   constructor(private appointmentEmittingService: AppointmentEmittingService) { }
 
   ngOnInit(): void {
-    this.appointmentEmittingService.selectedAppointment$
+    this.appointmentEmittingService.event$
       .subscribe((event: CalendarEvent) => {
         this.event = event;
         this.patientName = event.title.split(':')[0]
         this.pateintCase = event.title.split(':')[1]
         this.appointmentStartDate = event.start
         this.appointmentEndDate = event.end;
+        this.appointmentStatus = event.meta.status
+        this.appointmentType = event.meta.type
       })
   }
   editAppointmentAction() {
-    this.appointmentEmittingService.EditedAppointment$.next(this.event);
     this.changeVisibility.emit("edit");
   }
   changeStatusAppointmentAction() {
-    this.appointmentEmittingService.stautsAppointment$.next(this.event);
     this.changeVisibility.emit("status");
   }
   deleteAppointmentAction() {

@@ -13,9 +13,13 @@ export class Appointment {
     clinicId: number;
     isAllUsers: boolean;
     patient: Patient;
-    patientCase: PatientCase = null;;
+    patientId: number;
+    patientCase: PatientCase = null;
+    patientCaseId: number;
     therapy: User = null;
-    appointmentDate:AppointmentDate={}
+    appointmentDate: AppointmentDate = {}
+    startDate:number;
+    endDate:number
     title: string;
     note: string;
     repeatId: number;
@@ -24,7 +28,7 @@ export class Appointment {
     repeat: AppointmentRepeat;
     appointmentStatus: string;
     statusHistory: AppointementStatus[]
-    public constructTitle():string{
-        return this.patient.fullName+ ':' + this.patientCase.title
+    public constructTitle(): string {
+        return this.patient.fullName + ':' + this.patientCase.title
     }
 }

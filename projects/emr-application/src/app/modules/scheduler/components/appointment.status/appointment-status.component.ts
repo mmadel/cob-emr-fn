@@ -13,10 +13,7 @@ export class AppointmentStatusComponent implements OnInit {
   constructor(private appointmentEmittingService: AppointmentEmittingService) { }
 
   ngOnInit(): void {
-    this.appointmentEmittingService.stautsAppointment$
-      .subscribe((event) => {
-        this.event = event
-      })
+    this.appointmentEmittingService.selectedAppointment$
   }
 
 }
