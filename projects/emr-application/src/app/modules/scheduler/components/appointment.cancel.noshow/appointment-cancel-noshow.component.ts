@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-appointment-cancel-noshow',
@@ -6,10 +6,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./appointment-cancel-noshow.component.css']
 })
 export class AppointmentCancelNoshowComponent implements OnInit {
-
   constructor() { }
 
   ngOnInit(): void {
   }
+
 
 }

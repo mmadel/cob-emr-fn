@@ -55,6 +55,7 @@ export class ViewSchdulerComponent implements OnInit {
   appointmentStatusVisibility = false;
   appointmentEditVisibility = false;
   appointmentDeleteVisibility = false
+  appointmentCancelNoShowVisibility = false
   isCreate: boolean;
   view: CalendarView = CalendarView.Month;
   schedulerConfiguration$!: Observable<SchedulerConfiguration>;
@@ -86,6 +87,9 @@ export class ViewSchdulerComponent implements OnInit {
   }
   toggleAppointmentStatus() {
     this.appointmentStatusVisibility = !this.appointmentStatusVisibility;
+  }
+  toggleAppointmentCancelNoShow() {
+    this.appointmentCancelNoShowVisibility = !this.appointmentCancelNoShowVisibility;
   }
 
   actions: CalendarEventAction[] = [
@@ -215,9 +219,12 @@ export class ViewSchdulerComponent implements OnInit {
     this.appointmentActionsVisibility = !this.appointmentActionsVisibility;
   }
   changeAppointmentStatusVisibility(event: any) {
-    console.log(event)
     if (event === 'close')
       this.appointmentStatusVisibility = !this.appointmentStatusVisibility;
+    if (event === 'cancel/noshow') {
+      this.appointmentStatusVisibility = !this.appointmentStatusVisibility;
+      this.appointmentCancelNoShowVisibility = !this.appointmentCancelNoShowVisibility;
+    }
     this.appointmentActionsVisibility = false;
   }
   getSchedulerConfiguration() {
