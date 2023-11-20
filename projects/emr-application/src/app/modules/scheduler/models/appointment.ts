@@ -16,7 +16,7 @@ export class Appointment {
     patientId: number;
     patientCase: PatientCase = null;
     patientCaseId: number;
-    therapy: User = null;
+    therapyUUID: string = null;
     appointmentDate: AppointmentDate = {}
     startDate:number;
     endDate:number

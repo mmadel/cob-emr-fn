@@ -84,9 +84,9 @@
                         </small>
                         <select cFormControl cSelect class="mb-2" sizing="sm" id="appTherapy" name="appTherapy"
                             [ngClass]="{'is-invalid': appTherapy.invalid && (appTherapy.dirty || appTherapy.touched)}"
-                            [(ngModel)]="appointment.therapy" #appTherapy="ngModel" required>
+                            [(ngModel)]="appointment.therapyUUID" #appTherapy="ngModel" required>
                             <option [ngValue]="null" disabled selected>Select Therapy</option>
-                            <option *ngFor="let therapy of this.therapists$ | async" [ngValue]="therapy">
+                            <option *ngFor="let therapy of this.therapists$ | async" [value]="therapy.uuid">
                                 {{therapy.userName}}
                             </option>
                         </select>
