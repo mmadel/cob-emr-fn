@@ -5,7 +5,8 @@
         (viewDateChange)="closeOpenMonthViewDay()">
         Previous
       </div>
-      <div class="btn btn-outline-secondary" mwlCalendarToday [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
+      <div class="btn btn-outline-secondary" mwlCalendarToday [(viewDate)]="viewDate"
+        (viewDateChange)="closeOpenMonthViewDay()">
         Today
       </div>
       <div class="btn btn-primary" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate"
@@ -38,10 +39,12 @@
     (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)">
   </mwl-calendar-month-view>
   <mwl-calendar-week-view *ngSwitchCase="CalendarView.Week" [viewDate]="viewDate" [events]="events" [refresh]="refresh"
-    (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)">
+    (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)"
+    [dayStartHour]="(schedulerConfiguration$ | async)?.startHour" [dayEndHour]="(schedulerConfiguration$ | async)?.endHour">
   </mwl-calendar-week-view>
   <mwl-calendar-day-view *ngSwitchCase="CalendarView.Day" [viewDate]="viewDate" [events]="events" [refresh]="refresh"
-    (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)">
+    (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)"
+    [dayStartHour]="(schedulerConfiguration$ | async)?.startHour" [dayEndHour]="(schedulerConfiguration$ | async)?.endHour">
   </mwl-calendar-day-view>
 </div>
 

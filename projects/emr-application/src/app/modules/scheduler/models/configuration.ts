@@ -6,5 +6,4 @@ export class SchedulerConfiguration{
     startHourStr:string;
     endHourStr:string;
     clinicId:string;
-    organizationId: number;
 }
