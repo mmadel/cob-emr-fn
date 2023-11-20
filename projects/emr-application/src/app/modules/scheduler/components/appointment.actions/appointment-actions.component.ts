@@ -23,6 +23,7 @@ export class AppointmentActionsComponent implements OnInit {
   ngOnInit(): void {
     this.appointmentEmittingService.event$
       .subscribe((event: CalendarEvent) => {
+        console.log(JSON.stringify(event))
         this.event = event;
         this.patientName = event.title.split(':')[0]
         this.pateintCase = event.title.split(':')[1]
@@ -37,6 +38,7 @@ export class AppointmentActionsComponent implements OnInit {
     this.changeVisibility.emit("edit");
   }
   changeStatusAppointmentAction() {
+    this.appointmentEmittingService.selectedAppointment$.next(Number(this.event.id))
     this.changeVisibility.emit("status");
   }
   deleteAppointmentAction() {

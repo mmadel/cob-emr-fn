@@ -5,9 +5,9 @@
 <c-card>
     <c-card-body>
         <div class="d-grid gap-2">
-            <button class="btn btn-outline-primary" type="button">Confirm</button>
-            <button class="btn btn-outline-primary" type="button">Check In</button>
-            <button class="btn btn-outline-primary" type="button">Check Out</button>
+            <button class="btn btn-outline-primary" type="button" (click)="onConfirmed()">Confirm</button>
+            <button class="btn btn-outline-primary" type="button" (click)="onCheckin()">Check In</button>
+            <button class="btn btn-outline-primary" type="button" (click)="onCheckout()">Check Out</button>
             <button class="btn btn-outline-primary" type="button">No Show</button>
             <button class="btn btn-outline-primary" type="button">Cancel</button>
           </div>

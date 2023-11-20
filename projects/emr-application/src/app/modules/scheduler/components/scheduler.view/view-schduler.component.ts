@@ -205,7 +205,7 @@ export class ViewSchdulerComponent implements OnInit {
       this.refresh.next()
     })
   }
-  changeAppointmentVisibility(event: any) {
+  changeAppointmentActionsVisibility(event: any) {
     if (event === 'status')
       this.appointmentStatusVisibility = !this.appointmentStatusVisibility;
     if (event === 'edit') {
@@ -213,6 +213,12 @@ export class ViewSchdulerComponent implements OnInit {
       this.isCreate = false;
     }
     this.appointmentActionsVisibility = !this.appointmentActionsVisibility;
+  }
+  changeAppointmentStatusVisibility(event: any) {
+    console.log(event)
+    if (event === 'close')
+      this.appointmentStatusVisibility = !this.appointmentStatusVisibility;
+    this.appointmentActionsVisibility = false;
   }
   getSchedulerConfiguration() {
     this.schedulerConfiguration$ = this.clinicEmittingService.selectedClinic$.pipe(

@@ -76,7 +76,7 @@
       <button (click)="toggleAppointmentActions()" cButtonClose></button>
     </c-modal-header>
     <c-modal-body>
-      <app-appointment-actions (changeVisibility)="changeAppointmentVisibility($event)"></app-appointment-actions>
+      <app-appointment-actions (changeVisibility)="changeAppointmentActionsVisibility($event)"></app-appointment-actions>
     </c-modal-body>
   </c-modal>
 </span>
@@ -87,7 +87,7 @@
       <button (click)="toggleAppointmentStatus()" cButtonClose></button>
     </c-modal-header>
     <c-modal-body>
-      <app-appointment-status></app-appointment-status>
+      <app-appointment-status (changeVisibility)="changeAppointmentStatusVisibility($event)"></app-appointment-status>
     </c-modal-body>
   </c-modal>
 </span>
