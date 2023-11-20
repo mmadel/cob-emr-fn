@@ -40,10 +40,10 @@ export class AppointmentStatusComponent implements OnInit {
     this.updateAppointmentStatus('Checkout')
   }
   onCancel(){
-    this.changeVisibility.emit('cancel/noshow');
+    this.changeVisibility.emit('cancel');
   }
   onNoShow(){
-    this.changeVisibility.emit('cancel/noshow');
+    this.changeVisibility.emit('noshow');
   }
   private updateAppointmentStatus(status: string) {
     this.appointment.appointmentStatus = status;

@@ -1,4 +1,5 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { CancelNoShowReasons } from '../../../common/models/enums/scheduler/cancel.noshow';
 
 @Component({
   selector: 'app-appointment-cancel-noshow',
@@ -6,10 +7,15 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
   styleUrls: ['./appointment-cancel-noshow.component.css']
 })
 export class AppointmentCancelNoshowComponent implements OnInit {
+  @Input() type: string;
+  cancelNoShowReasons = CancelNoShowReasons;
+  reson: string;
   constructor() { }
 
   ngOnInit(): void {
   }
-
+  onResonSelectionChange(event: any) {
+    this.reson = event.target.value;
+  }
 
 }

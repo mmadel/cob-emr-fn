@@ -65,7 +65,7 @@ export class ViewSchdulerComponent implements OnInit {
   refresh = new Subject<void>();
 
   events: CalendarEvent[] = [];
-
+  cancelNoShow: string;
   activeDayIsOpen: boolean = false;
   constructor(
     private appointmentService: AppointmentService,
@@ -221,7 +221,8 @@ export class ViewSchdulerComponent implements OnInit {
   changeAppointmentStatusVisibility(event: any) {
     if (event === 'close')
       this.appointmentStatusVisibility = !this.appointmentStatusVisibility;
-    if (event === 'cancel/noshow') {
+    if (event === 'cancel' || event === 'noshow') {
+      this.cancelNoShow = event;
       this.appointmentStatusVisibility = !this.appointmentStatusVisibility;
       this.appointmentCancelNoShowVisibility = !this.appointmentCancelNoShowVisibility;
     }
