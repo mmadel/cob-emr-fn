@@ -111,6 +111,7 @@ export class AppointmentAddComponent implements OnInit {
     this.appointment.patientCase = { id: appointment.patientCaseId }
     this.appointment.patientCaseId = appointment.patientCaseId;
     this.appointment.note = appointment.note;
+    this.appointment.appointmentStatus = appointment.appointmentStatus;
   }
   initAppointmentDate() {
     this.appointment.appointmentDate.startDate = this.startDate;
