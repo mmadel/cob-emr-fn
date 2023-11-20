@@ -102,7 +102,7 @@
       <button (click)="toggleAppointmentCancelNoShow()" cButtonClose></button>
     </c-modal-header>
     <c-modal-body>
-      <app-appointment-cancel-noshow [type]="cancelNoShow"></app-appointment-cancel-noshow>
+      <app-appointment-cancel-noshow [type]="cancelNoShow" (changeVisibility)="changeAppointmentCancelNoShowVisibility($event)"></app-appointment-cancel-noshow>
     </c-modal-body>
   </c-modal>
 </span>

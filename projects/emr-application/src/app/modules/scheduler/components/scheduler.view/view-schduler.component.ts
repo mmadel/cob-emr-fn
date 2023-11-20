@@ -228,6 +228,10 @@ export class ViewSchdulerComponent implements OnInit {
     }
     this.appointmentActionsVisibility = false;
   }
+  changeAppointmentCancelNoShowVisibility(event: any) {
+    if (event === 'close')
+      this.appointmentCancelNoShowVisibility = !this.appointmentCancelNoShowVisibility;
+  }
   getSchedulerConfiguration() {
     this.schedulerConfiguration$ = this.clinicEmittingService.selectedClinic$.pipe(
       filter((clinicId) => clinicId != null),

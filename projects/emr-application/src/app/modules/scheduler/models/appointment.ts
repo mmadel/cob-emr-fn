@@ -1,12 +1,9 @@
-import { AppointmentMetaData } from './appointment.meta.data';
-import { AppointmentType } from './appointment.type';
+import { PatientCase } from '../../patient/models/case/patient.case';
+import { Patient } from '../../patient/models/patient';
+import { AppointmentCancelNoShowReason } from './appointment.cancel.no.show.reason';
+import { AppointmentDate } from './appointment.date';
 import { AppointmentRepeat } from './appointment.repeat';
 import { AppointementStatus } from './appointment.status';
-import { Patient } from '../../patient/models/patient';
-import { PatientCase } from '../../patient/models/case/patient.case';
-import { User } from '../../administration/model/user/user';
-import { SchedulerType } from '../../common/models/enums/scheduler/scheduler.type';
-import { AppointmentDate } from './appointment.date';
 
 export class Appointment {
     id: number;
@@ -18,8 +15,8 @@ export class Appointment {
     patientCaseId: number;
     therapyUUID: string = null;
     appointmentDate: AppointmentDate = {}
-    startDate:number;
-    endDate:number
+    startDate: number;
+    endDate: number
     title: string;
     note: string;
     repeatId: number;
@@ -28,6 +25,7 @@ export class Appointment {
     repeat: AppointmentRepeat;
     appointmentStatus: string;
     statusHistory: AppointementStatus[]
+    appointmentCancelNoShowReason: AppointmentCancelNoShowReason
     public constructTitle(): string {
         return this.patient.fullName + ':' + this.patientCase.title
     }

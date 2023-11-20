@@ -23,7 +23,8 @@
                 <c-col>
                     <c-card>
                         <c-card-body>
-                            <c-date-picker size="sm" placeholder="Appointment Cancelation Date"></c-date-picker>
+                            <c-date-picker size="sm" [date]="resonDate"
+                                placeholder="Appointment Cancelation Date"></c-date-picker>
                         </c-card-body>
                     </c-card>
                 </c-col>
@@ -34,7 +35,8 @@
                 <c-col>
                     <c-card>
                         <c-card-body>
-                            <textarea cFormControl rows="3" placeholder="Comment"></textarea>
+                            <textarea cFormControl rows="3" placeholder="Comment" name="comment"
+                             [(ngModel)]="appointmentCancelNoShowReason.comment"></textarea>
                         </c-card-body>
                     </c-card>
                 </c-col>
@@ -42,7 +44,7 @@
         </div>
     </form>
     <div class="d-grid gap-2 col-2 mx-auto mb-1">
-        <button cButton color="primary" variant="outline" size="sm">
+        <button cButton color="primary" variant="outline" size="sm" (click)="updateStatus()">
             <span *ngIf="type === 'cancel'">Cancel</span>
             <span *ngIf="type === 'noshow'">Save</span>
         </button>
