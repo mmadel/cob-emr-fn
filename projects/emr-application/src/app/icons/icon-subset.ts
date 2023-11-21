@@ -124,10 +124,14 @@ import {
   cilMedicalCross,
   cibHockeyapp,
   cibKeybase,
-  cibKeycdn,cilKeyboard,cilInfo,cilFolder,cilFlip,cilHandPointDown,cilThumbDown,cilExpandDown
+  cibKeycdn,cilKeyboard,cilInfo,cilFolder,cilFlip,cilHandPointDown,cilThumbDown,cilExpandDown,cilPhone,cibMailRu
+  ,cilChevronCircleDownAlt
+  ,cilHistory
 } from '@coreui/icons';
 
 export const iconSubset = {
+  cilHistory,
+  cilChevronCircleDownAlt,
   cilExpandDown,
   cilThumbDown,
   cilHandPointDown,
@@ -261,7 +265,9 @@ export const iconSubset = {
   cilViewModule,
   cilBirthdayCake,
   cilInfinity,
-  cilMedicalCross
+  cilMedicalCross,
+  cilPhone,
+  cibMailRu
 };
 
 export enum IconSubset {

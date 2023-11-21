@@ -21,12 +21,17 @@ import { PatientFinderService } from '../../services/patient/patient-finder.serv
 })
 export class PatientChartComponent extends ListTemplate implements OnInit {
   accordionAlwaysOpen: boolean = false;
+  patient:Patient;
   patientChartInfo: PatientChartInfo = {
     id: 0,
     name: '',
     dateOfBirth: '',
     age: 0,
-    address: []
+    gender:'',
+    address: [],
+    email:'',
+    phone:''
+
   };
   patientCases: PatientCase[];
   patientId: number;
@@ -46,7 +51,8 @@ export class PatientChartComponent extends ListTemplate implements OnInit {
         this.patientCases = patient.cases;
         this.patientChartInfo.name = PatientName.formatName(patient.firstName, patient.middleName, patient.lastName);
         this.patientChartInfo.dateOfBirth = moment(patient.birthDate).format("MM-DD-YYYY");
-
+        this.patientChartInfo.email = patient.contacts[0].email;
+        this.patientChartInfo.phone= patient.contacts[0].phoneNumber;
         for (var i = 0; i < patient.addresses.length; i++) {
 
           this.patientChartInfo.address.push(AddressUtil.formatAddress(patient.addresses[i]))
