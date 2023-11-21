@@ -1,3 +1,4 @@
+{{patientChartInfo.gender}}
 <ngx-spinner></ngx-spinner>
 <c-row>
     <c-col xs="12" class="mb-2">
@@ -8,84 +9,122 @@
 <c-container fluid>
     <!--Pateint Basic Component-->
     <c-row class="justify-content-center">
-        <c-col class="col">
-            <c-card class="mb-3 ustify-content-center">
+        <c-col xs="12">
+            <c-card class="mb-4">
                 <c-card-header>
-                    <h4>Patient information</h4>
+                    <strong>Patient Information</strong>
                 </c-card-header>
                 <c-card-body>
-                    <c-card cBorder="primary" class="mb-2">
-                        <c-card-body *ngIf="patientChartInfo">
-                            <h5 cCardTitle>
-
-                                <small class="fw-bold fs-6"> Name : </small>
-                                <small class="fw-normal fs-6">{{patientChartInfo.name}}</small>
-                            </h5>
-                            <h5 cCardTitle>
-
-                                <small class="fw-bold fs-6"> Date Of Birth : </small>
-                                <small class="fw-normal fs-6">{{patientChartInfo.dateOfBirth}}</small>
-                            </h5>
-                            <h5 cCardTitle>
-
-                                <small class="fw-bold fs-6"> Age : </small>
-                                <small class="fw-normal fs-6">{{patientChartInfo.age}}</small>
-                            </h5>
-                            <h5 cCardTitle *ngIf="patientChartInfo.address">
-
-                                <small class="fw-bold fs-6"> Addresses : </small>
-                                <ul class="list-unstyled">
-                                    <ul>
-                                        <li *ngFor="let address of patientChartInfo.address; let i = index">
-                                            <small class="fw-normal fs-6">{{address}}</small>
-                                        </li>
-                                    </ul>
-                                </ul>
-                            </h5>
-                        </c-card-body>
-                    </c-card>
-                    <c-card cBorder="primary" class="mb-2">
-                        <c-card-body>
-                            <select aria-label="Default select example" cSelect sizing="sm"
-                                (change)="changeCase($event)">
-                                <option value="0">Select Case</option>
-                                <option *ngFor="let case of patientCases" [value]="case.id">
-                                    {{case.title}}</option>
-                            </select>
-                            <c-accordion [alwaysOpen]="accordionAlwaysOpen" class=" m-3">
-                                <c-accordion-item #item0="cAccordionItem" [visible]="false">
-                                    <ng-template cTemplateId="accordionHeaderTemplate">
-                                        <button (click)="item0.toggleItem()" [collapsed]="!item0.visible"
-                                            cAccordionButton>
-                                            <h5> <svg cIcon name="cilArrowCircleRight" size="xl"></svg>
-                                                Upcoming Appointment
-                                            </h5>
-                                        </button>
-                                    </ng-template>
-                                    <ng-template cTemplateId="accordionBodyTemplate">
-                                        <app-upcoming-appointment [patientId]="patientId"></app-upcoming-appointment>
-                                    </ng-template>
-                                </c-accordion-item>
-                                <c-accordion-item #item1="cAccordionItem" [visible]="false">
-                                    <ng-template cTemplateId="accordionHeaderTemplate">
-                                        <button (click)="item1.toggleItem()" [collapsed]="!item1.visible"
-                                            cAccordionButton>
-                                            <h5> <svg cIcon name="cilArrowCircleLeft" size="xl"></svg>
-                                                Previous Appointment</h5>
-                                        </button>
-                                    </ng-template>
-                                    <ng-template cTemplateId="accordionBodyTemplate">
-                                        <app-previous-appointment [patientId]="patientId"></app-previous-appointment>
-                                    </ng-template>
-                                </c-accordion-item>
-                            </c-accordion>
-                        </c-card-body>
-                    </c-card>
+                    <div style="float: left;" *ngIf="patientChartInfo.gender !== 'Female'">
+                        <svg cIcon name="cilUser" title="cilUser" size="9xl"></svg>
+                    </div>
+                    <div style="float: left;" *ngIf="patientChartInfo.gender === 'Female'">
+                        <svg cIcon name="cilUserFemale" title="cilUserFemale" size="9xl"></svg>
+                    </div>
+                    <c-row>
+                        <c-col class="mb-1">
+                            <c-input-group sizing="sm">
+                                <span cInputGroupText>
+                                    <svg cIcon name="cilDisabled" title="cilDisabled"></svg>
+                                </span>
+                                <input cFormControl readonly [(ngModel)]="patientChartInfo.name" />
+                            </c-input-group>
+                        </c-col>
+                    </c-row>
+                    <c-row>
+                        <c-col class="mb-1">
+                            <c-input-group sizing="sm">
+                                <span cInputGroupText>
+                                    <svg cIcon name="cilAddressBook" title="cilAddressBook"></svg>
+                                </span>
+                                <input cFormControl readonly [(ngModel)]="patientChartInfo.address[0]" />
+                            </c-input-group>
+                        </c-col>
+                    </c-row>
+                    <c-row>
+                        <c-col class="mb-1">
+                            <c-input-group sizing="sm">
+                                <span cInputGroupText>
+                                    <svg cIcon name="cilBirthdayCake" title="cilBirthdayCake"></svg>
+                                </span>
+                                <input cFormControl readonly [(ngModel)]="patientChartInfo.dateOfBirth" />
+                                <input cFormControl [(ngModel)]="patientChartInfo.age" style="max-width: 20%;" />
+                            </c-input-group>
+                        </c-col>
+                    </c-row>
+                    <c-row>
+                        <c-col class="mb-1">
+                            <c-input-group sizing="sm">
+                                <span cInputGroupText>
+                                    <svg cIcon name="cibMailRu" title="cibMailRu"></svg>
+                                </span>
+                                <input cFormControl readonly [(ngModel)]="patientChartInfo.email" />
+                            </c-input-group>
+                        </c-col>
+                    </c-row>
+                    <c-row>
+                        <c-col class="mb-1">
+                            <c-input-group sizing="sm">
+                                <span cInputGroupText>
+                                    <svg cIcon name="cilPhone" title="cilPhone"></svg>
+                                </span>
+                                <input cFormControl [(ngModel)]="patientChartInfo.phone" readonly />
+                            </c-input-group>
+                        </c-col>
+                    </c-row>
                 </c-card-body>
             </c-card>
         </c-col>
     </c-row>
-    <!--Pateint Case Component-->
+    <!-- Patient Appointment-->
+    <c-row>
+        <c-col xs="12">
+            <c-card class="mb-4">
+                <c-card-header>
+                    <strong>Appointment Information</strong>
+                </c-card-header>
+                <c-card-body>
+                    <c-row>
+                        <c-col>
+                            <select cFormControl cSelect class="mb-2" id="cases" name="cases" sizing="sm"
+                                (change)="changeCase($event)">
+                                <option selected value="0">All Cases</option>
+                                <option *ngFor="let case of patientCases" [value]="case.id">
+                                    {{case.title}}
+                                </option>
+                            </select>
+                        </c-col>
+                    </c-row>
+                    <c-nav variant="tabs">
+                        <c-nav-item>
+                            <a [cTabContent]="tabContent2" [routerLink] [tabPaneIdx]="0" cNavLink>
+                                <svg cIcon class="me-2" name="cilCalendar"></svg>
+                                Upcoming Appointment
+                            </a>
+                        </c-nav-item>
+                        <c-nav-item>
+                            <a [cTabContent]="tabContent2" [routerLink] [tabPaneIdx]=1 cNavLink>
+                                <svg cIcon class="me-2" name="cilHistory"></svg>
+                                Previous Appointment
+                            </a>
+                        </c-nav-item>
+                    </c-nav>
+                    <c-tab-content #tabContent2="cTabContent" [activeTabPaneIdx]="0" cRounded="bottom">
+                        <c-tab-pane tabPaneIdx=0>
+                            <app-upcoming-appointment [patientId]="patientId"
+                                [caseId]="caseId"></app-upcoming-appointment>
+                        </c-tab-pane>
+                        <c-tab-pane tabPaneIdx=1>
+                            <app-previous-appointment [patientId]="patientId"
+                                [caseId]="caseId"></app-previous-appointment>
+                        </c-tab-pane>
+                    </c-tab-content>
+                </c-card-body>
+            </c-card>
+
+        </c-col>
+    </c-row>
+    <!-- Patient Case-->
     <c-row class="justify-content-center">
         <c-col class="col">
             <c-card class="mb-3 ustify-content-center">

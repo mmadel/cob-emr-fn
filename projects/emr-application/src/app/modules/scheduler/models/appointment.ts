@@ -1,23 +1,32 @@
-import { AppointmentMetaData } from './appointment.meta.data';
-import { AppointmentType } from './appointment.type';
+import { PatientCase } from '../../patient/models/case/patient.case';
+import { Patient } from '../../patient/models/patient';
+import { AppointmentCancelNoShowReason } from './appointment.cancel.no.show.reason';
+import { AppointmentDate } from './appointment.date';
 import { AppointmentRepeat } from './appointment.repeat';
 import { AppointementStatus } from './appointment.status';
 
 export class Appointment {
     id: number;
     clinicId: number;
-    doctorUUID: string;
     isAllUsers: boolean;
+    patient: Patient;
     patientId: number;
+    patientCase: PatientCase = null;
     patientCaseId: number;
+    therapyUUID: string = null;
+    appointmentDate: AppointmentDate = {}
     startDate: number;
-    endDate: number;
+    endDate: number
     title: string;
     note: string;
     repeatId: number;
-    appointmentType: AppointmentType = new AppointmentType();
-    metaData: AppointmentMetaData;
+    appointmentType: string | null = null;
+    appointmentRepetition: string | null = null;
     repeat: AppointmentRepeat;
     appointmentStatus: string;
     statusHistory: AppointementStatus[]
+    appointmentCancelNoShowReason: AppointmentCancelNoShowReason
+    public constructTitle(): string {
+        return this.patient.fullName + ':' + this.patientCase.title
+    }
 }

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'projects/emr-application/src/environments/environment';
+import { Observable } from 'rxjs';
 import { SchedulerConfiguration } from '../models/configuration';
 
 @Injectable({
@@ -19,8 +20,8 @@ export class SchedulerConfigurationService {
     return this._http.put(createClinicSchedulerConfigurationURL, JSON.stringify(clinicSchedulerConfiguration));
   }
 
-  retrieveCliniSchedulerConfigurationById(id: number) {
-    const listClinicSchedulerConfigurationURL = this.baseUrl + 'scheduler/configuration/find/id/' + id;
+  retrieveCliniSchedulerConfigurationById(id: number) :Observable<any>{
+    const listClinicSchedulerConfigurationURL = this.baseUrl + 'scheduler/find/clinicId/' + id;
     return this._http.get<SchedulerConfiguration>(listClinicSchedulerConfigurationURL);
   }
 

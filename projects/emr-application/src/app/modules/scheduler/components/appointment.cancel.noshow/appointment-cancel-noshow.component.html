@@ -1,1 +1,52 @@
-<p>appointment-cancel-noshow works!</p>
+<c-container fluid>
+    <form cForm #cancelnoshowForm="ngForm">
+        <div class="mb-2">
+            <c-row class="justify-content-center">
+                <c-col>
+                    <c-card>
+                        <c-card-header>
+                            Cancellation Reason
+                        </c-card-header>
+                        <c-card-body>
+                            <c-form-check *ngFor="let reson of cancelNoShowReasons | keyvalue">
+                                <input cFormCheckInput type="radio" value="one" name="flexRadioDefault"
+                                    [value]="reson.value" (change)="onResonSelectionChange($event)" />
+                                <label cFormCheckLabel>{{ reson.value }}</label>
+                            </c-form-check>
+                        </c-card-body>
+                    </c-card>
+                </c-col>
+            </c-row>
+        </div>
+        <div class="mb-2" *ngIf="type ==='cancel'">
+            <c-row class="justify-content-center">
+                <c-col>
+                    <c-card>
+                        <c-card-body>
+                            <c-date-picker size="sm" [date]="resonDate"
+                                placeholder="Appointment Cancelation Date"></c-date-picker>
+                        </c-card-body>
+                    </c-card>
+                </c-col>
+            </c-row>
+        </div>
+        <div class="mb-2">
+            <c-row class="justify-content-center">
+                <c-col>
+                    <c-card>
+                        <c-card-body>
+                            <textarea cFormControl rows="3" placeholder="Comment" name="comment"
+                             [(ngModel)]="appointmentCancelNoShowReason.comment"></textarea>
+                        </c-card-body>
+                    </c-card>
+                </c-col>
+            </c-row>
+        </div>
+    </form>
+    <div class="d-grid gap-2 col-2 mx-auto mb-1">
+        <button cButton color="primary" variant="outline" size="sm" (click)="updateStatus()">
+            <span *ngIf="type === 'cancel'">Cancel</span>
+            <span *ngIf="type === 'noshow'">Save</span>
+        </button>
+    </div>
+</c-container>

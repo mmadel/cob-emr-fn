@@ -13,12 +13,12 @@ export class AppointmentService {
   private baseUrl = environment.baseURL;
   constructor(private _http: HttpClient) { }
   createAppointment(appointment: Appointment) {
-    const createAppointmentURL = this.baseUrl + 'appointment';
-    return this._http.post(createAppointmentURL, JSON.stringify(appointment));
+    const createAppointmentURL = this.baseUrl + 'appointment/create';
+    return this._http.post(createAppointmentURL, appointment);
   }
 
   retrieveAppointments(startDate: number, endDate: number, clinicId: number) {
-    const listAppointmentURL = this.baseUrl + 'appointment/find/' + startDate + '/' + endDate + '/' + clinicId;
+    const listAppointmentURL = this.baseUrl + 'appointment/find/startDate/' + startDate + '/endDate/' + endDate + '/' + clinicId;
     return this._http.get(listAppointmentURL);
   }
   retrieveAppointmentsByFilter(startDate: number, endDate: number, clinicId: number, filters: AppointmentFilter) {
@@ -36,6 +36,10 @@ export class AppointmentService {
   retrieveAppointmentTypes(clinicId: number): Observable<AppointmentType[]> {
     const listAppointmentTypesURL = this.baseUrl + 'appointment/type/find/clinicId/' + clinicId;
     return this._http.get<AppointmentType[]>(listAppointmentTypesURL);
+  }
+  retrieveAppointment(appointmentId: number): Observable<Appointment> {
+    const url = this.baseUrl + 'appointment/find/id/' + appointmentId;
+    return this._http.get<Appointment>(url);
   }
 
   createAppointmentType(type: AppointmentType) {

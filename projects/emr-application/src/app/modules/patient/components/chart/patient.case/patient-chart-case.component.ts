@@ -1,11 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { IColumn } from '@coreui/angular-pro/lib/smart-table/smart-table.type';
-import { cibTreehouse } from '@coreui/icons';
+import * as moment from 'moment';
 import { PatientName } from 'projects/emr-application/src/app/util/name.util';
 import { map, Observable, retry, tap } from 'rxjs';
 import { ListTemplate } from '../../../../common/template/list.template';
+import { Appointment } from '../../../../scheduler/models/appointment';
 
-import { Appointment } from '../../../models/appointments/appointment';
 import { PatientCase } from '../../../models/case/patient.case';
 import { CancelNoShowService } from '../../../services/appointment/cancel-no-show.service';
 
@@ -22,15 +22,22 @@ export class PatientChartCaseComponent extends ListTemplate implements OnInit {
   @Input() patientId: number;
   @Input() clinicId: number;
   appointments$!: Observable<Appointment[]>;
+  reasonVisibility = false;
   columns: (string | IColumn)[];
+  tmp : Appointment;
+  tmpReasonDate : Date
   constructor(private cancelNoShowService: CancelNoShowService) { super() }
 
   ngOnInit(): void {
-    this.columns = this.constructColumns(['title', 'startDate', 'endDate']);
+    this.columns = this.constructColumns(['appointmentStatus', 'startDate', 'endDate', 'Actions']);
     this.gettreatingDoctorFullName();
     this.getAppointments();
   }
-
+  toggleReasonVisibility(data: any) {
+    this.tmp = data;
+    this.tmpReasonDate = moment.unix(this.tmp?.appointmentCancelNoShowReason?.reasonDate / 1000).toDate();
+    this.reasonVisibility = !this.reasonVisibility;
+  }
   gettreatingDoctorFullName() {
     var fName: string = this.case.treatingDoctor?.firstName === undefined ? '' : this.case.treatingDoctor?.firstName;
     var mName: string = this.case.treatingDoctor?.middleName === undefined ? '' : this.case.treatingDoctor?.middleName;
@@ -45,7 +52,7 @@ export class PatientChartCaseComponent extends ListTemplate implements OnInit {
   }
   getAppointments() {
     if (this.case.id !== null)
-      this.appointments$ = this.cancelNoShowService.findCancelNoShowAppointments(this.apiParams$, this.patientId, this.clinicId, this.case.id).pipe(
+      this.appointments$ = this.cancelNoShowService.findCancelNoShowAppointments(this.apiParams$, this.patientId, this.case.id).pipe(
         retry({
           delay: (error) => {
             console.warn('Retry: ', error);

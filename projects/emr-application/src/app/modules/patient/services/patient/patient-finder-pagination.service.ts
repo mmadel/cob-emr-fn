@@ -16,7 +16,7 @@ export class PatientFinderPaginationService extends BasePaginationService {
 
   private baseUrl = environment.baseURL + 'patient'
 
-  constructor(httpClient: HttpClient,chacheService: CacheService,clinicEmittingService :ClinicEmittingService) { super(httpClient,chacheService,clinicEmittingService) }
+  constructor(httpClient: HttpClient,clinicEmittingService :ClinicEmittingService) { super(httpClient,clinicEmittingService) }
 
   getPateints(config$: BehaviorSubject<IApiParams>): Observable<any> {
     return this.get(config$, this.baseUrl + "/find/clinicId/")

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { IColumn } from '@coreui/angular-pro/lib/smart-table/smart-table.type';
-import { map, Observable, retry, tap } from 'rxjs';
+import { filter, map, Observable, retry, tap } from 'rxjs';
 import { ListTemplate } from '../../../../common/template/list.template';
 import { Appointment } from '../../../models/appointments/appointment';
 import { UpcomingAppointmentService } from '../../../services/appointment/upcoming-appointment.service';
@@ -14,7 +14,7 @@ import { PateintCaseService } from '../../../services/patient/cases/pateint-case
 export class UpcomingAppointmentComponent extends ListTemplate implements OnInit {
 
   @Input() patientId: number;
-  caseId: number = 0;
+  @Input() caseId: number = 0
   appointments$!: Observable<Appointment[]>;
   columns: (string | IColumn)[];
 
@@ -24,22 +24,19 @@ export class UpcomingAppointmentComponent extends ListTemplate implements OnInit
   ) { super(); }
 
   ngOnInit(): void {
-    this.columns = this.constructColumns(['title', 'startDate', 'endDate']);
-
-    if (this.caseId === 0) {
-      this.getAllAppointments();
-    }
-    this.pateintCaseService.selectedCase$.subscribe((caseId) => {
-      if (caseId !== null) {
-        this.caseId = caseId;
-        this.getUpcomingAppointments();
-      }
-
+    this.initListComponent();
+    this.columns = this.constructColumns(['appointmentStatus', 'startDate', 'endDate']);
+    this.getAllAppointments();
+    this.pateintCaseService.selectedCase$.pipe(
+      filter(clinicId => clinicId != null)
+    ).subscribe((caseId) => {
+      this.caseId = caseId;
+      this.getUpcomingAppointments();
     })
   }
 
   private getUpcomingAppointments() {
-    if (this.caseId === 0) {
+    if (this.caseId == 0) {
       this.getAllAppointments();
     }
     if (this.caseId > 0) {

@@ -15,17 +15,17 @@ import { ClinicEmittingService } from '../../../common/service/emitting/clinic-e
 export class PreviousAppointmentService extends BasePaginationService {
   private baseUrl = environment.baseURL + 'appointment/chart/previous'
   constructor(httpClient: HttpClient,cahceService: CacheService,clinicEmittingService :ClinicEmittingService) {
-    super(httpClient,cahceService,clinicEmittingService);
+    super(httpClient,clinicEmittingService);
   }
 
   public findAllPreviousAppointments(config$: BehaviorSubject<IApiParams>, pateintId: number): Observable<any> {
-    return this.get(config$, this.baseUrl + '/find/patientId/' + pateintId + '/clinicId/' + 2)
+    return this.get(config$, this.baseUrl + '/find/patientId/' + pateintId + '/clinicId/')
   }
 
   public findPreviousAppointmentsByCase(config$: BehaviorSubject<IApiParams>,
     pateintId: number,
-    caseId: number): Observable<any> {
-    return this.get(config$, this.baseUrl + '/find/patientId/' + pateintId + '/clinicId/' + 1 + '/patientCaseId/' + caseId);
+    caseId: number,): Observable<any> {
+    return this.get(config$, this.baseUrl + '/find/patientId/' + pateintId + '/clinicId/' + '/patientCaseId/' + caseId);
 
   }
 }

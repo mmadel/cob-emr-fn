@@ -7,10 +7,12 @@ import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { FlatpickrModule } from 'angularx-flatpickr';
 import { EmrCommonModule } from '../common/emr-common.module';
-import { ModalModule } from '@coreui/angular-pro';
+import { CalloutModule, DatePickerModule, DropdownModule, FormModule, ModalModule, TimePickerModule } from '@coreui/angular-pro';
 import { AppointmentAddComponent } from './components/appointment.add/appointment-add.component';
 import { AppointmentCancelNoshowComponent } from './components/appointment.cancel.noshow/appointment-cancel-noshow.component';
 import { AppointmentConfirmComponent } from './components/appointment.confirm/appointment-confirm.component';
+import { AutocompleteLibModule } from 'angular-ng-autocomplete';
+import { AppointmentActionsComponent } from './components/appointment.actions/appointment-actions.component';
 import { AppointmentStatusComponent } from './components/appointment.status/appointment-status.component';
 @NgModule({
     declarations: [
@@ -18,6 +20,7 @@ import { AppointmentStatusComponent } from './components/appointment.status/appo
         AppointmentAddComponent,
         AppointmentCancelNoshowComponent,
         AppointmentConfirmComponent,
+        AppointmentActionsComponent,
         AppointmentStatusComponent
     ],
     imports: [
@@ -25,12 +28,15 @@ import { AppointmentStatusComponent } from './components/appointment.status/appo
         SchedulerRoutingModule,
         EmrCommonModule,
         ModalModule,
+        DatePickerModule,
+        TimePickerModule,
+        AutocompleteLibModule,
+        CalloutModule,
         FlatpickrModule.forRoot(),
         CalendarModule.forRoot({
             provide: DateAdapter,
             useFactory: adapterFactory,
-          })
-
+        })
     ]
 })
 export class SchedulerModule { }

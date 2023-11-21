@@ -1,120 +1,169 @@
 <c-card class="mb-3 ustify-content-center">
     <c-card-body>
-        <h5 cCardTitle>
-            <small class="fw-bold fs-6"> treatingDoctor : </small>
-            <small class="fw-normal fs-6">{{treatingDoctor}}</small>
-        </h5>
-        <h5 cCardTitle>
-            <small class="fw-bold fs-6"> ReferringDoctor : </small>
-            <small class="fw-normal fs-6">{{referringDoctor}}</small><br />
-        </h5>
-        <h5 cCardTitle>
-            <small class="fw-bold fs-6"> ReferringNPI : </small>
-            <small class="fw-normal fs-6">{{referringNPI}}</small><br />
-        </h5>
-        <h5 cCardTitle>
-            <small class="fw-bold fs-6"> PlaceOfService : </small>
-            <small class="fw-normal fs-6">{{case.placeOfService | lowercase}}</small><br />
-        </h5>
-        <h5 cCardTitle>
-            <small class="fw-bold fs-6"> InjuryCase : </small>
-            <small class="fw-normal fs-6">{{case.injuryCase | lowercase}}</small><br />
-        </h5>
-        <h6 cCardTitle>
-            <small class="fw-bold fs-6"> CaseDiagnosis : </small>
-            <ul class="list-unstyled">
-                <ul>
-                    <li *ngFor="let diagnosis of case.caseDiagnosis; let i = index">
-                        <small
-                            class="fw-normal fs-6">{{diagnosis.diagnosisCode}}-{{diagnosis.diagnosisDescription}}</small>
-                    </li>
-                </ul>
-
-            </ul>
-        </h6>
+        <c-row class="g-3">
+            <c-col class="mb-1">
+                <c-input-group sizing="sm">
+                    <span cInputGroupText style="width: 8%;">Rreating Doctor</span>
+                    <input cFormControl readonly [value]="treatingDoctor" />
+                </c-input-group>
+            </c-col>
+        </c-row>
+        <c-row class="g-3">
+            <c-col class="mb-1">
+                <c-input-group sizing="sm">
+                    <span cInputGroupText style="width: 8%;">Referring Doctor</span>
+                    <input cFormControl readonly [value]="referringDoctor" />
+                </c-input-group>
+            </c-col>
+        </c-row>
+        <c-row class="g-3">
+            <c-col class="mb-1">
+                <c-input-group sizing="sm">
+                    <span cInputGroupText style="width: 8%;">ReferringNPI</span>
+                    <input cFormControl readonly [value]="referringNPI" />
+                </c-input-group>
+            </c-col>
+        </c-row>
+        <c-row class="g-3">
+            <c-col class="mb-1">
+                <c-input-group sizing="sm">
+                    <span cInputGroupText style="width: 8%;">PlaceOfService</span>
+                    <input cFormControl readonly [value]="case.placeOfService | lowercase" />
+                </c-input-group>
+            </c-col>
+        </c-row>
+        <c-row class="g-3">
+            <c-col class="mb-1">
+                <c-input-group sizing="sm">
+                    <span cInputGroupText style="width: 8%;">InjuryCase</span>
+                    <input cFormControl readonly [value]="case.injuryCase | lowercase" />
+                </c-input-group>
+            </c-col>
+        </c-row>
+        <c-row class="mb-3">
+            <label [sm]="1" cCol cLabel="col" for="CaseDiagnosis" sizing="sm">
+                <strong>CaseDiagnosis</strong>
+            </label>
+            <c-col [sm]="12" *ngFor="let diagnosis of case.caseDiagnosis; let i = index">
+                <c-row>
+                    <c-col [sm]="1">
+                        <input cFormControl id="CaseDiagnosis" readonly type="text" [value]="diagnosis.diagnosisCode"
+                            sizing="sm" />
+                    </c-col>
+                    <c-col [sm]="11">
+                        <input cFormControl id="CaseDiagnosis" readonly type="text"
+                            [value]="diagnosis.diagnosisDescription" sizing="sm" />
+                    </c-col>
+                </c-row>
+            </c-col>
+        </c-row>
     </c-card-body>
 </c-card>
 <c-card class="mb-3 ustify-content-center">
     <c-card-body>
-        <c-accordion [alwaysOpen]="false" class="shadow m-3">
-            <c-accordion-item #item0="cAccordionItem" [visible]="false">
-                <ng-template cTemplateId="accordionHeaderTemplate">
-                    <button (click)="item0.toggleItem()" [collapsed]="!item0.visible" cAccordionButton>
-                        <h5> <svg cIcon name="cilNotes" size="xl"></svg>
-                            Records
-                        </h5>
-                    </button>
-                </ng-template>
-                <ng-template cTemplateId="accordionBodyTemplate">
-                    <c-card class="mb-3">
-                        <c-card-body>
-                            <ng-container *ngIf="props$ | async as props">
-                                <c-smart-table [columnSorter]="{resetable: true }" [columns]="columns"
-                                    [items]="(appointments$ | async) ?? []" [itemsPerPage]="props.itemsPerPage"
-                                    (itemsPerPageChange)="handleItemsPerPageChange($event)"
-                                    [itemsPerPageOptions]="[5,10,20]" [itemsPerPageSelect]="true"
-                                    [tableProps]="{ hover: true, striped: false, responsive: true }"
-                                    [tableBodyProps]="{ align: 'middle' }"
-                                    (sorterValueChange)="handleSorterValueChange($event)" header>
-                                    <ng-template cTemplateId="tableData" let-columnName="columnName" let-item="item"
-                                        let-tdContent="tdContent">
-                                        <td>
-                                            <ng-container [ngSwitch]="columnName">
-                                                <ng-container *ngSwitchCase="'startDate'">
-                                                    {{tdContent| date:'MMM d, y, h:mm a'}}
-                                                </ng-container>
-                                                <ng-container *ngSwitchCase="'endDate'">
-                                                    {{tdContent| date:'MMM d, y, h:mm a'}}
-                                                </ng-container>
-                                                <ng-container *ngSwitchDefault>
-                                                    {{tdContent}}
-                                                </ng-container>
+        <c-nav variant="tabs">
+            <c-nav-item>
+                <a [cTabContent]="tabContent2" [routerLink] [tabPaneIdx]="0" cNavLink>
+                    <svg cIcon class="me-2" name="cilNotes"></svg>
+                    Records
+                </a>
+            </c-nav-item>
+            <c-nav-item>
+                <a [cTabContent]="tabContent2" [routerLink] [tabPaneIdx]=1 cNavLink>
+                    <svg cIcon class="me-2" name="cilPaperclip"></svg>
+                    E-Documents
+                </a>
+            </c-nav-item>
+            <c-nav-item>
+                <a [cTabContent]="tabContent2" [routerLink] [tabPaneIdx]=2 cNavLink>
+                    <svg cIcon class="me-2" name="cilMoney"></svg>
+                    Patient Payment
+                </a>
+            </c-nav-item>
+            <c-nav-item>
+                <a [cTabContent]="tabContent2" [routerLink] [tabPaneIdx]=3 cNavLink>
+                    <svg cIcon class="me-2" name="cilHome"></svg>
+                    Home Exercise Program
+                </a>
+            </c-nav-item>
+        </c-nav>
+        <c-tab-content #tabContent2="cTabContent" [activeTabPaneIdx]="0" cRounded="bottom">
+            <c-tab-pane tabPaneIdx=0>
+                <c-card class="mb-3">
+                    <c-card-body>
+                        <ng-container *ngIf="props$ | async as props">
+                            <c-smart-table [columnSorter]="{resetable: true }" [columns]="columns"
+                                [items]="(appointments$ | async) ?? []" [itemsPerPage]="props.itemsPerPage"
+                                (itemsPerPageChange)="handleItemsPerPageChange($event)"
+                                [itemsPerPageOptions]="[5,10,20]" [itemsPerPageSelect]="true"
+                                [tableProps]="{ hover: true, striped: false, small:true }"
+                                [tableBodyProps]="{ align: 'middle' }"
+                                (sorterValueChange)="handleSorterValueChange($event)" header>
+                                <ng-template cTemplateId="tableData" let-columnName="columnName" let-item="item"
+                                    let-tdContent="tdContent">
+                                    <td>
+                                        <ng-container [ngSwitch]="columnName">
+                                            <ng-container *ngSwitchCase="'appointmentStatus'">
+                                                {{tdContent}}
                                             </ng-container>
-                                        </td>
-                                    </ng-template>
-                                </c-smart-table>
-                                <c-smart-pagination *ngIf="props.totalPages" [activePage]="props.activePage"
-                                    (activePageChange)="handleActivePageChange($event)"
-                                    [pages]="props.totalPages"></c-smart-pagination>
-                            </ng-container>
-                        </c-card-body>
-                    </c-card>
-
-                </ng-template>
-            </c-accordion-item>
-            <c-accordion-item #item1="cAccordionItem" [visible]="false">
-                <ng-template cTemplateId="accordionHeaderTemplate">
-                    <button (click)="item1.toggleItem()" [collapsed]="!item1.visible" cAccordionButton>
-                        <h5> <svg cIcon name="cilPaperclip" size="xl"></svg>
-                            E-Documents</h5>
-                    </button>
-                </ng-template>
-                <ng-template cTemplateId="accordionBodyTemplate">
-
-                </ng-template>
-            </c-accordion-item>
-            <c-accordion-item #item2="cAccordionItem" [visible]="false">
-                <ng-template cTemplateId="accordionHeaderTemplate">
-                    <button (click)="item2.toggleItem()" [collapsed]="!item2.visible" cAccordionButton>
-                        <h5> <svg cIcon name="cilMoney" size="xl"></svg>
-                            Patient Payment</h5>
-                    </button>
-                </ng-template>
-                <ng-template cTemplateId="accordionBodyTemplate">
-
-                </ng-template>
-            </c-accordion-item>
-            <c-accordion-item #item3="cAccordionItem" [visible]="false">
-                <ng-template cTemplateId="accordionHeaderTemplate">
-                    <button (click)="item3.toggleItem()" [collapsed]="!item3.visible" cAccordionButton>
-                        <h5> <svg cIcon name="cilHome" size="xl"></svg>
-                            Home Exercise Program</h5>
-                    </button>
-                </ng-template>
-                <ng-template cTemplateId="accordionBodyTemplate">
-
-                </ng-template>
-            </c-accordion-item>
-        </c-accordion>
+                                            <ng-container *ngSwitchCase="'startDate'">
+                                                {{tdContent| date:'MMM d, y, h:mm a'}}
+                                            </ng-container>
+                                            <ng-container *ngSwitchCase="'endDate'">
+                                                {{tdContent| date:'MMM d, y, h:mm a'}}
+                                            </ng-container>
+                                            <ng-container *ngSwitchDefault>
+                                                {{tdContent}}
+                                            </ng-container>
+                                            <ng-container *ngSwitchCase="'Actions'">
+                                                <button class="btn btn-outline-primary btn-sm"
+                                                    (click)="toggleReasonVisibility(item)">View Reasons</button>
+                                            </ng-container>
+                                        </ng-container>
+                                    </td>
+                                </ng-template>
+                            </c-smart-table>
+                            <c-smart-pagination *ngIf="props.totalPages" [activePage]="props.activePage" size="sm"
+                                (activePageChange)="handleActivePageChange($event)"
+                                [pages]="props.totalPages"></c-smart-pagination>
+                        </ng-container>
+                    </c-card-body>
+                </c-card>
+            </c-tab-pane>
+            <c-tab-pane tabPaneIdx=1>
+                E-Documents component
+            </c-tab-pane>
+            <c-tab-pane tabPaneIdx=2>
+                Patient Payment component
+            </c-tab-pane>
+            <c-tab-pane tabPaneIdx=3>
+                Home Exercise Program component
+            </c-tab-pane>
+        </c-tab-content>
     </c-card-body>
 </c-card>
+
+<c-modal id="AppointmentAction" [visible]="reasonVisibility">
+    <c-modal-header>
+        <h5 cModalTitle>Appointment {{tmp?.appointmentStatus}} Reason</h5>
+        <button (click)="toggleReasonVisibility('')" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+        <c-input-group class="mb-3" sizing="sm">
+            <span cInputGroupText id="basic-addon1">
+                <svg cIcon name="cilReportSlash" title="cilReportSlash"></svg>
+            </span>
+            <input aria-describedby="basic-addon1" readonly cFormControl
+                [value]="tmp?.appointmentCancelNoShowReason?.reason" />
+        </c-input-group>
+        <c-input-group class="mb-3" sizing="sm" *ngIf="tmp?.appointmentStatus === 'Cancel'">
+            <span cInputGroupText id="basic-addon1">
+                <svg cIcon name="cilCalendar" title="cilCalendar"></svg>
+            </span>
+            <input aria-describedby="basic-addon1" readonly cFormControl
+                [value]="this.tmpReasonDate | date: 'MM/dd/yyyy hh:mm a'" />
+        </c-input-group>
+        <textarea cFormControl id="exampleFormControlTextarea1" rows="3"
+            [value]="tmp?.appointmentCancelNoShowReason?.comment"></textarea>
+    </c-modal-body>
+</c-modal>

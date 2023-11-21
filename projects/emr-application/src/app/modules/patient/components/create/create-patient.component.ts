@@ -75,7 +75,7 @@ export class CreatePatientComponent implements OnInit, AfterViewInit {
       name: null
     },
     clinicsId: [],
-    patientCaseModels: [],
+    cases: [],
     patientInsuranceModels: []
   };
   constructor(private toastr: ToastrService,
@@ -186,10 +186,10 @@ export class CreatePatientComponent implements OnInit, AfterViewInit {
       }
 
       if (component instanceof PatientCaseInfoComponent) {
-        if (this.patient.patientCaseModels.length === 0 && component.isValid()) {
+        if (this.patient.cases.length === 0 && component.isValid()) {
           this.caseInvalidFields.push("Push Case(s) Inputs")
           valid = valid && false;
-        } else if (this.patient.patientCaseModels.length === 0) {
+        } else if (this.patient.cases.length === 0) {
           valid = false;
           component.getInvalidControls().forEach(invalidControl => {
             this.caseInvalidFields.push(invalidControl);

@@ -12,7 +12,7 @@ import { ClinicEmittingService } from '../../../../common/service/emitting/clini
 })
 export class ClinicalUserService extends BasePaginationService {
   private baseUrl = environment.baseURL + 'user'
-  constructor(httpClient: HttpClient, chacheService: CacheService,clinicEmittingService :ClinicEmittingService) { super(httpClient, chacheService,clinicEmittingService) }
+  constructor(httpClient: HttpClient,clinicEmittingService :ClinicEmittingService) { super(httpClient,clinicEmittingService) }
 
   getClinicalUser(config$: BehaviorSubject<IApiParams>): Observable<any> {
     return this.get(config$, this.baseUrl + "/find/clinicals/clinicId/")

@@ -3,12 +3,11 @@ import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
 import { AddressUtil } from 'projects/emr-application/src/app/util/address.util';
 import { PatientName } from 'projects/emr-application/src/app/util/name.util';
-import { filter, switchMap } from 'rxjs';
+import { filter, switchMap, tap } from 'rxjs';
 import { ClinicEmittingService } from '../../../common/service/emitting/clinic-emitting.service';
 import { ListTemplate } from '../../../common/template/list.template';
 import { PatientCase } from '../../models/case/patient.case';
 import { PatientChartInfo } from '../../models/chart/patient.chart.info';
-import { Clinic } from '../../models/clinic';
 import { Patient } from '../../models/patient';
 import { PateintResponse } from '../../models/response/patient.response';
 import { PateintCaseService } from '../../services/patient/cases/pateint-case.service';
@@ -19,34 +18,43 @@ import { PatientFinderService } from '../../services/patient/patient-finder.serv
   templateUrl: './patient-chart.component.html',
   styleUrls: ['./patient-chart.component.css']
 })
-export class PatientChartComponent extends ListTemplate implements OnInit {
-  accordionAlwaysOpen: boolean = false;
+export class PatientChartComponent implements OnInit {
+  patient: Patient;
   patientChartInfo: PatientChartInfo = {
     id: 0,
     name: '',
     dateOfBirth: '',
     age: 0,
-    address: []
+    gender: '',
+    address: [],
+    email: '',
+    phone: ''
+
   };
   patientCases: PatientCase[];
   patientId: number;
+  caseId: number = 0;
+  clinicId:number;
   constructor(private route: ActivatedRoute
-    , private patientFinderService: PatientFinderService,
-    private pateintCaseService: PateintCaseService,
-    private clinicEmittingService: ClinicEmittingService) { super(); }
+    , private patientFinderService: PatientFinderService
+    , private pateintCaseService: PateintCaseService
+    , private clinicEmittingService: ClinicEmittingService) { }
 
   ngOnInit(): void {
     this.patientId = Number(this.route.snapshot.paramMap.get('patientId'))
     this.clinicEmittingService.selectedClinic$
       .pipe(
         filter(clinicId => clinicId != null),
+        tap((clinicId) => this.clinicId = clinicId),
         switchMap((clinicId) => this.patientFinderService.getPatient(this.patientId, clinicId)))
       .subscribe((response: PateintResponse) => {
         var patient: Patient = response.records
-        this.patientCases = patient.patientCaseModels;
+        this.patientCases = patient.cases;
         this.patientChartInfo.name = PatientName.formatName(patient.firstName, patient.middleName, patient.lastName);
         this.patientChartInfo.dateOfBirth = moment(patient.birthDate).format("MM-DD-YYYY");
-
+        this.patientChartInfo.email = patient.contacts[0].email;
+        this.patientChartInfo.phone = patient.contacts[0].phoneNumber;
+        this.patientChartInfo.gender = patient.gender
         for (var i = 0; i < patient.addresses.length; i++) {
 
           this.patientChartInfo.address.push(AddressUtil.formatAddress(patient.addresses[i]))
@@ -55,8 +63,7 @@ export class PatientChartComponent extends ListTemplate implements OnInit {
       })
   }
   changeCase(event: any) {
-    this.accordionAlwaysOpen = true;
-    var caseId: number = event.target.value;
+    var caseId: number = event.target.value;    
     if (caseId !== null)
       this.pateintCaseService.selectedCase$.next(caseId);
   }
