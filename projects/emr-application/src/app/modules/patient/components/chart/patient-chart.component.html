@@ -80,6 +80,13 @@
                     <strong>Appointment Information</strong>
                 </c-card-header>
                 <c-card-body>
+                    <c-row>
+                        <c-col>
+                            <select cFormControl cSelect class="mb-2" id="cases" name="cases" sizing="sm">
+                                <option selected>All Cases</option>
+                            </select>
+                        </c-col>
+                    </c-row>
                     <c-nav variant="tabs">
                         <c-nav-item>
                             <a [cTabContent]="tabContent2" [routerLink] [tabPaneIdx]="0" cNavLink>
@@ -94,7 +101,7 @@
                             </a>
                         </c-nav-item>
                     </c-nav>
-                    <c-tab-content #tabContent2="cTabContent" [activeTabPaneIdx]="0" cRounded="bottom" >
+                    <c-tab-content #tabContent2="cTabContent" [activeTabPaneIdx]="0" cRounded="bottom">
                         <c-tab-pane tabPaneIdx=0>
                             <app-upcoming-appointment [patientId]="patientId"></app-upcoming-appointment>
                         </c-tab-pane>

@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'projects/emr-application/src/environments/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { ClinicService } from '../../../administration/services/clinic/clinic.service';
 import { IApiParams } from '../../../common/interfaces/api.params';
 import { BasePaginationService } from '../../../common/service/base-pagination.service';
 import { CacheService } from '../../../common/service/cahce/cache.service';
