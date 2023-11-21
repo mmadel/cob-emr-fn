@@ -58,7 +58,6 @@ export class AppointmentStatusComponent implements OnInit {
     })
   }
   checkValidityToChangeStatus() {
-    console.log(this.appointment.startDate)
     const currentDate = moment(new Date()).unix()*1000;
     console.log(currentDate)
     const appointmentStartDate = this.appointment.startDate;

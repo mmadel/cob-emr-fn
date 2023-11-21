@@ -1,3 +1,4 @@
+{{patientChartInfo.gender}}
 <ngx-spinner></ngx-spinner>
 <c-row>
     <c-col xs="12" class="mb-2">
@@ -14,8 +15,11 @@
                     <strong>Patient Information</strong>
                 </c-card-header>
                 <c-card-body>
-                    <div style="float: left;">
+                    <div style="float: left;" *ngIf="patientChartInfo.gender !== 'Female'">
                         <svg cIcon name="cilUser" title="cilUser" size="9xl"></svg>
+                    </div>
+                    <div style="float: left;" *ngIf="patientChartInfo.gender === 'Female'">
+                        <svg cIcon name="cilUserFemale" title="cilUserFemale" size="9xl"></svg>
                     </div>
                     <c-row>
                         <c-col class="mb-1">
@@ -82,8 +86,12 @@
                 <c-card-body>
                     <c-row>
                         <c-col>
-                            <select cFormControl cSelect class="mb-2" id="cases" name="cases" sizing="sm">
-                                <option selected>All Cases</option>
+                            <select cFormControl cSelect class="mb-2" id="cases" name="cases" sizing="sm"
+                                (change)="changeCase($event)">
+                                <option selected value="0">All Cases</option>
+                                <option *ngFor="let case of patientCases" [value]="case.id">
+                                    {{case.title}}
+                                </option>
                             </select>
                         </c-col>
                     </c-row>
@@ -103,10 +111,12 @@
                     </c-nav>
                     <c-tab-content #tabContent2="cTabContent" [activeTabPaneIdx]="0" cRounded="bottom">
                         <c-tab-pane tabPaneIdx=0>
-                            <app-upcoming-appointment [patientId]="patientId"></app-upcoming-appointment>
+                            <app-upcoming-appointment [patientId]="patientId"
+                                [caseId]="caseId"></app-upcoming-appointment>
                         </c-tab-pane>
                         <c-tab-pane tabPaneIdx=1>
-                            <app-previous-appointment [patientId]="patientId"></app-previous-appointment>
+                            <app-previous-appointment [patientId]="patientId"
+                                [caseId]="caseId"></app-previous-appointment>
                         </c-tab-pane>
                     </c-tab-content>
                 </c-card-body>

@@ -126,7 +126,7 @@ import {
   cibKeybase,
   cibKeycdn,cilKeyboard,cilInfo,cilFolder,cilFlip,cilHandPointDown,cilThumbDown,cilExpandDown,cilPhone,cibMailRu
   ,cilChevronCircleDownAlt
-  ,cilHistory
+  ,cilHistory,
 } from '@coreui/icons';
 
 export const iconSubset = {

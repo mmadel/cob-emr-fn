@@ -18,7 +18,7 @@ const httpOptions = {
 })
 export class BasePaginationService {
   url: string;
-  constructor(public httpClient: HttpClient, private cahceService: CacheService , private clinicEmittingService :ClinicEmittingService) { }
+  constructor(public httpClient: HttpClient,private clinicEmittingService: ClinicEmittingService) { }
   get(config$: BehaviorSubject<IApiParams>, url: string): Observable<any> {
     this.url = url;
     return config$.pipe(
@@ -31,7 +31,7 @@ export class BasePaginationService {
       switchMap((config) => this.fetchData(config))
     );
   }
-  private fetchData(params: IApiParams): Observable<PaginationData> {    
+  private fetchData(params: IApiParams): Observable<PaginationData> {
     const apiParams = {
       ...params
     };
@@ -43,7 +43,7 @@ export class BasePaginationService {
     return this.clinicEmittingService.selectedClinic$.pipe(
       switchMap(clinicId =>
         this.httpClient
-          .get<PaginationData>(this.url + clinicId, options)
+          .get<PaginationData>(this.constructURL(this.url, clinicId), options)
           .pipe(
             retry({ count: 1, delay: 100000, resetOnSuccess: true }),
             catchError(this.handleHttpError)
@@ -52,5 +52,13 @@ export class BasePaginationService {
   }
   private handleHttpError(error: HttpErrorResponse) {
     return throwError(() => error);
+  }
+  private constructURL(url: string, clinicId?: number) {
+    var urlArr: string[] = url.split('/clinicId/')
+    if (urlArr[1] === '') {
+      return url + clinicId;
+    } else {
+      return urlArr[0] + '/clinicId/' + clinicId + urlArr[1]
+    }
   }
 }

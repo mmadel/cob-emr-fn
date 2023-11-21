@@ -15,12 +15,11 @@ import { ClinicEmittingService } from '../../../common/service/emitting/clinic-e
 export class CancelNoShowService extends BasePaginationService {
 
   private baseUrl = environment.baseURL + 'appointment/chart/cno/find/cancel/noshow'
-  constructor(httpClient: HttpClient, cahceService: CacheService,clinicEmittingService :ClinicEmittingService) { super(httpClient, cahceService,clinicEmittingService) }
+  constructor(httpClient: HttpClient,clinicEmittingService :ClinicEmittingService) { super(httpClient,clinicEmittingService) }
 
   public findCancelNoShowAppointments(config$: BehaviorSubject<IApiParams>,
     pateintId: number,
-    clinicId: number,
     caseId: number) {
-    return this.get(config$, this.baseUrl + '/patientId/' + pateintId + '/clinicId/' + 2 + '/patientCaseId/' + caseId)
+    return this.get(config$, this.baseUrl + '/patientId/' + pateintId + '/clinicId/'  + '/patientCaseId/' + caseId)
   }
 }

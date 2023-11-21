@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { IColumn } from '@coreui/angular-pro/lib/smart-table/smart-table.type';
-import { map, Observable, retry, tap } from 'rxjs';
+import { filter, map, Observable, retry, tap } from 'rxjs';
 import { ListTemplate } from '../../../../common/template/list.template';
 import { Appointment } from '../../../models/appointments/appointment';
 import { PreviousAppointmentService } from '../../../services/appointment/previous-appointment.service';
@@ -13,7 +13,7 @@ import { PateintCaseService } from '../../../services/patient/cases/pateint-case
 })
 export class PreviousAppointmentComponent extends ListTemplate implements OnInit {
   @Input() patientId: number;
-  caseId: number = 0;
+  @Input() caseId: number =0 ;
   appointments$!: Observable<Appointment[]>;
   columns: (string | IColumn)[];
   constructor(
@@ -21,23 +21,28 @@ export class PreviousAppointmentComponent extends ListTemplate implements OnInit
     private pateintCaseService: PateintCaseService) { super(); }
 
   ngOnInit(): void {
-    this.columns = this.constructColumns(['title', 'startDate', 'endDate', 'viewHistory']);
-    if (this.caseId === 0)
-      this.getAllAppointments();
-    this.pateintCaseService.selectedCase$.subscribe((caseId) => {
-      if (caseId !== null)
-        this.getPreviousAppointments();
+    this.initListComponent();
+    this.columns = this.constructColumns(['appointmentStatus', 'startDate', 'endDate']);
+    this.getAllAppointments();
+    this.pateintCaseService.selectedCase$.pipe(
+      filter(clinicId => clinicId != null)
+    ).subscribe((caseId) => {
+      this.caseId = caseId;
+      this.getPreviousAppointments();
     })
 
   }
   private getPreviousAppointments() {
-    if (Number(this.caseId) === 0)
-      this.getAllAppointments()
-    if (Number(this.caseId) > 0)
+
+    if (this.caseId == 0) {
+      this.getAllAppointments();
+    }
+    if (this.caseId > 0)
       this.getAppointmentsByCase();
   }
 
   private getAllAppointments() {
+    console.log('getAllAppointments')
     this.appointments$ = this.previousAppointmentService.findAllPreviousAppointments(this.apiParams$, this.patientId).pipe(
       retry({
         delay: (error) => {

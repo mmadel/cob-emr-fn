@@ -103,6 +103,9 @@
                                     let-tdContent="tdContent">
                                     <td>
                                         <ng-container [ngSwitch]="columnName">
+                                            <ng-container *ngSwitchCase="'appointmentStatus'">
+                                                {{tdContent}}
+                                            </ng-container>
                                             <ng-container *ngSwitchCase="'startDate'">
                                                 {{tdContent| date:'MMM d, y, h:mm a'}}
                                             </ng-container>
@@ -111,6 +114,10 @@
                                             </ng-container>
                                             <ng-container *ngSwitchDefault>
                                                 {{tdContent}}
+                                            </ng-container>
+                                            <ng-container *ngSwitchCase="'Actions'">
+                                                <button class="btn btn-outline-primary btn-sm"
+                                                    (click)="toggleReasonVisibility(item)">View Reasons</button>
                                             </ng-container>
                                         </ng-container>
                                     </td>
@@ -135,3 +142,28 @@
         </c-tab-content>
     </c-card-body>
 </c-card>
+
+<c-modal id="AppointmentAction" [visible]="reasonVisibility">
+    <c-modal-header>
+        <h5 cModalTitle>Appointment {{tmp?.appointmentStatus}} Reason</h5>
+        <button (click)="toggleReasonVisibility('')" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+        <c-input-group class="mb-3" sizing="sm">
+            <span cInputGroupText id="basic-addon1">
+                <svg cIcon name="cilReportSlash" title="cilReportSlash"></svg>
+            </span>
+            <input aria-describedby="basic-addon1" readonly cFormControl
+                [value]="tmp?.appointmentCancelNoShowReason?.reason" />
+        </c-input-group>
+        <c-input-group class="mb-3" sizing="sm" *ngIf="tmp?.appointmentStatus === 'Cancel'">
+            <span cInputGroupText id="basic-addon1">
+                <svg cIcon name="cilCalendar" title="cilCalendar"></svg>
+            </span>
+            <input aria-describedby="basic-addon1" readonly cFormControl
+                [value]="this.tmpReasonDate | date: 'MM/dd/yyyy hh:mm a'" />
+        </c-input-group>
+        <textarea cFormControl id="exampleFormControlTextarea1" rows="3"
+            [value]="tmp?.appointmentCancelNoShowReason?.comment"></textarea>
+    </c-modal-body>
+</c-modal>
