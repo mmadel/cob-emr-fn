@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { CalendarEvent } from 'calendar-utils';
+import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { filter, switchMap, tap } from 'rxjs';
 import { Appointment } from '../../models/appointment';
@@ -15,7 +16,7 @@ import { AppointmentService } from '../../service/appointment.service';
 export class AppointmentStatusComponent implements OnInit {
   @Output() changeVisibility = new EventEmitter<string>();
   event: CalendarEvent;
-  statusDisabled: boolean = true;
+  statusDisabled: boolean = false;
   appointment: Appointment
   constructor(private appointmentEmittingService: AppointmentEmittingService
     , private appointmentService: AppointmentService
@@ -28,6 +29,7 @@ export class AppointmentStatusComponent implements OnInit {
       switchMap((appointmentId) => this.appointmentService.retrieveAppointment(appointmentId))
     ).subscribe((result) => {
       this.appointment = result
+      this.checkValidityToChangeStatus();
     })
   }
   onConfirmed(): void {
@@ -54,6 +56,14 @@ export class AppointmentStatusComponent implements OnInit {
       // this.appointmentEmittingService.event$.next(newEvent);
       this.changeVisibility.emit('close');
     })
-
   }
+  checkValidityToChangeStatus() {
+    console.log(this.appointment.startDate)
+    const currentDate = moment(new Date()).unix()*1000;
+    console.log(currentDate)
+    const appointmentStartDate = this.appointment.startDate;
+    if (appointmentStartDate > currentDate) {
+        this.statusDisabled = true;
+    }
+}
 }
